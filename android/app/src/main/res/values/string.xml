@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+<string name="facebook_app_id">695934069106903</string>
+<string name="fb_login_protocol_scheme">fb695934069106903</string>
+<string name="facebook_client_token">e445308c04613cccdabf272b3c3d3d73</string>
+<string name="app_name">ev_charger</string>
+</resources>
