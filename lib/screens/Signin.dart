@@ -1,10 +1,9 @@
-// ignore_for_file: prefer_const_constructors, camel_case_types
-
 import 'package:ev_charger/components/square_tile.dart';
 import 'package:ev_charger/main.dart';
+import 'package:ev_charger/screens/forget_phone.dart';
 import 'package:ev_charger/screens/register.dart';
-import 'package:flutter/material.dart';
 import 'package:ev_charger/services/auth_service.dart';
+import 'package:flutter/material.dart';
 
 class sign_in extends StatefulWidget {
   const sign_in({super.key});
@@ -83,10 +82,16 @@ class _sign_inState extends State<sign_in> {
                         SizedBox(
                           height: 40,
                         ),
-                        Text(
-                          'Forget Password',
-                          style: TextStyle(fontSize: 16, color: Colors.grey),
-                        )
+                        TextButton(
+                          child: const Text(
+                            'Forget Password',
+                            style: TextStyle(fontSize: 16, color: Colors.grey),
+                          ),
+                          onPressed: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ForgetPhone())),
+                        ),
                       ],
                     ),
                     SizedBox(
