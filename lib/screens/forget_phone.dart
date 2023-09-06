@@ -1,4 +1,6 @@
 import 'package:ev_charger/main.dart';
+import 'package:ev_charger/screens/create_password.dart';
+import 'package:ev_charger/screens/register.dart';
 import 'package:flutter/material.dart';
 
 class ForgetPhone extends StatefulWidget {
@@ -76,25 +78,54 @@ class _ForgetPhoneState extends State<ForgetPhone> {
                   suffixIcon: const Icon(Icons.phone_android),
                   fillColor: backgroundblue),
             ),
-            SizedBox(
+            const SizedBox(
               height: 300,
             ),
             ElevatedButton(
-                onPressed: null,
-                style: ButtonStyle(
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18.0),
-                    ),
+              onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const CreatePassword())),
+              style: ButtonStyle(
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(18.0),
                   ),
-                  backgroundColor:
-                      MaterialStateProperty.all<Color>(backgroundblue),
-                  padding: MaterialStateProperty.all(EdgeInsets.all(20)),
                 ),
-                child: Text(
-                  "CONTINUE",
-                  style: TextStyle(fontSize: 20, color: Colors.white),
-                )),
+                backgroundColor:
+                    MaterialStateProperty.all<Color>(backgroundblue),
+                padding: MaterialStateProperty.all(const EdgeInsets.all(20)),
+              ),
+              child: const Text(
+                "CONTINUE",
+                style: TextStyle(fontSize: 20, color: Colors.white),
+              ),
+            ),
+            const SizedBox(
+              height: 40,
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  "Don't have an account? ",
+                  style: TextStyle(
+                    fontSize: 20,
+                  ),
+                ),
+                TextButton(
+                    onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const register())),
+                    child: const Text(
+                      'Sign up',
+                      style: TextStyle(fontSize: 20, color: backgroundblue),
+                    ))
+              ],
+            ),
           ],
         ),
       ),

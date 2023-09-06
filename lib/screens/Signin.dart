@@ -115,7 +115,7 @@ class _sign_inState extends State<sign_in> {
                           "CONTINUE",
                           style: TextStyle(fontSize: 20, color: Colors.white),
                         )),
-                    SizedBox(
+                    const SizedBox(
                       height: 30,
                     ),
                     Row(
@@ -129,7 +129,7 @@ class _sign_inState extends State<sign_in> {
                         )
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 40,
                     ),
                     Row(
