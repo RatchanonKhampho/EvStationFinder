@@ -27,7 +27,7 @@ class _ForgetPhoneState extends State<ForgetPhone> {
                   icon: const Icon(Icons.arrow_back_ios_new),
                 ),
                 const SizedBox(
-                  width: 75,
+                  width: 70,
                 ),
                 const Text(
                   "Forget Password",
@@ -39,48 +39,44 @@ class _ForgetPhoneState extends State<ForgetPhone> {
               ],
             ),
             const SizedBox(
-              height: 15,
+              height: 30,
             ),
             const Padding(
-              padding: EdgeInsets.only(left: 30, right: 30, top: 25),
+              padding: EdgeInsets.all(20.0),
               child: Column(
                 children: [
                   Text(
                     'Forget Password',
-                    style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
                   )
                 ],
               ),
             ),
-            SizedBox(height: 15),
+            const SizedBox(height: 5),
             Row(
               children: [
                 Column(
                   children: [
                     Container(
                       height: 40,
-                      width: double.infinity,
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: const Text(
-                          "Please enter your phone and we will send ",
-                          style: TextStyle(color: Colors.grey, fontSize: 14),
-                        ),
+                      width: 370,
+                      alignment: Alignment.center,
+                      child: const Text(
+                        'Please enter your phone and we will send',
+                        style: TextStyle(color: Colors.grey, fontSize: 14),
                       ),
                     ),
                     Container(
                       height: 20,
-                      width: double.infinity,
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: const Text(
-                          "you a link to return to your account ",
-                          style: TextStyle(color: Colors.grey, fontSize: 14),
-                        ),
+                      width: 370,
+                      alignment: Alignment.center,
+                      child: const Text(
+                        'you a link to return to your account',
+                        style: TextStyle(color: Colors.grey, fontSize: 14),
                       ),
-                    )
+                    ),
                   ],
-                ),
+                )
               ],
             ),
             const SizedBox(
@@ -96,7 +92,7 @@ class _ForgetPhoneState extends State<ForgetPhone> {
                   fillColor: backgroundblue),
             ),
             const SizedBox(
-              height: 300,
+              height: 350,
             ),
             ElevatedButton(
               onPressed: () => Navigator.push(
@@ -104,21 +100,21 @@ class _ForgetPhoneState extends State<ForgetPhone> {
                   MaterialPageRoute(
                       builder: (context) => const CreatePassword())),
               style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.all(20.0),
-                  fixedSize: const Size(300, 60),
-                  textStyle: const TextStyle(
-                      fontSize: 20, fontWeight: FontWeight.w800),
+                  padding: EdgeInsets.all(20.0),
+                  fixedSize: Size(300, 60),
+                  textStyle:
+                      TextStyle(fontSize: 20, fontWeight: FontWeight.w800),
                   primary: backgroundblue,
                   elevation: 10,
                   shadowColor: backgroundblue,
-                  shape: const StadiumBorder()),
+                  shape: StadiumBorder()),
               child: const Text(
                 "CONTINUE",
                 style: TextStyle(fontSize: 20, color: Colors.white),
               ),
             ),
             const SizedBox(
-              height: 40,
+              height: 30,
             ),
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
