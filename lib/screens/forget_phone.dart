@@ -53,30 +53,26 @@ class _ForgetPhoneState extends State<ForgetPhone> {
               ),
             ),
             const SizedBox(height: 5),
-            Row(
+            Column(
               children: [
-                Column(
-                  children: [
-                    Container(
-                      height: 40,
-                      width: 370,
-                      alignment: Alignment.center,
-                      child: const Text(
-                        'Please enter your phone and we will send',
-                        style: TextStyle(color: Colors.grey, fontSize: 16),
-                      ),
-                    ),
-                    Container(
-                      height: 20,
-                      width: 370,
-                      alignment: Alignment.center,
-                      child: const Text(
-                        'you a link to return to your account',
-                        style: TextStyle(color: Colors.grey, fontSize: 16),
-                      ),
-                    ),
-                  ],
-                )
+                Container(
+                  height: 40,
+                  width: 370,
+                  alignment: Alignment.center,
+                  child: const Text(
+                    'Please enter your phone and we will send',
+                    style: TextStyle(color: Colors.grey, fontSize: 16),
+                  ),
+                ),
+                Container(
+                  height: 20,
+                  width: 370,
+                  alignment: Alignment.center,
+                  child: const Text(
+                    'you a link to return to your account',
+                    style: TextStyle(color: Colors.grey, fontSize: 16),
+                  ),
+                ),
               ],
             ),
             const SizedBox(
