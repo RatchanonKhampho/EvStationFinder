@@ -27,7 +27,7 @@ class _ForgetPhoneState extends State<ForgetPhone> {
                   icon: const Icon(Icons.arrow_back_ios_new),
                 ),
                 const SizedBox(
-                  width: 50,
+                  width: 55,
                 ),
                 const Text(
                   "Forget Password",
@@ -39,7 +39,7 @@ class _ForgetPhoneState extends State<ForgetPhone> {
               ],
             ),
             const SizedBox(
-              height: 40,
+              height: 20,
             ),
             const Padding(
               padding: EdgeInsets.all(20.0),
@@ -52,19 +52,18 @@ class _ForgetPhoneState extends State<ForgetPhone> {
                 ],
               ),
             ),
-            const SizedBox(),
-            const Padding(
-              padding: EdgeInsets.all(5.0),
-              // ignore: unnecessary_const
-              child: const Column(
-                children: [
-                  Padding(padding: EdgeInsets.only(right: 20, left: 20)),
-                  Text(
-                    'Please enter your phone and we will send you a link to return to your account',
-                    style: TextStyle(color: Colors.grey),
+            Row(
+              children: [
+                Container(
+                  height: 40,
+                  width: 370,
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                        "Please enter your phone and we will sendyou a link to return to your account"),
                   ),
-                ],
-              ),
+                )
+              ],
             ),
             const SizedBox(
               height: 50,
@@ -86,16 +85,15 @@ class _ForgetPhoneState extends State<ForgetPhone> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => const CreatePassword())),
-              style: ButtonStyle(
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(18.0),
-                  ),
-                ),
-                backgroundColor:
-                    MaterialStateProperty.all<Color>(backgroundblue),
-                padding: MaterialStateProperty.all(const EdgeInsets.all(20)),
-              ),
+              style: ElevatedButton.styleFrom(
+                  padding: EdgeInsets.all(20.0),
+                  fixedSize: Size(300, 60),
+                  textStyle:
+                      TextStyle(fontSize: 20, fontWeight: FontWeight.w800),
+                  primary: backgroundblue,
+                  elevation: 10,
+                  shadowColor: backgroundblue,
+                  shape: StadiumBorder()),
               child: const Text(
                 "CONTINUE",
                 style: TextStyle(fontSize: 20, color: Colors.white),
