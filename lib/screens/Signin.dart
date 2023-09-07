@@ -24,19 +24,19 @@ class _sign_inState extends State<sign_in> {
               Row(
                 children: [
                   SizedBox(
-                    width: 130,
+                    width: 160,
                   ),
                   Text(
                     "Sign In",
                     style: TextStyle(
                         color: Colors.grey,
-                        fontSize: 25,
+                        fontSize: 20,
                         fontWeight: FontWeight.bold),
                   )
                 ],
               ),
               SizedBox(
-                height: 20,
+                height: 15,
               ),
               Padding(
                 padding: const EdgeInsets.all(20.0),
@@ -45,7 +45,7 @@ class _sign_inState extends State<sign_in> {
                     Text(
                       'Welcome',
                       style:
-                          TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+                          TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
                     ),
                     SizedBox(
                       height: 20,

@@ -27,42 +27,60 @@ class _ForgetPhoneState extends State<ForgetPhone> {
                   icon: const Icon(Icons.arrow_back_ios_new),
                 ),
                 const SizedBox(
-                  width: 55,
+                  width: 75,
                 ),
                 const Text(
                   "Forget Password",
                   style: TextStyle(
                       color: Colors.grey,
-                      fontSize: 25,
+                      fontSize: 20,
                       fontWeight: FontWeight.bold),
                 )
               ],
             ),
             const SizedBox(
-              height: 20,
+              height: 15,
             ),
             const Padding(
-              padding: EdgeInsets.all(20.0),
+              padding: EdgeInsets.only(left: 30, right: 30, top: 25),
               child: Column(
                 children: [
                   Text(
                     'Forget Password',
-                    style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
                   )
                 ],
               ),
             ),
+            SizedBox(height: 15),
             Row(
               children: [
-                Container(
-                  height: 40,
-                  width: 370,
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: Text(
-                        "Please enter your phone and we will sendyou a link to return to your account"),
-                  ),
-                )
+                Column(
+                  children: [
+                    Container(
+                      height: 40,
+                      width: double.infinity,
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: const Text(
+                          "Please enter your phone and we will send ",
+                          style: TextStyle(color: Colors.grey, fontSize: 14),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      height: 20,
+                      width: double.infinity,
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: const Text(
+                          "you a link to return to your account ",
+                          style: TextStyle(color: Colors.grey, fontSize: 14),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
               ],
             ),
             const SizedBox(
@@ -86,14 +104,14 @@ class _ForgetPhoneState extends State<ForgetPhone> {
                   MaterialPageRoute(
                       builder: (context) => const CreatePassword())),
               style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.all(20.0),
-                  fixedSize: Size(300, 60),
-                  textStyle:
-                      TextStyle(fontSize: 20, fontWeight: FontWeight.w800),
+                  padding: const EdgeInsets.all(20.0),
+                  fixedSize: const Size(300, 60),
+                  textStyle: const TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.w800),
                   primary: backgroundblue,
                   elevation: 10,
                   shadowColor: backgroundblue,
-                  shape: StadiumBorder()),
+                  shape: const StadiumBorder()),
               child: const Text(
                 "CONTINUE",
                 style: TextStyle(fontSize: 20, color: Colors.white),
@@ -110,7 +128,7 @@ class _ForgetPhoneState extends State<ForgetPhone> {
                 const Text(
                   "Don't have an account? ",
                   style: TextStyle(
-                    fontSize: 20,
+                    fontSize: 16,
                   ),
                 ),
                 TextButton(
@@ -120,7 +138,7 @@ class _ForgetPhoneState extends State<ForgetPhone> {
                             builder: (context) => const register())),
                     child: const Text(
                       'Sign up',
-                      style: TextStyle(fontSize: 20, color: backgroundblue),
+                      style: TextStyle(fontSize: 16, color: backgroundblue),
                     ))
               ],
             ),
