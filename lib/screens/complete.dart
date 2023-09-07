@@ -21,11 +21,13 @@ class _CompleteProfileState extends State<CompleteProfile> {
               Row(
                 children: [
                   IconButton(
-                    onPressed: () => Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => register())),
+                    onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const register())),
                     icon: const Icon(Icons.arrow_back_ios_new),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 120,
                   ),
                   const Text(
@@ -43,7 +45,7 @@ class _CompleteProfileState extends State<CompleteProfile> {
               Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: Column(children: [
-                  Text(
+                  const Text(
                     'Complete Profile',
                     style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
                   ),
@@ -58,7 +60,7 @@ class _CompleteProfileState extends State<CompleteProfile> {
                             height: 40,
                             width: 330,
                             alignment: Alignment.center,
-                            child: Text(
+                            child: const Text(
                               'Complete your details or conitnue',
                               style:
                                   TextStyle(color: Colors.grey, fontSize: 16),
@@ -68,7 +70,7 @@ class _CompleteProfileState extends State<CompleteProfile> {
                             height: 20,
                             width: 330,
                             alignment: Alignment.center,
-                            child: Text(
+                            child: const Text(
                               'with social media',
                               style:
                                   TextStyle(color: Colors.grey, fontSize: 16),
@@ -78,7 +80,7 @@ class _CompleteProfileState extends State<CompleteProfile> {
                       ),
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 50,
                   ),
                   TextField(
@@ -89,7 +91,7 @@ class _CompleteProfileState extends State<CompleteProfile> {
                         labelText: 'First Name',
                         suffixIcon: const Icon(Icons.person_outlined)),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 30,
                   ),
                   TextField(
@@ -100,7 +102,7 @@ class _CompleteProfileState extends State<CompleteProfile> {
                         labelText: 'Last Name',
                         suffixIcon: const Icon(Icons.person_outlined)),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 30,
                   ),
                   TextField(
@@ -111,7 +113,7 @@ class _CompleteProfileState extends State<CompleteProfile> {
                         labelText: 'Phone',
                         suffixIcon: const Icon(Icons.phone_android)),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 30,
                   ),
                   TextField(
@@ -127,7 +129,7 @@ class _CompleteProfileState extends State<CompleteProfile> {
                     onPressed: () => Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => CompleteProfile())),
+                            builder: (context) => const CompleteProfile())),
                     style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.all(15.0),
                         fixedSize: const Size(300, 50),
@@ -153,7 +155,7 @@ class _CompleteProfileState extends State<CompleteProfile> {
                             height: 40,
                             width: 330,
                             alignment: Alignment.center,
-                            child: Text(
+                            child: const Text(
                               'By continuing your confirm that yiu agree',
                               style:
                                   TextStyle(color: Colors.grey, fontSize: 16),
@@ -163,11 +165,10 @@ class _CompleteProfileState extends State<CompleteProfile> {
                             height: 20,
                             width: 330,
                             alignment: Alignment.center,
-                            child: Text(
+                            child: const Text(
                               'with our Term and Condition',
                               style: TextStyle(
-                                  color:
-                                      const Color.fromARGB(255, 254, 169, 169),
+                                  color: Color.fromARGB(255, 254, 169, 169),
                                   fontSize: 16),
                             ),
                           ),

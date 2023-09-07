@@ -78,7 +78,7 @@ class _sign_inState extends State<sign_in> {
                         )
                       ],
                     ),
-                    SizedBox(height: 50),
+                    const SizedBox(height: 50),
                     TextField(
                       decoration: InputDecoration(
                           border: OutlineInputBorder(

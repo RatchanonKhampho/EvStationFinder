@@ -79,7 +79,7 @@ class _registerState extends State<register> {
                         )
                       ],
                     ),
-                    SizedBox(height: 50),
+                    const SizedBox(height: 50),
                     TextField(
                       decoration: InputDecoration(
                           border: OutlineInputBorder(
@@ -138,7 +138,7 @@ class _registerState extends State<register> {
                       onPressed: () => Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => CompleteProfile())),
+                              builder: (context) => const CompleteProfile())),
                       style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.all(15.0),
                           fixedSize: const Size(300, 50),
@@ -193,7 +193,7 @@ class _registerState extends State<register> {
                             onPressed: () => Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => register())),
+                                    builder: (context) => const register())),
                             child: const Text(
                               'Sign up',
                               style: TextStyle(

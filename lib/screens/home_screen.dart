@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class HomeScreen extends StatelessWidget {
   final AuthService auth;
-  HomeScreen({required this.auth});
+  const HomeScreen({required this.auth});
 
   @override
   Widget build(BuildContext context) {
@@ -13,10 +13,10 @@ class HomeScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
+              const Text(
                 'Home Page',
               ),
-              SizedBox(
+              const SizedBox(
                 height: 30,
               ),
               auth.currentUser != null
