@@ -63,7 +63,7 @@ class _ForgetPhoneState extends State<ForgetPhone> {
                       alignment: Alignment.center,
                       child: const Text(
                         'Please enter your phone and we will send',
-                        style: TextStyle(color: Colors.grey, fontSize: 14),
+                        style: TextStyle(color: Colors.grey, fontSize: 16),
                       ),
                     ),
                     Container(
@@ -72,7 +72,7 @@ class _ForgetPhoneState extends State<ForgetPhone> {
                       alignment: Alignment.center,
                       child: const Text(
                         'you a link to return to your account',
-                        style: TextStyle(color: Colors.grey, fontSize: 14),
+                        style: TextStyle(color: Colors.grey, fontSize: 16),
                       ),
                     ),
                   ],
@@ -100,21 +100,21 @@ class _ForgetPhoneState extends State<ForgetPhone> {
                   MaterialPageRoute(
                       builder: (context) => const CreatePassword())),
               style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.all(20.0),
-                  fixedSize: Size(300, 60),
-                  textStyle:
-                      TextStyle(fontSize: 20, fontWeight: FontWeight.w800),
+                  padding: const EdgeInsets.all(15.0),
+                  fixedSize: const Size(300, 50),
+                  textStyle: const TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.w800),
                   primary: backgroundblue,
                   elevation: 10,
                   shadowColor: backgroundblue,
-                  shape: StadiumBorder()),
+                  shape: const StadiumBorder()),
               child: const Text(
                 "CONTINUE",
                 style: TextStyle(fontSize: 20, color: Colors.white),
               ),
             ),
             const SizedBox(
-              height: 30,
+              height: 20,
             ),
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,

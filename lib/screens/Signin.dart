@@ -1,9 +1,9 @@
-import 'package:ev_charger/components/square_tile.dart';
 import 'package:ev_charger/main.dart';
 import 'package:ev_charger/screens/forget_phone.dart';
 import 'package:ev_charger/screens/register.dart';
 import 'package:ev_charger/services/auth_service.dart';
 import 'package:flutter/material.dart';
+import 'package:sign_button/sign_button.dart';
 
 class sign_in extends StatefulWidget {
   const sign_in({super.key});
@@ -21,7 +21,7 @@ class _sign_inState extends State<sign_in> {
           padding: const EdgeInsets.all(20.0),
           child: Column(
             children: [
-              Row(
+              const Row(
                 children: [
                   SizedBox(
                     width: 160,
@@ -35,34 +35,60 @@ class _sign_inState extends State<sign_in> {
                   )
                 ],
               ),
-              SizedBox(
-                height: 15,
+              const SizedBox(
+                height: 30,
               ),
               Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: Column(
                   children: [
-                    Text(
-                      'Welcome',
+                    const Text(
+                      'Welcome Back',
                       style:
-                          TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+                          TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(
-                      height: 20,
+                    const SizedBox(
+                      height: 5,
                     ),
-                    SizedBox(
-                      height: 20,
+                    Row(
+                      children: [
+                        Column(
+                          children: [
+                            Container(
+                              height: 40,
+                              width: 330,
+                              alignment: Alignment.center,
+                              child: const Text(
+                                'Complete your details or conitnue',
+                                style:
+                                    TextStyle(color: Colors.grey, fontSize: 16),
+                              ),
+                            ),
+                            Container(
+                              height: 20,
+                              width: 330,
+                              alignment: Alignment.center,
+                              child: const Text(
+                                'with social media',
+                                style:
+                                    TextStyle(color: Colors.grey, fontSize: 16),
+                              ),
+                            ),
+                          ],
+                        )
+                      ],
                     ),
+                    SizedBox(height: 50),
                     TextField(
                       decoration: InputDecoration(
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(25.0),
                           ),
                           labelText: 'Email',
-                          suffixIcon: Icon(Icons.mail),
+                          suffixIcon: const Icon(Icons.mail),
                           fillColor: backgroundblue),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 30,
                     ),
                     TextField(
@@ -71,7 +97,7 @@ class _sign_inState extends State<sign_in> {
                             borderRadius: BorderRadius.circular(25.0),
                           ),
                           labelText: 'Password',
-                          suffixIcon: Icon(Icons.lock),
+                          suffixIcon: const Icon(Icons.lock),
                           fillColor: backgroundblue),
                     ),
                     Row(
@@ -79,7 +105,7 @@ class _sign_inState extends State<sign_in> {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       mainAxisSize: MainAxisSize.max,
                       children: [
-                        SizedBox(
+                        const SizedBox(
                           height: 40,
                         ),
                         TextButton(
@@ -90,31 +116,29 @@ class _sign_inState extends State<sign_in> {
                           onPressed: () => Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => ForgetPhone())),
+                                  builder: (context) => const ForgetPhone())),
                         ),
                       ],
                     ),
-                    SizedBox(
-                      height: 100,
+                    const SizedBox(
+                      height: 180,
                     ),
                     ElevatedButton(
-                        onPressed: null,
-                        style: ButtonStyle(
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18.0),
-                            ),
-                          ),
-                          backgroundColor:
-                              MaterialStateProperty.all<Color>(backgroundblue),
-                          padding:
-                              MaterialStateProperty.all(EdgeInsets.all(20)),
-                        ),
-                        child: Text(
-                          "CONTINUE",
-                          style: TextStyle(fontSize: 20, color: Colors.white),
-                        )),
+                      onPressed: () => null,
+                      style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.all(15.0),
+                          fixedSize: const Size(300, 50),
+                          textStyle: const TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.w800),
+                          primary: backgroundblue,
+                          elevation: 10,
+                          shadowColor: backgroundblue,
+                          shape: const StadiumBorder()),
+                      child: const Text(
+                        "CONTINUE",
+                        style: TextStyle(fontSize: 20, color: Colors.white),
+                      ),
+                    ),
                     const SizedBox(
                       height: 30,
                     ),
@@ -123,24 +147,32 @@ class _sign_inState extends State<sign_in> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       mainAxisSize: MainAxisSize.max,
                       children: [
-                        SquareTile(
-                          imagePath: 'images/Google.png',
-                          onTap: () => AuthService().signInWithGoogle(),
-                        )
+                        SignInButton.mini(
+                          buttonType: ButtonType.apple,
+                          onPressed: null,
+                        ),
+                        SignInButton.mini(
+                          buttonType: ButtonType.google,
+                          onPressed: () => AuthService().signInWithGoogle(),
+                        ),
+                        SignInButton.mini(
+                          buttonType: ButtonType.facebook,
+                          onPressed: null,
+                        ),
                       ],
                     ),
                     const SizedBox(
-                      height: 40,
+                      height: 20,
                     ),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
+                        const Text(
                           "Don't have an account? ",
                           style: TextStyle(
-                            fontSize: 20,
+                            fontSize: 16,
                           ),
                         ),
                         TextButton(
@@ -148,10 +180,10 @@ class _sign_inState extends State<sign_in> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => const register())),
-                            child: Text(
+                            child: const Text(
                               'Sign up',
                               style: TextStyle(
-                                  fontSize: 20, color: backgroundblue),
+                                  fontSize: 16, color: backgroundblue),
                             ))
                       ],
                     ),
