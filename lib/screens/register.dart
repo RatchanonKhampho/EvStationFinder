@@ -18,26 +18,19 @@ class _registerState extends State<register> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
+        maintainBottomViewPadding: true,
         child: Padding(
           padding: const EdgeInsets.all(20.0),
-          child: Column(
+          child: ListView(
             children: [
-              const Row(
+              Row(
                 children: [
-                  SizedBox(
-                    width: 160,
+                  IconButton(
+                    onPressed: () => Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => const MyApp())),
+                    icon: const Icon(Icons.arrow_back_ios_new),
                   ),
-                  Text(
-                    "Sign Up",
-                    style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold),
-                  )
                 ],
-              ),
-              const SizedBox(
-                height: 30,
               ),
               Padding(
                 padding: const EdgeInsets.all(20.0),
@@ -51,32 +44,26 @@ class _registerState extends State<register> {
                     const SizedBox(
                       height: 5,
                     ),
-                    Row(
+                    Column(
                       children: [
-                        Column(
-                          children: [
-                            Container(
-                              height: 40,
-                              width: 330,
-                              alignment: Alignment.center,
-                              child: const Text(
-                                'Complete your details or continue',
-                                style:
-                                    TextStyle(color: Colors.grey, fontSize: 16),
-                              ),
-                            ),
-                            Container(
-                              height: 20,
-                              width: 330,
-                              alignment: Alignment.center,
-                              child: const Text(
-                                'with social media',
-                                style:
-                                    TextStyle(color: Colors.grey, fontSize: 16),
-                              ),
-                            ),
-                          ],
-                        )
+                        Container(
+                          height: 40,
+                          width: 330,
+                          alignment: Alignment.center,
+                          child: const Text(
+                            'Complete your details or continue',
+                            style: TextStyle(color: Colors.grey, fontSize: 16),
+                          ),
+                        ),
+                        Container(
+                          height: 20,
+                          width: 330,
+                          alignment: Alignment.center,
+                          child: const Text(
+                            'with social media',
+                            style: TextStyle(color: Colors.grey, fontSize: 16),
+                          ),
+                        ),
                       ],
                     ),
                     const SizedBox(height: 50),
@@ -131,9 +118,6 @@ class _registerState extends State<register> {
                         ),
                       ],
                     ),
-                    const SizedBox(
-                      height: 80,
-                    ),
                     ElevatedButton(
                       onPressed: () => Navigator.push(
                           context,
@@ -153,9 +137,6 @@ class _registerState extends State<register> {
                         style: TextStyle(fontSize: 20, color: Colors.white),
                       ),
                     ),
-                    const SizedBox(
-                      height: 30,
-                    ),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -174,9 +155,6 @@ class _registerState extends State<register> {
                           onPressed: null,
                         ),
                       ],
-                    ),
-                    const SizedBox(
-                      height: 20,
                     ),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,

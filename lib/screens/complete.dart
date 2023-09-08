@@ -14,9 +14,10 @@ class _CompleteProfileState extends State<CompleteProfile> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
+        maintainBottomViewPadding: true,
         child: Padding(
           padding: const EdgeInsets.all(20.0),
-          child: Column(
+          child: ListView(
             children: [
               Row(
                 children: [
@@ -27,20 +28,7 @@ class _CompleteProfileState extends State<CompleteProfile> {
                             builder: (context) => const register())),
                     icon: const Icon(Icons.arrow_back_ios_new),
                   ),
-                  const SizedBox(
-                    width: 120,
-                  ),
-                  const Text(
-                    'Sign Up',
-                    style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold),
-                  ),
                 ],
-              ),
-              const SizedBox(
-                height: 30,
               ),
               Padding(
                 padding: const EdgeInsets.all(20.0),
@@ -52,36 +40,27 @@ class _CompleteProfileState extends State<CompleteProfile> {
                   const SizedBox(
                     height: 5,
                   ),
-                  Row(
+                  Column(
                     children: [
-                      Column(
-                        children: [
-                          Container(
-                            height: 40,
-                            width: 330,
-                            alignment: Alignment.center,
-                            child: const Text(
-                              'Complete your details or conitnue',
-                              style:
-                                  TextStyle(color: Colors.grey, fontSize: 16),
-                            ),
-                          ),
-                          Container(
-                            height: 20,
-                            width: 330,
-                            alignment: Alignment.center,
-                            child: const Text(
-                              'with social media',
-                              style:
-                                  TextStyle(color: Colors.grey, fontSize: 16),
-                            ),
-                          ),
-                        ],
+                      Container(
+                        height: 40,
+                        width: 400,
+                        alignment: Alignment.center,
+                        child: const Text(
+                          'Complete your details or conitnue with social media',
+                          style: TextStyle(color: Colors.grey, fontSize: 16),
+                        ),
                       ),
+                      /*Container(
+                        height: 20,
+                        width: 330,
+                        alignment: Alignment.center,
+                        child: const Text(
+                          '',
+                          style: TextStyle(color: Colors.grey, fontSize: 16),
+                        ),
+                      ), */
                     ],
-                  ),
-                  const SizedBox(
-                    height: 50,
                   ),
                   TextField(
                     decoration: InputDecoration(
@@ -124,12 +103,9 @@ class _CompleteProfileState extends State<CompleteProfile> {
                         labelText: 'Address',
                         suffixIcon: const Icon(Icons.add_home_rounded)),
                   ),
-                  const SizedBox(height: 80),
                   ElevatedButton(
-                    onPressed: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const CompleteProfile())),
+                    onPressed: () => Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => const MyApp())),
                     style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.all(15.0),
                         fixedSize: const Size(300, 50),
@@ -144,35 +120,27 @@ class _CompleteProfileState extends State<CompleteProfile> {
                       style: TextStyle(fontSize: 20, color: Colors.white),
                     ),
                   ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Row(
+                  Column(
                     children: [
-                      Column(
-                        children: [
-                          Container(
-                            height: 40,
-                            width: 330,
-                            alignment: Alignment.center,
-                            child: const Text(
-                              'By continuing your confirm that yiu agree',
-                              style:
-                                  TextStyle(color: Colors.grey, fontSize: 16),
-                            ),
-                          ),
-                          Container(
-                            height: 20,
-                            width: 330,
-                            alignment: Alignment.center,
-                            child: const Text(
-                              'with our Term and Condition',
-                              style: TextStyle(
-                                  color: Color.fromARGB(255, 254, 169, 169),
-                                  fontSize: 16),
-                            ),
-                          ),
-                        ],
+                      Container(
+                        height: 40,
+                        width: 330,
+                        alignment: Alignment.center,
+                        child: const Text(
+                          'By continuing your confirm that yiu agree',
+                          style: TextStyle(color: Colors.grey, fontSize: 16),
+                        ),
+                      ),
+                      Container(
+                        height: 20,
+                        width: 330,
+                        alignment: Alignment.center,
+                        child: const Text(
+                          'with our Term and Condition',
+                          style: TextStyle(
+                              color: Color.fromARGB(255, 254, 169, 169),
+                              fontSize: 16),
+                        ),
                       ),
                     ],
                   ),

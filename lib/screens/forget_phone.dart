@@ -15,9 +15,10 @@ class _ForgetPhoneState extends State<ForgetPhone> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: SafeArea(
+      maintainBottomViewPadding: true,
       child: Padding(
         padding: const EdgeInsets.all(20.0),
-        child: Column(
+        child: ListView(
           children: [
             Row(
               children: [
@@ -26,20 +27,7 @@ class _ForgetPhoneState extends State<ForgetPhone> {
                       MaterialPageRoute(builder: (context) => const MyApp())),
                   icon: const Icon(Icons.arrow_back_ios_new),
                 ),
-                const SizedBox(
-                  width: 70,
-                ),
-                const Text(
-                  "Forget Password",
-                  style: TextStyle(
-                      color: Colors.grey,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold),
-                )
               ],
-            ),
-            const SizedBox(
-              height: 30,
             ),
             const Padding(
               padding: EdgeInsets.all(20.0),

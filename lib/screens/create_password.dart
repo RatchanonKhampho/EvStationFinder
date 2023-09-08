@@ -15,9 +15,10 @@ class _CreatePasswordState extends State<CreatePassword> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: SafeArea(
+      maintainBottomViewPadding: true,
       child: Padding(
         padding: const EdgeInsets.all(20.0),
-        child: Column(
+        child: ListView(
           children: [
             Row(
               children: [

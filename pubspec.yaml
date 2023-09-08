@@ -44,7 +44,7 @@ dependencies:
   flutter_credit_card: any 
   flutter_facebook_auth: any
   sign_button: ^2.0.5
-  
+  sizer: any
 
 dev_dependencies:
   flutter_test:

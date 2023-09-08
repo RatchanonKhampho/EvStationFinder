@@ -1,6 +1,8 @@
 import 'package:ev_charger/screens/Signin.dart';
+import 'package:ev_charger/screens/register.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
 
 const backgroundblue = Color(0xFF535FFD);
 const backgroundwhite = Color(0xFFFAFAFA);
@@ -17,6 +19,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(),
       home: const MyHomePage(),
     );
@@ -33,6 +36,10 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(home: sign_in());
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+    return const MaterialApp(
+      home: sign_in(),
+    );
   }
 }
