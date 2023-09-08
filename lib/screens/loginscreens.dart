@@ -2,6 +2,7 @@ import 'package:ev_charger/main.dart';
 import 'package:ev_charger/screens/Signin.dart';
 import 'package:flutter/material.dart';
 
+// ignore: camel_case_types
 class login extends StatefulWidget {
   const login({super.key});
 
@@ -9,6 +10,7 @@ class login extends StatefulWidget {
   State<login> createState() => _loginState();
 }
 
+// ignore: camel_case_types
 class _loginState extends State<login> {
   @override
   Widget build(BuildContext context) {
@@ -38,8 +40,8 @@ class _loginState extends State<login> {
                 shape: MaterialStatePropertyAll<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(18.0)))),
-            onPressed: () => Navigator.push(
-                context, MaterialPageRoute(builder: (context) => sign_in())),
+            onPressed: () => Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const sign_in())),
             child: ListTile(
               leading: Image.asset('images/Letter.png'),
               title: const Text(

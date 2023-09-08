@@ -43,6 +43,8 @@ dependencies:
   google_sign_in: any
   flutter_credit_card: any 
   flutter_facebook_auth: any
+  sign_button: ^2.0.5
+  
 
 dev_dependencies:
   flutter_test:
