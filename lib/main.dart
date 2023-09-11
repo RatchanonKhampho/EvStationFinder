@@ -1,8 +1,7 @@
 import 'package:ev_charger/screens/Signin.dart';
-import 'package:ev_charger/screens/register.dart';
+import 'package:ev_charger/screens/profile.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:sizer/sizer.dart';
 
 const backgroundblue = Color(0xFF535FFD);
 const backgroundwhite = Color(0xFFFAFAFA);
