@@ -46,6 +46,8 @@ dependencies:
   sign_button: ^2.0.5
   sizer: any
   google_maps_flutter: any
+  http: any
+  flutter_polyline_points: any
 dev_dependencies:
   flutter_test:
     sdk: flutter
