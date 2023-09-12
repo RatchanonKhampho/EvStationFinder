@@ -45,7 +45,7 @@ dependencies:
   flutter_facebook_auth: any
   sign_button: ^2.0.5
   sizer: any
-
+  google_maps_flutter: any
 dev_dependencies:
   flutter_test:
     sdk: flutter

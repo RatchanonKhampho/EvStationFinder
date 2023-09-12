@@ -1,8 +1,7 @@
 import 'package:ev_charger/screens/Signin.dart';
-import 'package:ev_charger/screens/register.dart';
+import 'package:ev_charger/screens/map.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:sizer/sizer.dart';
 
 const backgroundblue = Color(0xFF535FFD);
 const backgroundwhite = Color(0xFFFAFAFA);
@@ -39,7 +38,7 @@ class _MyHomePageState extends State<MyHomePage> {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     return const MaterialApp(
-      home: sign_in(),
+      home: map(),
     );
   }
 }
