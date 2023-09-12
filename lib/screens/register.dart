@@ -92,7 +92,7 @@ class _registerState extends State<register> {
                     TextField(
                       decoration: InputDecoration(
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25.0),
+                            borderRadius: BorderRadius.circular(20.0),
                           ),
                           labelText: 'Confirm Password',
                           suffixIcon: const Icon(Icons.lock),

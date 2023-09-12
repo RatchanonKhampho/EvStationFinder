@@ -76,13 +76,13 @@ class _sign_inState extends State<sign_in> {
                           hintText: ' Enter your email',
                           suffixIcon: Icons.email,
                           fillColor: backgroundblue),
-                      SizedBox(height: 25),
+                      const SizedBox(height: 25),
                       TextFromFile(
                           labelText: 'Password ',
                           hintText: 'Enter your password',
                           suffixIcon: Icons.lock,
                           fillColor: backgroundblue),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       Align(
                         alignment: Alignment.centerRight,
                         child: TextButton(
@@ -90,7 +90,7 @@ class _sign_inState extends State<sign_in> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => register())),
-                            child: Text(
+                            child: const Text(
                               'Forget Password',
                               textAlign: TextAlign.center,
                             )),
