@@ -1,9 +1,11 @@
 import 'package:ev_charger/main.dart';
-import 'package:ev_charger/screens/forget_phone.dart';
 import 'package:ev_charger/screens/register.dart';
-import 'package:ev_charger/services/auth_service.dart';
 import 'package:flutter/material.dart';
-import 'package:sign_button/sign_button.dart';
+import 'package:sign_button/constants.dart';
+import 'package:sign_button/create_button.dart';
+
+import '../services/auth_service.dart';
+import '../widgetd/text_fild.dart';
 
 class sign_in extends StatefulWidget {
   const sign_in({super.key});
@@ -17,168 +19,155 @@ class _sign_inState extends State<sign_in> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        maintainBottomViewPadding: true,
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: ListView(children: [
-            const Text(
-              "Sign In",
-              style: TextStyle(
-                color: Colors.grey,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                children: [
-                  const Text(
-                    'Welcome Back',
-                    style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  Column(
-                    children: [
-                      Container(
-                        height: 40,
-                        width: 330,
-                        alignment: Alignment.center,
-                        child: const Text(
-                          'Complete your details or conitnue',
-                          style: TextStyle(color: Colors.grey, fontSize: 16),
-                        ),
-                      ),
-                      Container(
-                        height: 20,
-                        width: 330,
-                        alignment: Alignment.center,
-                        child: const Text(
-                          'with social media',
-                          style: TextStyle(color: Colors.grey, fontSize: 16),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 50),
-                  TextField(
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(25.0),
-                        ),
-                        labelText: 'Email',
-                        suffixIcon: const Icon(Icons.mail),
-                        fillColor: backgroundblue),
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  TextField(
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(25.0),
-                        ),
-                        labelText: 'Password',
-                        suffixIcon: const Icon(Icons.lock),
-                        fillColor: backgroundblue),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      const SizedBox(
-                        height: 40,
-                      ),
-                      TextButton(
-                        child: const Text(
-                          'Forget Password',
-                          style: TextStyle(fontSize: 16, color: Colors.grey),
-                        ),
-                        onPressed: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const ForgetPhone())),
-                      ),
-                    ],
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 20),
-                    child: ElevatedButton(
-                      onPressed: () => null,
-                      style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.all(15.0),
-                          fixedSize: const Size(300, 50),
-                          textStyle: const TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.w800),
-                          primary: backgroundblue,
-                          elevation: 10,
-                          shadowColor: backgroundblue,
-                          shape: const StadiumBorder()),
-                      child: const Text(
-                        "CONTINUE",
-                        style: TextStyle(fontSize: 20, color: Colors.white),
-                      ),
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 40),
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                //head
+                Container(
+                  child: const Text(
+                    'Sign In',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w700,
+                      color: Text2,
+                      letterSpacing: 2,
                     ),
                   ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.max,
+                ),
+                Container(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      SignInButton.mini(
-                        buttonType: ButtonType.apple,
-                        onPressed: null,
-                      ),
-                      SignInButton.mini(
-                        buttonType: ButtonType.google,
-                        onPressed: () => AuthService().signInWithGoogle(),
-                      ),
-                      SignInButton.mini(
-                        buttonType: ButtonType.facebook,
-                        onPressed: null,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text(
-                        "Don't have an account? ",
-                        style: TextStyle(
-                          fontSize: 16,
+                      Container(
+                        child: const Column(
+                          children: [
+                            Text(
+                              'Welcome Back',
+                              style: TextStyle(
+                                  fontSize: 36, fontWeight: FontWeight.bold),
+                            ),
+                            SizedBox(height: 10),
+                            Text(
+                              'Complete your details or conitnue with social media',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Text2,
+                                  fontSize: 14,
+                                  letterSpacing: 1.5),
+                            ),
+                            SizedBox(height: 5),
+                          ],
                         ),
                       ),
-                      TextButton(
-                          onPressed: () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const register())),
-                          child: const Text(
-                            'Sign up',
-                            style:
-                                TextStyle(fontSize: 16, color: backgroundblue),
-                          ))
+                      Container(),
                     ],
                   ),
-                ],
-              ),
-            ),
-          ]),
+                ),
+                Container(
+                  child: Column(
+                    children: [
+                      TextFromFile(
+                          labelText: 'Email',
+                          hintText: ' Enter your email',
+                          suffixIcon: Icons.email,
+                          fillColor: backgroundblue),
+                      SizedBox(height: 25),
+                      TextFromFile(
+                          labelText: 'Password ',
+                          hintText: 'Enter your password',
+                          suffixIcon: Icons.lock,
+                          fillColor: backgroundblue),
+                      SizedBox(height: 10),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: TextButton(
+                            onPressed: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => register())),
+                            child: Text(
+                              'Forget Password',
+                              textAlign: TextAlign.center,
+                            )),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  child: ElevatedButton(
+                    onPressed: () => null,
+                    style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.all(15.0),
+                        fixedSize: const Size(300, 50),
+                        textStyle: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: 3),
+                        primary: backgroundblue,
+                        elevation: 10,
+                        shadowColor: backgroundblue,
+                        shape: const StadiumBorder()),
+                    child: const Text(
+                      "CONTINUE",
+                      style: TextStyle(fontSize: 20, color: backgroundwhite),
+                    ),
+                  ),
+                ),
+                //buttom
+                Container(
+                  child: Column(
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SignInButton.mini(
+                            buttonType: ButtonType.apple,
+                            onPressed: null,
+                          ),
+                          SignInButton.mini(
+                            buttonType: ButtonType.google,
+                            onPressed: () => AuthService().signInWithGoogle(),
+                          ),
+                          SignInButton.mini(
+                            buttonType: ButtonType.facebook,
+                            onPressed: null,
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 5),
+                      Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text(
+                              "Don't have an account? ",
+                              style: TextStyle(
+                                fontSize: 16,
+                              ),
+                            ),
+                            TextButton(
+                                onPressed: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const register())),
+                                child: const Text(
+                                  'Sign up',
+                                  style: TextStyle(
+                                      fontSize: 16, color: backgroundblue),
+                                ))
+                          ]),
+                    ],
+                  ),
+                )
+              ]),
         ),
       ),
     );
