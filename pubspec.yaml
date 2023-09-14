@@ -48,6 +48,12 @@ dependencies:
   google_maps_flutter: any
   http: any
   flutter_polyline_points: any
+  salomon_bottom_bar: any
+  firebase_database: any
+  syncfusion_flutter_maps: any
+  geoflutterfire: any
+  location: any
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
