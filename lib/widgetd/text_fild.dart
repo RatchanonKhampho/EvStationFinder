@@ -7,7 +7,7 @@ Widget TextFromFile({
   required Color fillColor,
 }) =>
     Container(
-      width: 350,
+      width: 370,
       height: 70,
       child: TextField(
         decoration: InputDecoration(

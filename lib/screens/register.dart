@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:sign_button/sign_button.dart';
 
 import '../widgetd/text_fild.dart';
+import 'complete.dart';
 
 class register extends StatefulWidget {
   const register({super.key});
@@ -18,152 +19,180 @@ class _registerState extends State<register> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 80,
         backgroundColor: backgroundwhite,
         elevation: 0,
-        leading: IconButton(
-          onPressed: () => Navigator.push(
-              context, MaterialPageRoute(builder: (context) => const MyApp())),
-          icon: const Icon(Icons.arrow_back_ios_new),
-          color: Text1,
+        leading: Row(
+          children: [
+            IconButton(
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => MyApp()),
+              ),
+              icon: Icon(Icons.arrow_back_ios_new),
+              color: Text1,
+            ),
+          ],
         ),
-        /* title: Align(alignment: Alignment.bottomLeft,
-        child: Text(
-          'Sign In',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w600,
-              color: Text2,
-              letterSpacing: 2),
-        ),
-        ),*/
       ),
-      body: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 40),
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                child: Column(
-                  ///mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Container(
-                      child: const Column(
-                        children: [
-                          Text(
-                            'Register Account',
-                            style: TextStyle(
-                                fontSize: 36, fontWeight: FontWeight.w700),
-                          ),
-                          SizedBox(height: 30),
-                          Text(
-                            'Complete your details or conitnue with social media',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: Text2, fontSize: 14, letterSpacing: 1.5),
-                          ),
-                          SizedBox(height: 5),
-                        ],
-                      ),
-                    ),
-                    Container(),
-                  ],
-                ),
-              ),
-              Container(
-                child: Column(
-                  children: [
-                    TextFromFile(
-                        labelText: 'Email',
-                        hintText: ' Enter your email',
-                        suffixIcon: Icons.email,
-                        fillColor: backgroundblue),
-                    const SizedBox(height: 25),
-                    TextFromFile(
-                        labelText: 'Password ',
-                        hintText: 'Enter your password',
-                        suffixIcon: Icons.lock,
-                        fillColor: backgroundblue),
-                    const SizedBox(height: 25),
-                    TextFromFile(
-                        labelText: "Confirm Password",
-                        hintText: 'Enter your password',
-                        suffixIcon: Icons.lock,
-                        fillColor: backgroundblue),
-                  ],
-                ),
-              ),
-              Container(
-                child: ElevatedButton(
-                  onPressed: () => null,
-                  style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.all(15.0),
-                      fixedSize: const Size(300, 50),
-                      textStyle: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w700,
-                          letterSpacing: 3),
-                      primary: backgroundblue,
-                      elevation: 10,
-                      shadowColor: backgroundblue,
-                      shape: const StadiumBorder()),
-                  child: const Text(
-                    "CONTINUE",
-                    style: TextStyle(fontSize: 20, color: backgroundwhite),
-                  ),
-                ),
-              ),
-              //buttom
-              Container(
-                child: Column(
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
+      body: SafeArea(
+        child: SafeArea(
+            child: SingleChildScrollView(
+          child: Container(
+            width: double.infinity,
+            height: MediaQuery.of(context).size.height,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Container(
+                    child: Column(
                       children: [
-                        SignInButton.mini(
-                          buttonType: ButtonType.apple,
-                          onPressed: null,
+                        Text(
+                          'Register Account',
+                          style: TextStyle(
+                              fontSize: 36,
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: 3.2,
+                              color: Text1),
                         ),
-                        SignInButton.mini(
-                          buttonType: ButtonType.google,
-                          onPressed: () => AuthService().signInWithGoogle(),
+                        SizedBox(
+                          height: 20,
                         ),
-                        SignInButton.mini(
-                          buttonType: ButtonType.facebook,
-                          onPressed: null,
+                        Text(
+                          'Complete your details or conitnue with social media',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: Text2,
+                              fontSize: 16,
+                              letterSpacing: 1.5,
+                              fontWeight: FontWeight.w600),
                         ),
                       ],
                     ),
-                    SizedBox(height: 5),
-                    Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text(
-                            "Don't have an account? ",
-                            style: TextStyle(
-                              fontSize: 16,
-                            ),
+                  ),
+                  Container(
+                    child: Column(
+                      children: [
+                        Container(
+                          child: TextFromFile(
+                              labelText: 'Email',
+                              hintText: ' Enter your email',
+                              suffixIcon: Icons.email,
+                              fillColor: backgroundblue),
+                        ),
+                        TextFromFile(
+                            labelText: 'Password ',
+                            hintText: 'Enter your password',
+                            suffixIcon: Icons.lock,
+                            fillColor: backgroundblue),
+                        TextFromFile(
+                            labelText: 'Confirm Password ',
+                            hintText: 'Enter your password',
+                            suffixIcon: Icons.lock,
+                            fillColor: backgroundblue),
+                        SizedBox(height: 50),
+                        ElevatedButton(
+                          onPressed: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => CompleteProfile())),
+                          style: ElevatedButton.styleFrom(
+                              padding: const EdgeInsets.all(15.0),
+                              fixedSize: const Size(300, 50),
+                              textStyle: const TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w600,
+                                  letterSpacing: 3),
+                              primary: backgroundblue,
+                              elevation: 10,
+                              shadowColor: backgroundblue,
+                              shape: const StadiumBorder()),
+                          child: const Text(
+                            "CONTINUE",
+                            style:
+                                TextStyle(fontSize: 20, color: backgroundwhite),
                           ),
-                          TextButton(
-                              onPressed: () => Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const register())),
-                              child: const Text(
-                                'Sign up',
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    child: Column(
+                      children: [
+                        SignInButton(
+                            buttonType: ButtonType.apple,
+                            imagePosition: ImagePosition.left,
+                            //[buttonSize] You can also use this in combination with [width]. Increases the font and icon size of the button.
+                            buttonSize: ButtonSize.large,
+                            btnTextColor: Text2,
+                            btnColor: Color(0xFFE7E7EE),
+                            width: 250,
+                            //[width] Use if you change the text value.
+                            btnText: 'Sign in with Apple',
+                            onPressed: () {
+                              print('click');
+                            }),
+                        SizedBox(height: 10),
+                        SignInButton(
+                          buttonType: ButtonType.google,
+                          imagePosition: ImagePosition.left,
+                          elevation: 4,
+                          //[buttonSize] You can also use this in combination with [width]. Increases the font and icon size of the button.
+                          buttonSize: ButtonSize.large,
+                          btnTextColor: Text2,
+                          btnColor: Color(0xFFE7E7EE),
+                          width: 250,
+                          //[width] Use if you change the text value.
+                          btnText: 'Sign in with Google',
+                          onPressed: () => AuthService().signInWithGoogle(),
+                        ),
+                        SizedBox(height: 10),
+                        SignInButton(
+                            buttonType: ButtonType.facebook,
+                            imagePosition: ImagePosition.left,
+                            //[buttonSize] You can also use this in combination with [width]. Increases the font and icon size of the button.
+                            buttonSize: ButtonSize.large,
+                            btnTextColor: Text2,
+                            btnColor: Color(0xFFE7E7EE),
+                            width: 250,
+                            //[width] Use if you change the text value.
+                            btnText: 'Sign in with Facebook',
+                            onPressed: () {
+                              print('click');
+                            }),
+                        SizedBox(height: 20),
+                        Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Text(
+                                "Don't have an account? ",
                                 style: TextStyle(
-                                    fontSize: 16, color: backgroundblue),
-                              ))
-                        ]),
-                  ],
-                ),
-              )
-            ]),
+                                  fontSize: 16,
+                                ),
+                              ),
+                              TextButton(
+                                  onPressed: () => Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const register())),
+                                  child: const Text(
+                                    'Sign up',
+                                    style: TextStyle(
+                                        fontSize: 16, color: backgroundblue),
+                                  ))
+                            ])
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        )),
       ),
     );
   }

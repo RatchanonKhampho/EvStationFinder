@@ -19,7 +19,7 @@ class _sign_inState extends State<sign_in> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      /*appBar: AppBar(
           backgroundColor: backgroundwhite,
           elevation: 0,
           title: Align(
@@ -29,7 +29,7 @@ class _sign_inState extends State<sign_in> {
               style: TextStyle(
                   color: Text2, fontSize: 20, fontWeight: FontWeight.w600),
             ),
-          )),
+          )),*/
       body: SafeArea(
         child: SafeArea(
             child: SingleChildScrollView(
@@ -44,10 +44,21 @@ class _sign_inState extends State<sign_in> {
                   Container(
                     child: Column(
                       children: [
+                        /*Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Text(
+                            'Sign In',
+                            style: TextStyle(
+                                color: text3,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600),
+                          ),
+                        ),*/
+                        SizedBox(height: 60),
                         Text(
                           'Welcome Back',
                           style: TextStyle(
-                              fontSize: 40,
+                              fontSize: 36,
                               fontWeight: FontWeight.w700,
                               letterSpacing: 3.2,
                               color: Text1),
