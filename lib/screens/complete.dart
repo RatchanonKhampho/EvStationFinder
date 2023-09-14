@@ -1,6 +1,7 @@
 import 'package:ev_charger/main.dart';
-import 'package:ev_charger/screens/register.dart';
 import 'package:flutter/material.dart';
+
+import '../widgetd/text_fild.dart';
 
 class CompleteProfile extends StatefulWidget {
   const CompleteProfile({super.key});
@@ -13,142 +14,120 @@ class _CompleteProfileState extends State<CompleteProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: backgroundwhite,
+        elevation: 0,
+        leading: Row(
+          children: [
+            IconButton(
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => MyApp()),
+              ),
+              icon: Icon(Icons.arrow_back_ios_new),
+              color: Text1,
+            ),
+          ],
+        ),
+      ),
       body: SafeArea(
-        maintainBottomViewPadding: true,
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: ListView(
-            children: [
-              Row(
+        child: SafeArea(
+            child: SingleChildScrollView(
+          child: Container(
+            width: double.infinity,
+            height: MediaQuery.of(context).size.height,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 35),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  IconButton(
-                    onPressed: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const register())),
-                    icon: const Icon(Icons.arrow_back_ios_new),
+                  Container(
+                    child: Column(
+                      children: [
+                        Text(
+                          'Register Account',
+                          style: TextStyle(
+                              fontSize: 36,
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: 3.2,
+                              color: Text1),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Text(
+                          'Complete your details or conitnue with social media',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: Text2,
+                              fontSize: 16,
+                              letterSpacing: 1.5,
+                              fontWeight: FontWeight.w600),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    child: Column(
+                      children: [
+                        Container(
+                          child: TextFromFile(
+                              labelText: 'Email',
+                              hintText: ' Enter your email',
+                              suffixIcon: Icons.email,
+                              fillColor: backgroundblue),
+                        ),
+                        TextFromFile(
+                            labelText: 'Password ',
+                            hintText: 'Enter your password',
+                            suffixIcon: Icons.lock,
+                            fillColor: backgroundblue),
+                        TextFromFile(
+                            labelText: 'Confirm Password ',
+                            hintText: 'Enter your password',
+                            suffixIcon: Icons.lock,
+                            fillColor: backgroundblue),
+                        TextFromFile(
+                            labelText: 'Confirm Password ',
+                            hintText: 'Enter your password',
+                            suffixIcon: Icons.lock,
+                            fillColor: backgroundblue),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    child: Column(
+                      children: [
+                        ElevatedButton(
+                          onPressed: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => CompleteProfile())),
+                          style: ElevatedButton.styleFrom(
+                              padding: const EdgeInsets.all(15.0),
+                              fixedSize: const Size(300, 50),
+                              textStyle: const TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w600,
+                                  letterSpacing: 3),
+                              primary: backgroundblue,
+                              elevation: 10,
+                              shadowColor: backgroundblue,
+                              shape: const StadiumBorder()),
+                          child: const Text(
+                            "CONTINUE",
+                            style:
+                                TextStyle(fontSize: 20, color: backgroundwhite),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
-              Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Column(children: [
-                  const Text(
-                    'Complete Profile',
-                    style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  Column(
-                    children: [
-                      Container(
-                        height: 40,
-                        width: 400,
-                        alignment: Alignment.center,
-                        child: const Text(
-                          'Complete your details or conitnue with social media',
-                          style: TextStyle(color: Colors.grey, fontSize: 16),
-                        ),
-                      ),
-                      /*Container(
-                        height: 20,
-                        width: 330,
-                        alignment: Alignment.center,
-                        child: const Text(
-                          '',
-                          style: TextStyle(color: Colors.grey, fontSize: 16),
-                        ),
-                      ), */
-                    ],
-                  ),
-                  TextField(
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(25.0),
-                        ),
-                        labelText: 'First Name',
-                        suffixIcon: const Icon(Icons.person_outlined)),
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  TextField(
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(25.0),
-                        ),
-                        labelText: 'Last Name',
-                        suffixIcon: const Icon(Icons.person_outlined)),
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  TextField(
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(25.0),
-                        ),
-                        labelText: 'Phone',
-                        suffixIcon: const Icon(Icons.phone_android)),
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  TextField(
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(25.0),
-                        ),
-                        labelText: 'Address',
-                        suffixIcon: const Icon(Icons.add_home_rounded)),
-                  ),
-                  ElevatedButton(
-                    onPressed: () => Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => const MyApp())),
-                    style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.all(15.0),
-                        fixedSize: const Size(300, 50),
-                        textStyle: const TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.w800),
-                        primary: backgroundblue,
-                        elevation: 10,
-                        shadowColor: backgroundblue,
-                        shape: const StadiumBorder()),
-                    child: const Text(
-                      "CONTINUE",
-                      style: TextStyle(fontSize: 20, color: Colors.white),
-                    ),
-                  ),
-                  Column(
-                    children: [
-                      Container(
-                        height: 40,
-                        width: 330,
-                        alignment: Alignment.center,
-                        child: const Text(
-                          'By continuing your confirm that yiu agree',
-                          style: TextStyle(color: Colors.grey, fontSize: 16),
-                        ),
-                      ),
-                      Container(
-                        height: 20,
-                        width: 330,
-                        alignment: Alignment.center,
-                        child: const Text(
-                          'with our Term and Condition',
-                          style: TextStyle(
-                              color: Color.fromARGB(255, 254, 169, 169),
-                              fontSize: 16),
-                        ),
-                      ),
-                    ],
-                  ),
-                ]),
-              ),
-            ],
+            ),
           ),
-        ),
+        )),
       ),
     );
   }

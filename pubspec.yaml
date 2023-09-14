@@ -45,6 +45,7 @@ dependencies:
   flutter_facebook_auth: any
   sign_button: ^2.0.5
   sizer: any
+  material_text_fields: ^1.0.3
 
 dev_dependencies:
   flutter_test:
