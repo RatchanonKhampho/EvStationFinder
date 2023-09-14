@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:ev_charger/screens/register.dart';
 import 'package:flutter/material.dart';
+import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:sign_button/constants.dart';
 import 'package:sign_button/create_button.dart';
 
@@ -16,20 +19,18 @@ class sign_in extends StatefulWidget {
 }
 
 class _sign_inState extends State<sign_in> {
+  final RoundedLoadingButtonController _btnController =
+      RoundedLoadingButtonController();
+
+  void _doSomething() async {
+    Timer(const Duration(seconds: 1), () {
+      _btnController.success();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      /*appBar: AppBar(
-          backgroundColor: backgroundwhite,
-          elevation: 0,
-          title: Align(
-            alignment: Alignment.bottomCenter,
-            child: Text(
-              'Sign In',
-              style: TextStyle(
-                  color: Text2, fontSize: 20, fontWeight: FontWeight.w600),
-            ),
-          )),*/
       body: SafeArea(
         child: SafeArea(
             child: SingleChildScrollView(
@@ -42,19 +43,13 @@ class _sign_inState extends State<sign_in> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Container(
+                      width: 200,
+                      height: 200,
+                      color: backgroundwhite,
+                      child: Image.asset('images/login.png')),
+                  Container(
                     child: Column(
                       children: [
-                        /*Align(
-                          alignment: Alignment.bottomCenter,
-                          child: Text(
-                            'Sign In',
-                            style: TextStyle(
-                                color: text3,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w600),
-                          ),
-                        ),*/
-                        SizedBox(height: 60),
                         Text(
                           'Welcome Back',
                           style: TextStyle(
@@ -83,17 +78,17 @@ class _sign_inState extends State<sign_in> {
                       children: [
                         Container(
                           child: TextFromFile(
-                              labelText: 'Email',
-                              hintText: ' Enter your email',
-                              suffixIcon: Icons.email,
-                              fillColor: backgroundblue),
+                            labelText: 'Email',
+                            hintText: ' Enter your email',
+                            suffixIcon: Icons.email,
+                          ),
                         ),
                         const SizedBox(height: 25),
                         TextFromFile(
-                            labelText: 'Password ',
-                            hintText: 'Enter your password',
-                            suffixIcon: Icons.lock,
-                            fillColor: backgroundblue),
+                          labelText: 'Password ',
+                          hintText: 'Enter your password',
+                          suffixIcon: Icons.lock,
+                        ),
                         Align(
                           alignment: Alignment.centerRight,
                           child: TextButton(
@@ -107,72 +102,58 @@ class _sign_inState extends State<sign_in> {
                             ),
                           ),
                         ),
-                        ElevatedButton(
-                          onPressed: () => null,
-                          style: ElevatedButton.styleFrom(
-                              padding: const EdgeInsets.all(15.0),
-                              fixedSize: const Size(300, 50),
-                              textStyle: const TextStyle(
+                        RoundedLoadingButton(
+                          child: Text('CONTINUE',
+                              style: TextStyle(
+                                  color: Colors.white,
                                   fontSize: 20,
-                                  fontWeight: FontWeight.w600,
-                                  letterSpacing: 3),
-                              primary: backgroundblue,
-                              elevation: 10,
-                              shadowColor: backgroundblue,
-                              shape: const StadiumBorder()),
-                          child: const Text(
-                            "CONTINUE",
-                            style:
-                                TextStyle(fontSize: 20, color: backgroundwhite),
-                          ),
-                        ),
+                                  fontWeight: FontWeight.w700,
+                                  letterSpacing: 3)),
+                          color: backgroundblue,
+                          controller: _btnController,
+                          onPressed: _doSomething,
+                        )
                       ],
                     ),
                   ),
                   Container(
                     child: Column(
                       children: [
-                        SignInButton(
-                            buttonType: ButtonType.apple,
-                            imagePosition: ImagePosition.left,
-                            //[buttonSize] You can also use this in combination with [width]. Increases the font and icon size of the button.
-                            buttonSize: ButtonSize.large,
-                            btnTextColor: Text2,
-                            btnColor: Color(0xFFE7E7EE),
-                            width: 250,
-                            //[width] Use if you change the text value.
-                            btnText: 'Sign in with Apple',
-                            onPressed: () {
-                              print('click');
-                            }),
-                        SizedBox(height: 10),
-                        SignInButton(
-                          buttonType: ButtonType.google,
-                          imagePosition: ImagePosition.left,
-                          elevation: 4,
-                          //[buttonSize] You can also use this in combination with [width]. Increases the font and icon size of the button.
-                          buttonSize: ButtonSize.large,
-                          btnTextColor: Text2,
-                          btnColor: Color(0xFFE7E7EE),
-                          width: 250,
-                          //[width] Use if you change the text value.
-                          btnText: 'Sign in with Google',
-                          onPressed: () => AuthService().signInWithGoogle(),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SignInButton.mini(
+                                buttonType: ButtonType.apple,
+                                //[buttonSize] You can also use this in combination with [width]. Increases the font and icon size of the button.
+                                buttonSize: ButtonSize.large,
+                                btnColor: Color(0xFFE7E7EE),
+                                //[width] Use if you change the text value.
+                                onPressed: () {
+                                  print('click');
+                                }),
+                            SignInButton.mini(
+                              buttonType: ButtonType.google,
+                              elevation: 4,
+                              //[buttonSize] You can also use this in combination with [width]. Increases the font and icon size of the button.
+                              buttonSize: ButtonSize.large,
+                              btnColor: Color(0xFFE7E7EE),
+                              //[width] Use if you change the text value.
+                              onPressed: () => AuthService().signInWithGoogle(),
+                            ),
+                            SignInButton.mini(
+                                buttonType: ButtonType.facebook,
+
+                                //[buttonSize] You can also use this in combination with [width]. Increases the font and icon size of the button.
+                                buttonSize: ButtonSize.large,
+                                btnColor: Color(0xFFE7E7EE),
+
+                                //[width] Use if you change the text value.
+
+                                onPressed: () {
+                                  print('click');
+                                }),
+                          ],
                         ),
-                        SizedBox(height: 10),
-                        SignInButton(
-                            buttonType: ButtonType.facebook,
-                            imagePosition: ImagePosition.left,
-                            //[buttonSize] You can also use this in combination with [width]. Increases the font and icon size of the button.
-                            buttonSize: ButtonSize.large,
-                            btnTextColor: Text2,
-                            btnColor: Color(0xFFE7E7EE),
-                            width: 250,
-                            //[width] Use if you change the text value.
-                            btnText: 'Sign in with Facebook',
-                            onPressed: () {
-                              print('click');
-                            }),
                         SizedBox(height: 20),
                         Row(
                             crossAxisAlignment: CrossAxisAlignment.center,

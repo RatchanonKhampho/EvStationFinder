@@ -1,4 +1,5 @@
 import 'package:ev_charger/main.dart';
+import 'package:ev_charger/screens/register.dart';
 import 'package:flutter/material.dart';
 
 import '../widgetd/text_fild.dart';
@@ -22,9 +23,9 @@ class _CompleteProfileState extends State<CompleteProfile> {
             IconButton(
               onPressed: () => Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => MyApp()),
+                MaterialPageRoute(builder: (context) => const register()),
               ),
-              icon: Icon(Icons.arrow_back_ios_new),
+              icon: const Icon(Icons.arrow_back_ios_new),
               color: Text1,
             ),
           ],
@@ -42,10 +43,16 @@ class _CompleteProfileState extends State<CompleteProfile> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Container(
-                    child: Column(
+                    width: 200,
+                    height: 200,
+                    color: backgroundwhite,
+                    child: Image.asset("images/complete.png"),
+                  ),
+                  Container(
+                    child: const Column(
                       children: [
                         Text(
-                          'Register Account',
+                          'Complete Profile',
                           style: TextStyle(
                               fontSize: 36,
                               fontWeight: FontWeight.w700,
@@ -53,13 +60,13 @@ class _CompleteProfileState extends State<CompleteProfile> {
                               color: Text1),
                         ),
                         SizedBox(
-                          height: 20,
+                          height: 15,
                         ),
                         Text(
                           'Complete your details or conitnue with social media',
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                              color: Text2,
+                              color: text3,
                               fontSize: 16,
                               letterSpacing: 1.5,
                               fontWeight: FontWeight.w600),
@@ -72,26 +79,26 @@ class _CompleteProfileState extends State<CompleteProfile> {
                       children: [
                         Container(
                           child: TextFromFile(
-                              labelText: 'Email',
-                              hintText: ' Enter your email',
-                              suffixIcon: Icons.email,
-                              fillColor: backgroundblue),
+                            labelText: 'Email',
+                            hintText: ' Enter your email',
+                            suffixIcon: Icons.email,
+                          ),
                         ),
                         TextFromFile(
-                            labelText: 'Password ',
-                            hintText: 'Enter your password',
-                            suffixIcon: Icons.lock,
-                            fillColor: backgroundblue),
+                          labelText: 'Password ',
+                          hintText: 'Enter your password',
+                          suffixIcon: Icons.lock,
+                        ),
                         TextFromFile(
-                            labelText: 'Confirm Password ',
-                            hintText: 'Enter your password',
-                            suffixIcon: Icons.lock,
-                            fillColor: backgroundblue),
+                          labelText: 'Confirm Password ',
+                          hintText: 'Enter your password',
+                          suffixIcon: Icons.lock,
+                        ),
                         TextFromFile(
-                            labelText: 'Confirm Password ',
-                            hintText: 'Enter your password',
-                            suffixIcon: Icons.lock,
-                            fillColor: backgroundblue),
+                          labelText: 'Confirm Password ',
+                          hintText: 'Enter your password',
+                          suffixIcon: Icons.lock,
+                        ),
                       ],
                     ),
                   ),
@@ -102,7 +109,8 @@ class _CompleteProfileState extends State<CompleteProfile> {
                           onPressed: () => Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => CompleteProfile())),
+                                  builder: (context) =>
+                                      const CompleteProfile())),
                           style: ElevatedButton.styleFrom(
                               padding: const EdgeInsets.all(15.0),
                               fixedSize: const Size(300, 50),
@@ -123,6 +131,8 @@ class _CompleteProfileState extends State<CompleteProfile> {
                       ],
                     ),
                   ),
+                  Container(),
+                  Container(),
                 ],
               ),
             ),

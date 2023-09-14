@@ -97,6 +97,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.17.1"
+  country_picker:
+    dependency: "direct main"
+    description:
+      name: country_picker
+      sha256: e440350c2f6397955499d5a647cc90599ba3048651c6858370483f55c346b525
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.21"
   crypto:
     dependency: transitive
     description:
@@ -536,6 +544,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.2.1"
+  rounded_loading_button:
+    dependency: "direct main"
+    description:
+      name: rounded_loading_button
+      sha256: ec4af194330ba688527749059b7c1a3d1ddda6c18794ec4b0696f0cb3b9784ff
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.0"
   rxdart:
     dependency: transitive
     description:
