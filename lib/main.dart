@@ -1,11 +1,12 @@
 import 'package:ev_charger/screens/Signin.dart';
-import 'package:ev_charger/screens/register.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:sizer/sizer.dart';
 
 const backgroundblue = Color(0xFF535FFD);
 const backgroundwhite = Color(0xFFFAFAFA);
+const Text1 = Color(0xFF252644);
+const Text2 = Color(0xFFACACAE);
+const text3 = Color(0xFFE7E7EE);
 
 Future<void> main() async {
   runApp(const MyApp());
