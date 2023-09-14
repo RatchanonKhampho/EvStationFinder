@@ -6,13 +6,17 @@ Widget TextFromFile({
   required IconData suffixIcon,
   required Color fillColor,
 }) =>
-    TextField(
-      decoration: InputDecoration(
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(25.0),
-          ),
-          hintText: hintText,
-          labelText: labelText,
-          suffixIcon: Icon(suffixIcon),
-          fillColor: fillColor),
+    Container(
+      width: 350,
+      height: 70,
+      child: TextField(
+        decoration: InputDecoration(
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(25.0),
+            ),
+            hintText: hintText,
+            labelText: labelText,
+            suffixIcon: Icon(suffixIcon),
+            fillColor: fillColor),
+      ),
     );

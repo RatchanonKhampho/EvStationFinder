@@ -1,9 +1,9 @@
 import 'package:ev_charger/main.dart';
-import 'package:ev_charger/screens/complete.dart';
-import 'package:ev_charger/screens/forget_phone.dart';
 import 'package:ev_charger/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:sign_button/sign_button.dart';
+
+import '../widgetd/text_fild.dart';
 
 class register extends StatefulWidget {
   const register({super.key});
@@ -17,130 +17,111 @@ class _registerState extends State<register> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        maintainBottomViewPadding: true,
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: ListView(
+      appBar: AppBar(
+        toolbarHeight: 80,
+        backgroundColor: backgroundwhite,
+        elevation: 0,
+        leading: IconButton(
+          onPressed: () => Navigator.push(
+              context, MaterialPageRoute(builder: (context) => const MyApp())),
+          icon: const Icon(Icons.arrow_back_ios_new),
+          color: Text1,
+        ),
+        /* title: Align(alignment: Alignment.bottomLeft,
+        child: Text(
+          'Sign In',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w600,
+              color: Text2,
+              letterSpacing: 2),
+        ),
+        ),*/
+      ),
+      body: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 40),
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                children: [
-                  IconButton(
-                    onPressed: () => Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => const MyApp())),
-                    icon: const Icon(Icons.arrow_back_ios_new),
-                  ),
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.all(20.0),
+              Container(
                 child: Column(
+                  ///mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    const Text(
-                      'Register Account',
-                      style:
-                          TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    Column(
-                      children: [
-                        Container(
-                          height: 40,
-                          width: 330,
-                          alignment: Alignment.center,
-                          child: const Text(
-                            'Complete your details or continue',
-                            style: TextStyle(color: Colors.grey, fontSize: 16),
+                    Container(
+                      child: const Column(
+                        children: [
+                          Text(
+                            'Register Account',
+                            style: TextStyle(
+                                fontSize: 36, fontWeight: FontWeight.w700),
                           ),
-                        ),
-                        Container(
-                          height: 20,
-                          width: 330,
-                          alignment: Alignment.center,
-                          child: const Text(
-                            'with social media',
-                            style: TextStyle(color: Colors.grey, fontSize: 16),
+                          SizedBox(height: 30),
+                          Text(
+                            'Complete your details or conitnue with social media',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: Text2, fontSize: 14, letterSpacing: 1.5),
                           ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 50),
-                    TextField(
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25.0),
-                          ),
-                          labelText: 'Email',
-                          suffixIcon: const Icon(Icons.mail),
-                          fillColor: backgroundblue),
-                    ),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    TextField(
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25.0),
-                          ),
-                          labelText: 'Password',
-                          suffixIcon: const Icon(Icons.lock),
-                          fillColor: backgroundblue),
-                    ),
-                    const SizedBox(height: 30),
-                    TextField(
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20.0),
-                          ),
-                          labelText: 'Confirm Password',
-                          suffixIcon: const Icon(Icons.lock),
-                          fillColor: backgroundblue),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        const SizedBox(
-                          height: 40,
-                        ),
-                        TextButton(
-                          child: const Text(
-                            'Forget Password',
-                            style: TextStyle(fontSize: 16, color: Colors.grey),
-                          ),
-                          onPressed: () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const ForgetPhone())),
-                        ),
-                      ],
-                    ),
-                    ElevatedButton(
-                      onPressed: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const CompleteProfile())),
-                      style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.all(15.0),
-                          fixedSize: const Size(300, 50),
-                          textStyle: const TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.w800),
-                          primary: backgroundblue,
-                          elevation: 10,
-                          shadowColor: backgroundblue,
-                          shape: const StadiumBorder()),
-                      child: const Text(
-                        "CONTINUE",
-                        style: TextStyle(fontSize: 20, color: Colors.white),
+                          SizedBox(height: 5),
+                        ],
                       ),
                     ),
+                    Container(),
+                  ],
+                ),
+              ),
+              Container(
+                child: Column(
+                  children: [
+                    TextFromFile(
+                        labelText: 'Email',
+                        hintText: ' Enter your email',
+                        suffixIcon: Icons.email,
+                        fillColor: backgroundblue),
+                    const SizedBox(height: 25),
+                    TextFromFile(
+                        labelText: 'Password ',
+                        hintText: 'Enter your password',
+                        suffixIcon: Icons.lock,
+                        fillColor: backgroundblue),
+                    const SizedBox(height: 25),
+                    TextFromFile(
+                        labelText: "Confirm Password",
+                        hintText: 'Enter your password',
+                        suffixIcon: Icons.lock,
+                        fillColor: backgroundblue),
+                  ],
+                ),
+              ),
+              Container(
+                child: ElevatedButton(
+                  onPressed: () => null,
+                  style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.all(15.0),
+                      fixedSize: const Size(300, 50),
+                      textStyle: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: 3),
+                      primary: backgroundblue,
+                      elevation: 10,
+                      shadowColor: backgroundblue,
+                      shape: const StadiumBorder()),
+                  child: const Text(
+                    "CONTINUE",
+                    style: TextStyle(fontSize: 20, color: backgroundwhite),
+                  ),
+                ),
+              ),
+              //buttom
+              Container(
+                child: Column(
+                  children: [
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.max,
                       children: [
                         SignInButton.mini(
                           buttonType: ButtonType.apple,
@@ -156,35 +137,33 @@ class _registerState extends State<register> {
                         ),
                       ],
                     ),
+                    SizedBox(height: 5),
                     Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text(
-                          "Don't have an account? ",
-                          style: TextStyle(
-                            fontSize: 16,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text(
+                            "Don't have an account? ",
+                            style: TextStyle(
+                              fontSize: 16,
+                            ),
                           ),
-                        ),
-                        TextButton(
-                            onPressed: () => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const register())),
-                            child: const Text(
-                              'Sign up',
-                              style: TextStyle(
-                                  fontSize: 16, color: backgroundblue),
-                            ))
-                      ],
-                    ),
+                          TextButton(
+                              onPressed: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const register())),
+                              child: const Text(
+                                'Sign up',
+                                style: TextStyle(
+                                    fontSize: 16, color: backgroundblue),
+                              ))
+                        ]),
                   ],
                 ),
-              ),
-            ],
-          ),
-        ),
+              )
+            ]),
       ),
     );
   }
