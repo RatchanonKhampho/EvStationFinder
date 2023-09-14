@@ -29,7 +29,7 @@ class _registerState extends State<register> {
                 MaterialPageRoute(builder: (context) => MyApp()),
               ),
               icon: Icon(Icons.arrow_back_ios_new),
-              color: Text1,
+              color: backgroundblue,
             ),
           ],
         ),
@@ -45,6 +45,11 @@ class _registerState extends State<register> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
+                  Container(
+                      width: 200,
+                      height: 200,
+                      color: backgroundwhite,
+                      child: Image.asset("images/register.png")),
                   Container(
                     child: Column(
                       children: [
@@ -63,7 +68,7 @@ class _registerState extends State<register> {
                           'Complete your details or conitnue with social media',
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                              color: Text2,
+                              color: text3,
                               fontSize: 16,
                               letterSpacing: 1.5,
                               fontWeight: FontWeight.w600),
@@ -76,22 +81,22 @@ class _registerState extends State<register> {
                       children: [
                         Container(
                           child: TextFromFile(
-                              labelText: 'Email',
-                              hintText: ' Enter your email',
-                              suffixIcon: Icons.email,
-                              fillColor: backgroundblue),
+                            labelText: 'Email',
+                            hintText: ' Enter your email',
+                            suffixIcon: Icons.email,
+                          ),
                         ),
                         TextFromFile(
-                            labelText: 'Password ',
-                            hintText: 'Enter your password',
-                            suffixIcon: Icons.lock,
-                            fillColor: backgroundblue),
+                          labelText: 'Password ',
+                          hintText: 'Enter your password',
+                          suffixIcon: Icons.lock,
+                        ),
                         TextFromFile(
-                            labelText: 'Confirm Password ',
-                            hintText: 'Enter your password',
-                            suffixIcon: Icons.lock,
-                            fillColor: backgroundblue),
-                        SizedBox(height: 50),
+                          labelText: 'Confirm Password ',
+                          hintText: 'Enter your password',
+                          suffixIcon: Icons.lock,
+                        ),
+                        SizedBox(height: 20),
                         ElevatedButton(
                           onPressed: () => Navigator.push(
                               context,
@@ -120,47 +125,32 @@ class _registerState extends State<register> {
                   Container(
                     child: Column(
                       children: [
-                        SignInButton(
-                            buttonType: ButtonType.apple,
-                            imagePosition: ImagePosition.left,
-                            //[buttonSize] You can also use this in combination with [width]. Increases the font and icon size of the button.
-                            buttonSize: ButtonSize.large,
-                            btnTextColor: Text2,
-                            btnColor: Color(0xFFE7E7EE),
-                            width: 250,
-                            //[width] Use if you change the text value.
-                            btnText: 'Sign in with Apple',
-                            onPressed: () {
-                              print('click');
-                            }),
-                        SizedBox(height: 10),
-                        SignInButton(
-                          buttonType: ButtonType.google,
-                          imagePosition: ImagePosition.left,
-                          elevation: 4,
-                          //[buttonSize] You can also use this in combination with [width]. Increases the font and icon size of the button.
-                          buttonSize: ButtonSize.large,
-                          btnTextColor: Text2,
-                          btnColor: Color(0xFFE7E7EE),
-                          width: 250,
-                          //[width] Use if you change the text value.
-                          btnText: 'Sign in with Google',
-                          onPressed: () => AuthService().signInWithGoogle(),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SignInButton.mini(
+                                buttonType: ButtonType.apple,
+                                buttonSize: ButtonSize.large,
+                                btnColor: text3,
+                                onPressed: () {
+                                  print('click');
+                                }),
+                            SignInButton.mini(
+                              buttonType: ButtonType.google,
+                              elevation: 4,
+                              buttonSize: ButtonSize.large,
+                              btnColor: text3,
+                              onPressed: () => AuthService().signInWithGoogle(),
+                            ),
+                            SignInButton.mini(
+                                buttonType: ButtonType.facebook,
+                                buttonSize: ButtonSize.large,
+                                btnColor: text3,
+                                onPressed: () {
+                                  print('click');
+                                }),
+                          ],
                         ),
-                        SizedBox(height: 10),
-                        SignInButton(
-                            buttonType: ButtonType.facebook,
-                            imagePosition: ImagePosition.left,
-                            //[buttonSize] You can also use this in combination with [width]. Increases the font and icon size of the button.
-                            buttonSize: ButtonSize.large,
-                            btnTextColor: Text2,
-                            btnColor: Color(0xFFE7E7EE),
-                            width: 250,
-                            //[width] Use if you change the text value.
-                            btnText: 'Sign in with Facebook',
-                            onPressed: () {
-                              print('click');
-                            }),
                         SizedBox(height: 20),
                         Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -188,6 +178,8 @@ class _registerState extends State<register> {
                       ],
                     ),
                   ),
+                  Container(),
+                  Container(),
                 ],
               ),
             ),
