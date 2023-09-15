@@ -27,7 +27,7 @@ environment:
 # dependencies can be manually updated by changing the version numbers below to
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
-dependencies:
+dependency_overrides:
   flutter:
     sdk: flutter
 
@@ -39,7 +39,7 @@ dependencies:
   side_navigation: any
   firebase_core : any
   firebase_auth : any
-  cloud_firestore: any
+  cloud_firestore: ^4.9.1
   google_sign_in: any
   flutter_credit_card: any 
   flutter_facebook_auth: any
@@ -53,7 +53,7 @@ dependencies:
   syncfusion_flutter_maps: any
   geoflutterfire: any
   location: any
-
+  firebase_core_platform_interface: any
 dev_dependencies:
   flutter_test:
     sdk: flutter

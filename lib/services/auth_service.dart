@@ -61,4 +61,5 @@ class AuthService {
         FacebookAuthProvider.credential(loginResult.accessToken!.token);
     return FirebaseAuth.instance.signInWithCredential(oAuthCredential);
   }
+
 }
