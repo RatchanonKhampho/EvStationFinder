@@ -9,6 +9,7 @@ const backgroundwhite = Color(0xFFFAFAFA);
 
 Future<void> main() async {
   runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 }
 
