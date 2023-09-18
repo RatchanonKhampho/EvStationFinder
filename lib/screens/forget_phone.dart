@@ -57,12 +57,12 @@ class _ForgetPhoneState extends State<ForgetPhone> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Container(
+                  /* Container(
                     width: 200,
                     height: 200,
                     color: backgroundwhite,
                     child: Image.asset("images/mobile.png"),
-                  ),
+                  ),*/
                   Container(
                     child: const Column(
                       children: [
@@ -105,11 +105,11 @@ class _ForgetPhoneState extends State<ForgetPhone> {
                         });
                       },
                       decoration: InputDecoration(
-                        labelText: "Phone",
+                        /* labelText: "Phone",
                         labelStyle: TextStyle(
                             fontSize: 20,
                             color: backgroundblue,
-                            fontWeight: FontWeight.w500),
+                            fontWeight: FontWeight.w500),*/
                         hintText: "Enter phone Number",
                         hintStyle: TextStyle(
                             fontWeight: FontWeight.w600,
