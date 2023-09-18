@@ -1,7 +1,8 @@
 import 'package:country_picker/country_picker.dart';
 import 'package:ev_charger/main.dart';
-import 'package:ev_charger/screens/forget_otp.dart';
+import 'package:ev_charger/provider/auth_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ForgetPhone extends StatefulWidget {
   const ForgetPhone({super.key});
@@ -172,10 +173,7 @@ class _ForgetPhoneState extends State<ForgetPhone> {
                     child: Column(
                       children: [
                         ElevatedButton(
-                          onPressed: () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => Forget_otp())),
+                          onPressed: () => sentPhoneNumber(),
                           style: ElevatedButton.styleFrom(
                               padding: const EdgeInsets.all(15.0),
                               fixedSize: const Size(300, 50),
@@ -205,5 +203,11 @@ class _ForgetPhoneState extends State<ForgetPhone> {
         )),
       ),
     );
+  }
+
+  void sentPhoneNumber() {
+    final ap = Provider.of<AuthProvider>(context, listen: false);
+    String phoneNumber = phoneController.text.trim();
+    ap.signInWithPhone(context, "+${selectedCountry.phoneCode}$phoneNumber");
   }
 }

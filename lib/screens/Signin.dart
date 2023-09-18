@@ -1,12 +1,16 @@
+// ignore_for_file: file_names
+
 import 'dart:async';
 
 import 'package:ev_charger/screens/register.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:sign_button/constants.dart';
 import 'package:sign_button/create_button.dart';
 
 import '../main.dart';
+import '../provider/auth_provider.dart';
 import '../services/auth_service.dart';
 import '../widgetd/text_fild.dart';
 import 'forget_phone.dart';
@@ -30,6 +34,7 @@ class _sign_inState extends State<sign_in> {
 
   @override
   Widget build(BuildContext context) {
+    final ap = Provider.of<AuthProvider>(context, listen: false);
     return Scaffold(
       body: SafeArea(
         child: SafeArea(
@@ -47,8 +52,9 @@ class _sign_inState extends State<sign_in> {
                       height: 200,
                       color: backgroundwhite,
                       child: Image.asset('images/login.png')),
+                  // ignore: avoid_unnecessary_containers
                   Container(
-                    child: Column(
+                    child: const Column(
                       children: [
                         Text(
                           'Welcome Back',
@@ -92,10 +98,19 @@ class _sign_inState extends State<sign_in> {
                         Align(
                           alignment: Alignment.centerRight,
                           child: TextButton(
-                            onPressed: () => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => ForgetPhone())),
+                            onPressed: () {
+                              ap.isSignedIn == true
+                                  ? Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => MyApp()))
+                                  : Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            const ForgetPhone(),
+                                      ));
+                            },
                             child: const Text(
                               'Forget Password',
                               textAlign: TextAlign.center,
@@ -126,7 +141,7 @@ class _sign_inState extends State<sign_in> {
                                 buttonType: ButtonType.apple,
                                 //[buttonSize] You can also use this in combination with [width]. Increases the font and icon size of the button.
                                 buttonSize: ButtonSize.large,
-                                btnColor: Color(0xFFE7E7EE),
+                                btnColor: const Color(0xFFE7E7EE),
                                 //[width] Use if you change the text value.
                                 onPressed: () {
                                   print('click');
@@ -136,7 +151,7 @@ class _sign_inState extends State<sign_in> {
                               elevation: 4,
                               //[buttonSize] You can also use this in combination with [width]. Increases the font and icon size of the button.
                               buttonSize: ButtonSize.large,
-                              btnColor: Color(0xFFE7E7EE),
+                              btnColor: const Color(0xFFE7E7EE),
                               //[width] Use if you change the text value.
                               onPressed: () => AuthService().signInWithGoogle(),
                             ),
@@ -145,7 +160,7 @@ class _sign_inState extends State<sign_in> {
 
                                 //[buttonSize] You can also use this in combination with [width]. Increases the font and icon size of the button.
                                 buttonSize: ButtonSize.large,
-                                btnColor: Color(0xFFE7E7EE),
+                                btnColor: const Color(0xFFE7E7EE),
 
                                 //[width] Use if you change the text value.
 
@@ -154,7 +169,7 @@ class _sign_inState extends State<sign_in> {
                                 }),
                           ],
                         ),
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisSize: MainAxisSize.max,

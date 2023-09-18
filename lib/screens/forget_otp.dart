@@ -4,7 +4,8 @@ import 'package:ev_charger/screens/forget_phone.dart';
 import 'package:flutter/material.dart';
 
 class Forget_otp extends StatefulWidget {
-  const Forget_otp({super.key});
+  final String verificationId;
+  const Forget_otp({super.key, required this.verificationId});
 
   @override
   State<Forget_otp> createState() => _Forget_otpState();
@@ -77,8 +78,6 @@ class _Forget_otpState extends State<Forget_otp> {
                 ],
               ),
             ),
-            Container(),
-            Container(),
             Container(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
