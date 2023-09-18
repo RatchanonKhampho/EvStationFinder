@@ -8,9 +8,10 @@ const backgroundblue = Color(0xFF535FFD);
 const backgroundwhite = Color(0xFFFAFAFA);
 
 Future<void> main() async {
-  runApp(const MyApp());
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  runApp(const MyApp());
+
 }
 
 class MyApp extends StatelessWidget {
