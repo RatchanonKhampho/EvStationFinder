@@ -1,167 +1,165 @@
+// ignore: unused_import
 import 'package:ev_charger/main.dart';
+import 'package:ev_charger/provider/auth_provider.dart';
 import 'package:ev_charger/screens/create_password.dart';
-import 'package:ev_charger/screens/forget_phone.dart';
+import 'package:ev_charger/utils/utils.dart';
+import 'package:ev_charger/widgetd/custombutton.dart';
 import 'package:flutter/material.dart';
+import 'package:pinput/pinput.dart';
+import 'package:provider/provider.dart';
 
 class Forget_otp extends StatefulWidget {
-  const Forget_otp({super.key});
+  final String verificationId;
+  const Forget_otp({super.key, required this.verificationId});
 
   @override
   State<Forget_otp> createState() => _Forget_otpState();
 }
 
 class _Forget_otpState extends State<Forget_otp> {
+  String? otpCode;
   @override
   Widget build(BuildContext context) {
+    final isLoading =
+        Provider.of<AuthProvider>(context, listen: true).isLoading;
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: backgroundwhite,
-        elevation: 0,
-        leading: Row(
-          children: [
-            IconButton(
-              onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const ForgetPhone()),
-              ),
-              icon: const Icon(Icons.arrow_back_ios_new),
-              color: Text1,
-            ),
-          ],
-        ),
-      ),
       body: SafeArea(
-          child: Container(
-        width: double.infinity,
-        height: MediaQuery.of(context).size.height,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Container(
-              child: Column(
-                children: [
-                  Text(
-                    "OTP Verification",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontSize: 36,
-                        fontWeight: FontWeight.w700,
-                        color: Text1),
-                  ),
-                  Text(
-                    'We sent code to +66 97 350 ****',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontSize: 16,
-                        color: Text2,
-                        fontWeight: FontWeight.w600),
-                  )
-                ],
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.all(20.0),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: isLoading == true
+            ? const Center(
+                child: CircularProgressIndicator(
+                  color: Colors.purple,
+                ),
+              )
+            : Center(
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 25, horizontal: 30),
+                  child: Column(
                     children: [
-                      _textFieldOTP(first: true, last: false),
-                      _textFieldOTP(first: false, last: false),
-                      _textFieldOTP(first: false, last: false),
-                      _textFieldOTP(first: false, last: false),
-                      _textFieldOTP(first: false, last: false),
-                      _textFieldOTP(first: false, last: true),
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: GestureDetector(
+                          onTap: () => Navigator.of(context).pop(),
+                          child: const Icon(Icons.arrow_back),
+                        ),
+                      ),
+                      /*Container(
+                        width: 200,
+                        height: 200,
+                        padding: const EdgeInsets.all(20.0),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.purple.shade50,
+                        ),
+                        child: Image.asset(
+                          "assets/image2.png",
+                        ),
+                      ),*/
+                      const SizedBox(height: 20),
+                      const Text(
+                        "Verification",
+                        style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      const Text(
+                        "Enter the OTP send to your phone number",
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.black38,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 20),
+                      Pinput(
+                        length: 6,
+                        showCursor: true,
+                        defaultPinTheme: PinTheme(
+                          width: 60,
+                          height: 60,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                              color: Colors.purple.shade200,
+                            ),
+                          ),
+                          textStyle: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        onCompleted: (value) {
+                          setState(() {
+                            otpCode = value;
+                          });
+                        },
+                      ),
+                      const SizedBox(height: 25),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        height: 50,
+                        child: CustomButton(
+                          text: "Verify",
+                          onPressed: () {
+                            if (otpCode != null) {
+                              verifyOtp(context, otpCode!);
+                            } else {
+                              showSnackBar(context, "Enter 6-Digit code");
+                            }
+                          },
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      const Text(
+                        "Didn't receive any code?",
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black38,
+                        ),
+                      ),
+                      const SizedBox(height: 15),
+                      const Text(
+                        "Resend New Code",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.purple,
+                        ),
+                      ),
                     ],
                   ),
-                ],
+                ),
               ),
-            ),
-            Container(),
-            Container(),
-            Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  ElevatedButton(
-                    onPressed: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => CreatePassword())),
-                    style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.all(15.0),
-                        fixedSize: const Size(180, 50),
-                        textStyle: const TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.w800),
-                        primary: backgroundblue,
-                        elevation: 10,
-                        shadowColor: backgroundblue,
-                        shape: const StadiumBorder()),
-                    child: const Text(
-                      "CONTINUE",
-                      style: TextStyle(fontSize: 20, color: Colors.white),
-                    ),
-                  ),
-                  ElevatedButton(
-                    onPressed: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => CreatePassword())),
-                    style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.all(15.0),
-                        fixedSize: const Size(180, 50),
-                        textStyle: const TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.w800),
-                        primary: backgroundblue,
-                        elevation: 10,
-                        shadowColor: backgroundblue,
-                        shape: const StadiumBorder()),
-                    child: const Text(
-                      "CONTINUE",
-                      style: TextStyle(fontSize: 20, color: Colors.white),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      )),
+      ),
     );
   }
 
-  Widget _textFieldOTP({required bool first, last}) {
-    return Container(
-      height: 115,
-      child: AspectRatio(
-        aspectRatio: 0.5,
-        child: TextField(
-          autofocus: true,
-          onChanged: (value) {
-            if (value.length == 1 && last == false) {
-              FocusScope.of(context).nextFocus();
-            }
-            if (value.length == 0 && first == false) {
-              FocusScope.of(context).previousFocus();
+  // verify otp
+  void verifyOtp(BuildContext context, String userOtp) {
+    final ap = Provider.of<AuthProvider>(context, listen: false);
+    ap.verifyOtp(
+      context: context,
+      verificationId: widget.verificationId,
+      userOtp: userOtp,
+      onSuccess: () {
+        // checking whether user exists in the db
+        ap.checkExistingUser().then(
+          (value) async {
+            if (value == true) {
+            } else {
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const CreatePassword()),
+                  (route) => false);
             }
           },
-          showCursor: false,
-          readOnly: false,
-          textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-          keyboardType: TextInputType.number,
-          maxLength: 1,
-          decoration: InputDecoration(
-            counter: Offstage(),
-            border: OutlineInputBorder(
-                borderSide: BorderSide(width: 2, color: text3),
-                borderRadius: BorderRadius.circular(15)),
-            focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(width: 2, color: backgroundblue),
-                borderRadius: BorderRadius.circular(15)),
-          ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

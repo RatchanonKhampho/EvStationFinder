@@ -1,6 +1,8 @@
+import 'package:ev_charger/provider/auth_provider.dart';
 import 'package:ev_charger/screens/Signin.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 const backgroundblue = Color(0xFF535FFD);
 const backgroundwhite = Color(0xFFFAFAFA);
@@ -9,6 +11,8 @@ const Text2 = Color(0xFFACACAE);
 const text3 = Color(0xFFE7E7EE);
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
   await Firebase.initializeApp();
 }
@@ -19,10 +23,13 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(),
-      home: const MyHomePage(),
+    return MultiProvider(
+      providers: [ChangeNotifierProvider(create: (_) => AuthProvider())],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(),
+        home: const MyHomePage(),
+      ),
     );
   }
 }
