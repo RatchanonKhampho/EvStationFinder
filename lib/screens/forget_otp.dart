@@ -1,7 +1,12 @@
+// ignore: unused_import
 import 'package:ev_charger/main.dart';
+import 'package:ev_charger/provider/auth_provider.dart';
+import 'package:ev_charger/screens/create_password.dart';
+import 'package:ev_charger/utils/utils.dart';
+import 'package:ev_charger/widgetd/custombutton.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_custom_buttons/flutter_custom_buttons.dart';
 import 'package:pinput/pinput.dart';
+import 'package:provider/provider.dart';
 
 class Forget_otp extends StatefulWidget {
   final String verificationId;
@@ -12,88 +17,149 @@ class Forget_otp extends StatefulWidget {
 }
 
 class _Forget_otpState extends State<Forget_otp> {
-  String? otpcode;
+  String? otpCode;
   @override
   Widget build(BuildContext context) {
+    final isLoading =
+        Provider.of<AuthProvider>(context, listen: true).isLoading;
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: backgroundwhite,
-        elevation: 0,
-        leading: Row(
-          children: [
-            IconButton(
-              onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => MyApp()),
-              ),
-              icon: Icon(Icons.arrow_back_ios_new),
-              color: backgroundblue,
-            ),
-          ],
-        ),
-        title: Text(
-          'OTP Verification',
-          style: TextStyle(color: Text2, letterSpacing: 2, fontSize: 20),
-        ),
-        centerTitle: true,
-      ),
       body: SafeArea(
-          child: Container(
-        width: double.infinity,
-        height: MediaQuery.of(context).size.height,
-        child: Column(children: [
-          Column(
-            children: [
-              Text(
-                "OTP Verification",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontSize: 36, fontWeight: FontWeight.w700, color: Text1),
-              ),
-              Text(
-                'We sent code to +66 97 350 ****',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontSize: 16, color: Text2, fontWeight: FontWeight.w600),
-              ),
-              SizedBox(height: 20),
-              Pinput(
-                length: 6,
-                showCursor: true,
-                defaultPinTheme: PinTheme(
-                  width: 60,
-                  height: 60,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: backgroundblue),
-                  ),
-                  textStyle: TextStyle(
-                      fontSize: 20, fontWeight: FontWeight.w600, color: Text1),
-                ),
-                onSubmitted: (value) {
-                  setState(() {
-                    otpcode = value;
-                  });
-                },
-              ),
-              SizedBox(height: 20),
-              Container(
-                child: Buttons(
-                  background: backgroundblue,
-                  width: 100.0,
-                  height: 60.0,
-                  radius: 12.0,
-                  elevation: 2.0,
-                  txt: "Button",
-                  textColor: Colors.white,
-                  fontSize: 20.0,
-                  onTap: () {},
+        child: isLoading == true
+            ? const Center(
+                child: CircularProgressIndicator(
+                  color: Colors.purple,
                 ),
               )
-            ],
-          ),
-        ]),
-      )),
+            : Center(
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 25, horizontal: 30),
+                  child: Column(
+                    children: [
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: GestureDetector(
+                          onTap: () => Navigator.of(context).pop(),
+                          child: const Icon(Icons.arrow_back),
+                        ),
+                      ),
+                      /*Container(
+                        width: 200,
+                        height: 200,
+                        padding: const EdgeInsets.all(20.0),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.purple.shade50,
+                        ),
+                        child: Image.asset(
+                          "assets/image2.png",
+                        ),
+                      ),*/
+                      const SizedBox(height: 20),
+                      const Text(
+                        "Verification",
+                        style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      const Text(
+                        "Enter the OTP send to your phone number",
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.black38,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 20),
+                      Pinput(
+                        length: 6,
+                        showCursor: true,
+                        defaultPinTheme: PinTheme(
+                          width: 60,
+                          height: 60,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                              color: Colors.purple.shade200,
+                            ),
+                          ),
+                          textStyle: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        onCompleted: (value) {
+                          setState(() {
+                            otpCode = value;
+                          });
+                        },
+                      ),
+                      const SizedBox(height: 25),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        height: 50,
+                        child: CustomButton(
+                          text: "Verify",
+                          onPressed: () {
+                            if (otpCode != null) {
+                              verifyOtp(context, otpCode!);
+                            } else {
+                              showSnackBar(context, "Enter 6-Digit code");
+                            }
+                          },
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      const Text(
+                        "Didn't receive any code?",
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black38,
+                        ),
+                      ),
+                      const SizedBox(height: 15),
+                      const Text(
+                        "Resend New Code",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.purple,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+      ),
+    );
+  }
+
+  // verify otp
+  void verifyOtp(BuildContext context, String userOtp) {
+    final ap = Provider.of<AuthProvider>(context, listen: false);
+    ap.verifyOtp(
+      context: context,
+      verificationId: widget.verificationId,
+      userOtp: userOtp,
+      onSuccess: () {
+        // checking whether user exists in the db
+        ap.checkExistingUser().then(
+          (value) async {
+            if (value == true) {
+            } else {
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const CreatePassword()),
+                  (route) => false);
+            }
+          },
+        );
+      },
     );
   }
 }
