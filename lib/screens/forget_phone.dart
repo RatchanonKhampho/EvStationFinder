@@ -1,6 +1,6 @@
 import 'package:country_picker/country_picker.dart';
 import 'package:ev_charger/main.dart';
-import 'package:ev_charger/provider/auth_provider.dart';
+import 'package:ev_charger/provider/sign_in_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -206,7 +206,7 @@ class _ForgetPhoneState extends State<ForgetPhone> {
   }
 
   void sentPhoneNumber() {
-    final ap = Provider.of<AuthProvider>(context, listen: false);
+    final ap = Provider.of<SignInProvide>(context, listen: false);
     String phoneNumber = phoneController.text.trim();
     ap.signInWithPhone(context, "+${selectedCountry.phoneCode}$phoneNumber");
   }

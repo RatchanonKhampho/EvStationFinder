@@ -1,12 +1,17 @@
 import 'dart:async';
 
+import 'package:ev_charger/provider/internet_provider.dart';
+import 'package:ev_charger/provider/sign_in_provider.dart';
+import 'package:ev_charger/screens/map.dart';
 import 'package:ev_charger/screens/register.dart';
+import 'package:ev_charger/utils/snack_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
-import 'package:sign_button/constants.dart';
-import 'package:sign_button/create_button.dart';
 
 import '../main.dart';
+import '../utils/next_Screen.dart';
 import '../widgetd/text_fild.dart';
 import 'forget_phone.dart';
 
@@ -19,6 +24,12 @@ class sign_in extends StatefulWidget {
 
 class _sign_inState extends State<sign_in> {
   final RoundedLoadingButtonController _btnController =
+      RoundedLoadingButtonController();
+  final RoundedLoadingButtonController googleController =
+      RoundedLoadingButtonController();
+  final RoundedLoadingButtonController facebookController =
+      RoundedLoadingButtonController();
+  final RoundedLoadingButtonController phoneController =
       RoundedLoadingButtonController();
 
   void _doSomething() async {
@@ -42,12 +53,12 @@ class _sign_inState extends State<sign_in> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Container(
-                      width: 200,
-                      height: 200,
+                      width: 80,
+                      height: 80,
                       color: backgroundwhite,
                       child: Image.asset('images/login.png')),
                   Container(
-                    child: Column(
+                    child: const Column(
                       children: [
                         Text(
                           'Welcome Back',
@@ -94,7 +105,7 @@ class _sign_inState extends State<sign_in> {
                             onPressed: () => Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => ForgetPhone())),
+                                    builder: (context) => const ForgetPhone())),
                             child: const Text(
                               'Forget Password',
                               textAlign: TextAlign.center,
@@ -102,60 +113,119 @@ class _sign_inState extends State<sign_in> {
                           ),
                         ),
                         RoundedLoadingButton(
-                          child: Text('CONTINUE',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w700,
-                                  letterSpacing: 3)),
+                          onPressed: () {},
+                          controller: googleController,
+                          successColor: backgroundblue,
+                          width: MediaQuery.of(context).size.width * 0.80,
+                          elevation: 0,
+                          borderRadius: 25,
                           color: backgroundblue,
-                          controller: _btnController,
-                          onPressed: _doSomething,
-                        )
+                          child: Wrap(
+                            children: const [
+                              Text("Sign in",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.w500,
+                                      letterSpacing: 3)),
+                            ],
+                          ),
+                        ),
                       ],
                     ),
                   ),
                   Container(
                     child: Column(
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SignInButton.mini(
-                                buttonType: ButtonType.apple,
-                                //[buttonSize] You can also use this in combination with [width]. Increases the font and icon size of the button.
-                                buttonSize: ButtonSize.large,
-                                btnColor: Color(0xFFE7E7EE),
-                                //[width] Use if you change the text value.
-                                onPressed: () {
-                                  print('click');
-                                }),
-                            SignInButton.mini(
-                              buttonType: ButtonType.google,
-                              elevation: 4,
-                              //[buttonSize] You can also use this in combination with [width]. Increases the font and icon size of the button.
-                              buttonSize: ButtonSize.large,
-                              btnColor: Color(0xFFE7E7EE),
-                              //[width] Use if you change the text value.
-                              onPressed: () {
-                                handleGoogleSignIn();
-                              },
-                            ),
-                            SignInButton.mini(
-                                buttonType: ButtonType.facebook,
-
-                                //[buttonSize] You can also use this in combination with [width]. Increases the font and icon size of the button.
-                                buttonSize: ButtonSize.large,
-                                btnColor: Color(0xFFE7E7EE),
-
-                                //[width] Use if you change the text value.
-
-                                onPressed: () {
-                                  print('click');
-                                }),
-                          ],
+                        RoundedLoadingButton(
+                          onPressed: () {
+                            handleGoogleSignIn();
+                          },
+                          controller: googleController,
+                          successColor: Colors.red,
+                          width: MediaQuery.of(context).size.width * 0.80,
+                          elevation: 0,
+                          borderRadius: 25,
+                          color: Colors.red,
+                          child: Wrap(
+                            children: const [
+                              Icon(
+                                FontAwesomeIcons.google,
+                                size: 20,
+                                color: Colors.white,
+                              ),
+                              SizedBox(
+                                width: 15,
+                              ),
+                              Text("Sign in with Google",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w500)),
+                            ],
+                          ),
                         ),
-                        SizedBox(height: 20),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        // facebook login button
+                        RoundedLoadingButton(
+                          onPressed: () {},
+                          controller: facebookController,
+                          successColor: Colors.blue,
+                          width: MediaQuery.of(context).size.width * 0.80,
+                          elevation: 0,
+                          borderRadius: 25,
+                          color: Colors.blue,
+                          child: Wrap(
+                            children: const [
+                              Icon(
+                                FontAwesomeIcons.facebook,
+                                size: 20,
+                                color: Colors.white,
+                              ),
+                              SizedBox(
+                                width: 15,
+                              ),
+                              Text("Sign in with Facebook",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w500)),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        // phoneAuth loading button
+                        RoundedLoadingButton(
+                          onPressed: () {},
+                          controller: phoneController,
+                          successColor: Colors.black,
+                          width: MediaQuery.of(context).size.width * 0.80,
+                          elevation: 0,
+                          borderRadius: 25,
+                          color: Colors.black,
+                          child: Wrap(
+                            children: const [
+                              Icon(
+                                FontAwesomeIcons.apple,
+                                size: 20,
+                                color: Colors.white,
+                              ),
+                              SizedBox(
+                                width: 15,
+                              ),
+                              Text("Sign in with Phone",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w500)),
+                            ],
+                          ),
+                        ),
+
                         Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisSize: MainAxisSize.max,
@@ -191,5 +261,49 @@ class _sign_inState extends State<sign_in> {
     );
   }
 
-  Future handleGoogleSignIn() async {}
+// handle Google Signin
+  Future handleGoogleSignIn() async {
+    final sp = context.read<SignInProvide>();
+    final ip = context.read<InternetProvider>();
+    await ip.checkInternetConnection();
+
+    if (ip.hasInternet == false) {
+      openSnackbar(context, "Check your Internet connection ", Colors.red);
+    } else {
+      await sp.signInWithGoogle().then((value) {
+        if (sp.hasError == true) {
+          openSnackbar(context, "snackMessage", Colors.red);
+          googleController.reset();
+        } else {
+          // checking whether user exists or not(ตรวจสอบว่ามีผู้ใช้อยู่หรือไม่)
+          sp.checkExistingUser().then((value) async {
+            if (value == true) {
+              // user exists
+              await sp.getUserDataFromFirestore(sp.uid).then((value) => sp
+                  .saveDataToSharedPreferences()
+                  .then((value) => sp.setSignIn().then((value) {
+                        googleController.success();
+                        handleAfterSignIn();
+                      })));
+            } else {
+              // user  does not exists
+              sp.saveDataToFirestore().then((value) => sp
+                  .saveDataToSharedPreferences()
+                  .then((value) => sp.setSignIn().then((value) {
+                        googleController.reset();
+                        handleAfterSignIn();
+                      })));
+            }
+          });
+        }
+      });
+    }
+  }
+
+  // handle after signin
+  handleAfterSignIn() {
+    Future.delayed(const Duration(milliseconds: 1000)).then((value) {
+      nextScreenReplace(context, const HomeScreen());
+    });
+  }
 }

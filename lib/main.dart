@@ -1,15 +1,20 @@
-import 'package:ev_charger/screens/Signin.dart';
-import 'package:ev_charger/screens/register.dart';
+import 'package:ev_charger/provider/internet_provider.dart';
+import 'package:ev_charger/provider/sign_in_provider.dart';
+import 'package:ev_charger/screens/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:sizer/sizer.dart';
+import 'package:provider/provider.dart';
 
 const backgroundblue = Color(0xFF535FFD);
 const backgroundwhite = Color(0xFFFAFAFA);
+const Text1 = Color(0xFF252644);
+const Text2 = Color(0xFFACACAE);
+const text3 = Color(0xFFE7E7EE);
 
 Future<void> main() async {
-  runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -18,10 +23,16 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(),
-      home: const MyHomePage(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => SignInProvide()),
+        ChangeNotifierProvider(create: (_) => InternetProvider()),
+      ],
+      child: MaterialApp(
+        theme: ThemeData(),
+        home: const MyHomePage(),
+        debugShowCheckedModeBanner: false,
+      ),
     );
   }
 }
@@ -39,7 +50,7 @@ class _MyHomePageState extends State<MyHomePage> {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     return const MaterialApp(
-      home: sign_in(),
+      home: SplashScreen(),
     );
   }
 }

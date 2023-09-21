@@ -1,6 +1,6 @@
 // ignore: unused_import
 import 'package:ev_charger/main.dart';
-import 'package:ev_charger/provider/auth_provider.dart';
+import 'package:ev_charger/provider/sign_in_provider.dart';
 import 'package:ev_charger/screens/create_password.dart';
 import 'package:ev_charger/utils/utils.dart';
 import 'package:ev_charger/widgetd/custombutton.dart';
@@ -21,7 +21,7 @@ class _Forget_otpState extends State<Forget_otp> {
   @override
   Widget build(BuildContext context) {
     final isLoading =
-        Provider.of<AuthProvider>(context, listen: true).isLoading;
+        Provider.of<SignInProvide>(context, listen: true).isLoading;
     return Scaffold(
       body: SafeArea(
         child: isLoading == true
@@ -140,7 +140,7 @@ class _Forget_otpState extends State<Forget_otp> {
 
   // verify otp
   void verifyOtp(BuildContext context, String userOtp) {
-    final ap = Provider.of<AuthProvider>(context, listen: false);
+    final ap = Provider.of<SignInProvide>(context, listen: false);
     ap.verifyOtp(
       context: context,
       verificationId: widget.verificationId,
