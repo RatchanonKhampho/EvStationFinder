@@ -54,6 +54,7 @@ dependency_overrides:
   location: any
   firebase_core_platform_interface: any
   geolocator: ^10.0.1
+  provider: ^6.0.2
 dev_dependencies:
   flutter_test:
     sdk: flutter

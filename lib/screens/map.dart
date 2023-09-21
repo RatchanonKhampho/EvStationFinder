@@ -1,10 +1,7 @@
-import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:geoflutterfire/geoflutterfire.dart';
-import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:rxdart/rxdart.dart';
+
 class map extends StatefulWidget {
   const map({super.key});
 
@@ -13,43 +10,29 @@ class map extends StatefulWidget {
 }
 
 class _mapState extends State<map> {
-  late Geoflutterfire geo;
-  final radius = BehaviorSubject<double>.seeded(1.0);
-
-  final _firestore = FirebaseFirestore.instance;
-  var _currentIndex = 0;
-  final Completer<GoogleMapController> _controller =
-      Completer<GoogleMapController>();
-  final markers = <MarkerId, Marker>{};
-  late Stream<List<DocumentSnapshot>> stream;
-  static const CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(37.42796133580664, -122.085749655962),
-    zoom: 14.4746,
-  );
-  @override
-  void initState() {
-    final geo = Geoflutterfire();
-    GeoFirePoint center = geo.point(latitude: 12.960632, longitude: 77.641603);
-    stream = radius.switchMap((rad) {
-      final collectionReference = _firestore.collection('locations');
-
-      return geo.collection(collectionRef: collectionReference).within(
-          center: center, radius: rad, field: 'position', strictMode: true);
-    });
-  }
+  GoogleMapController? _controller;
+  Set<Marker> _markers = Set<Marker>();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: GoogleMap(
-          mapType: MapType.hybrid,
-          initialCameraPosition: _kGooglePlex,
-          onMapCreated: (GoogleMapController controller) {
-            _controller.complete(controller);
+    return Stack(
+      children: [
+        GoogleMap(
+          initialCameraPosition: CameraPosition(
+            target: LatLng(13.812534711489294,100.5116944), // ตำแหน่งเริ่มต้นของแผนที่
+            zoom: 15.0, // ขนาดภาพ
+          ),
+          onMapCreated: (controller) {
+            setState(() {
+              _controller = controller;
+            });
+            _loadMarkersFromFirestore();
           },
+          markers: _markers,
         ),
-
-        bottomNavigationBar: SalomonBottomBar(
+      ],
+    );
+    /*bottomNavigationBar: SalomonBottomBar(
           currentIndex: _currentIndex,
           onTap: (i) => setState(() => _currentIndex = i),
           items: [
@@ -81,7 +64,36 @@ class _mapState extends State<map> {
               selectedColor: Colors.teal,
             ),
           ],
-        ));
+        ));*/
   }
 
+// โหลดข้อมูลจาก Firestore และสร้างหมุดบนแผนที่
+  void _loadMarkersFromFirestore() async {
+    final firestore = FirebaseFirestore.instance;
+    final snapshot = await firestore.collection('locations').get();
+
+    for (final doc in snapshot.docs) {
+      final data = doc.data() as Map<String, dynamic>;
+      final lat = data['latitude'] as double;
+      final lng = data['longitude'] as double;
+      final marker = Marker(
+        markerId: MarkerId(doc.id),
+        position: LatLng(lat, lng),
+        infoWindow: InfoWindow(
+          title: data['name'] ?? '',
+          snippet: data['description'] ?? '',
+        ),
+      );
+
+      setState(() {
+        _markers.add(marker);
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller?.dispose();
+    super.dispose();
+  }
 }
