@@ -1,9 +1,7 @@
-import 'package:ev_charger/services/auth_service.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatelessWidget {
-  final AuthService auth;
-  const HomeScreen({required this.auth});
+  const HomeScreen();
 
   @override
   Widget build(BuildContext context) {
@@ -16,12 +14,6 @@ class HomeScreen extends StatelessWidget {
               const Text(
                 'Home Page',
               ),
-              const SizedBox(
-                height: 30,
-              ),
-              auth.currentUser != null
-                  ? Text('User: ${auth.currentUser?.email}')
-                  : Container()
             ],
           ),
         ),

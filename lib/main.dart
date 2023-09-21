@@ -1,5 +1,6 @@
-import 'package:ev_charger/provider/auth_provider.dart';
-import 'package:ev_charger/screens/Signin.dart';
+import 'package:ev_charger/provider/internet_provider.dart';
+import 'package:ev_charger/provider/sign_in_provider.dart';
+import 'package:ev_charger/screens/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -14,7 +15,6 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(const MyApp());
-  await Firebase.initializeApp();
 }
 
 class MyApp extends StatelessWidget {
@@ -24,11 +24,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [ChangeNotifierProvider(create: (_) => AuthProvider())],
+      providers: [
+        ChangeNotifierProvider(create: (_) => SignInProvide()),
+        ChangeNotifierProvider(create: (_) => InternetProvider()),
+      ],
       child: MaterialApp(
-        debugShowCheckedModeBanner: false,
         theme: ThemeData(),
         home: const MyHomePage(),
+        debugShowCheckedModeBanner: false,
       ),
     );
   }
@@ -47,7 +50,7 @@ class _MyHomePageState extends State<MyHomePage> {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     return const MaterialApp(
-      home: sign_in(),
+      home: SplashScreen(),
     );
   }
 }
