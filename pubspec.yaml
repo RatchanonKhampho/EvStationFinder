@@ -41,7 +41,6 @@ dependencies:
   cloud_firestore: any
   google_sign_in: any
   flutter_credit_card: any 
-  flutter_facebook_auth: any
   sign_button: ^2.0.5
   sizer: any
   material_text_fields: ^1.0.3
@@ -52,6 +51,8 @@ dependencies:
   pinput: ^3.0.1
   connectivity_plus: ^4.0.2
   font_awesome_flutter: ^10.5.0
+  http: ^1.1.0
+  flutter_facebook_auth: ^6.0.2
   
 
 
