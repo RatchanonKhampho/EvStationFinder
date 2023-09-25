@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:ev_charger/provider/sign_in_provider.dart';
 import 'package:ev_charger/screens/Signin.dart';
-import 'package:ev_charger/screens/map.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -25,7 +24,7 @@ class _SplashScreenState extends State<SplashScreen> {
     Timer(const Duration(seconds: 2), () {
       sp.isSignedIn == false
           ? nextScreen(context, const sign_in())
-          : nextScreen(context, const HomeScreen());
+          : nextScreen(context, const sign_in());
     });
   }
 
