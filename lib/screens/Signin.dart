@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:ev_charger/provider/internet_provider.dart';
 import 'package:ev_charger/provider/sign_in_provider.dart';
-import 'package:ev_charger/screens/map.dart';
+import 'package:ev_charger/screens/profile.dart';
 import 'package:ev_charger/screens/register.dart';
 import 'package:ev_charger/utils/snack_bar.dart';
 import 'package:flutter/material.dart';
@@ -28,8 +28,6 @@ class _sign_inState extends State<sign_in> {
   final RoundedLoadingButtonController googleController =
       RoundedLoadingButtonController();
   final RoundedLoadingButtonController facebookController =
-      RoundedLoadingButtonController();
-  final RoundedLoadingButtonController phoneController =
       RoundedLoadingButtonController();
 
   void _doSomething() async {
@@ -200,33 +198,6 @@ class _sign_inState extends State<sign_in> {
                         const SizedBox(
                           height: 10,
                         ),
-                        // phoneAuth loading button
-                        RoundedLoadingButton(
-                          onPressed: () {},
-                          controller: phoneController,
-                          successColor: Colors.black,
-                          width: MediaQuery.of(context).size.width * 0.80,
-                          elevation: 0,
-                          borderRadius: 25,
-                          color: Colors.black,
-                          child: Wrap(
-                            children: const [
-                              Icon(
-                                FontAwesomeIcons.apple,
-                                size: 20,
-                                color: Colors.white,
-                              ),
-                              SizedBox(
-                                width: 15,
-                              ),
-                              Text("Sign in with Phone",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w500)),
-                            ],
-                          ),
-                        ),
 
                         Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -240,11 +211,9 @@ class _sign_inState extends State<sign_in> {
                                 ),
                               ),
                               TextButton(
-                                  onPressed: () => Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const register())),
+                                  onPressed: () {
+                                    nextScreen(context, register());
+                                  },
                                   child: const Text(
                                     'Sign up',
                                     style: TextStyle(
@@ -345,7 +314,7 @@ class _sign_inState extends State<sign_in> {
   // handle after signin(จัดการหลังจากลงชื่อเข้าใช้)
   handleAfterSignIn() {
     Future.delayed(const Duration(milliseconds: 1000)).then((value) {
-      nextScreenReplace(context, const HomeScreen());
+      nextScreenReplace(context, const profile());
     });
   }
 }

@@ -1,7 +1,9 @@
-import 'package:ev_charger/main.dart';
+import 'package:ev_charger/provider/sign_in_provider.dart';
 import 'package:ev_charger/screens/Signin.dart';
 import 'package:ev_charger/screens/map.dart';
+import 'package:ev_charger/utils/next_Screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class profile extends StatefulWidget {
   const profile({super.key});
@@ -11,8 +13,15 @@ class profile extends StatefulWidget {
 }
 
 class _profileState extends State<profile> {
+  Future getData() async {
+    final sp = context.read()<SignInProvide>();
+    sp.getDataFromSharedPreferences();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final sp = context.watch<SignInProvide>();
+
     return Scaffold(
       body: SafeArea(
         maintainBottomViewPadding: true,
@@ -23,11 +32,10 @@ class _profileState extends State<profile> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 IconButton(
-                  onPressed: () =>
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => sign_in())),
+                  onPressed: () {
+                    sp.userSignout();
+                    nextScreenReplace(context, const map());
+                  },
                   icon: const Icon(Icons.arrow_back_ios_new),
                 ),
                 const Text(
@@ -38,11 +46,9 @@ class _profileState extends State<profile> {
                       fontWeight: FontWeight.bold),
                 ),
                 IconButton(
-                  onPressed: () =>
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => sign_in())),
+                  onPressed: () {
+                    nextScreen(context, sign_in());
+                  },
                   icon: const Icon(Icons.logout_rounded),
                 ),
               ],
@@ -53,33 +59,31 @@ class _profileState extends State<profile> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   CircleAvatar(
-                    radius: 55,
-                    backgroundImage: NetworkImage('https://t4.ftcdn.net/jpg/02/29/75/83/240_F_229758328_7x8jwCwjtBMmC6rgFzLFhZoEpLobB6L8.jpg')
-                  ),
+                      radius: 55,
+                      backgroundImage: NetworkImage(
+                          'https://t4.ftcdn.net/jpg/02/29/75/83/240_F_229758328_7x8jwCwjtBMmC6rgFzLFhZoEpLobB6L8.jpg')),
                   Align(
-                    alignment: Alignment.centerLeft  ,
-                    child: Text('Personal Information',
-                      style: TextStyle(
-                          fontSize: 25
-                      ),
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'Personal Information',
+                      style: TextStyle(fontSize: 25),
                     ),
                   ),
                   Name(),
                   Email(),
                   Moblie(),
                   Address(),
-                  Text('Security',style: TextStyle(
-                    fontSize: 25
-                  ),
+                  Text(
+                    'Security',
+                    style: TextStyle(fontSize: 25),
                   ),
                   password(),
-                  Text('Payment',style: TextStyle(
-                      fontSize: 25
-                  ),
+                  Text(
+                    'Payment',
+                    style: TextStyle(fontSize: 25),
                   ),
                   MyWallet()
                 ],
-                
               ),
             )
           ]),
@@ -89,63 +93,51 @@ class _profileState extends State<profile> {
   }
 
   Widget Name() => ListTile(
-    shape: RoundedRectangleBorder(
-      side: BorderSide(width: 2, color: Colors.lightBlue),
-      borderRadius: BorderRadius.circular(20)
-    ),
-    leading: Icon(Icons.person_2_rounded),
-    title: Text('Name'),
-    trailing: Text('chayut yuttapornpong'),
-
-  );
+        shape: RoundedRectangleBorder(
+            side: BorderSide(width: 2, color: Colors.lightBlue),
+            borderRadius: BorderRadius.circular(20)),
+        leading: Icon(Icons.person_2_rounded),
+        title: Text('Name'),
+        trailing: Text('chayut yuttapornpong'),
+      );
   Widget Email() => ListTile(
-    shape: RoundedRectangleBorder(
-        side: BorderSide(width: 2, color: Colors.lightBlue),
-        borderRadius: BorderRadius.circular(20)
-    ),
-    leading: Icon(Icons.email_rounded),
-    title: Text('Email'),
-    trailing: Text('xxxxxxx'),
-
-  );
+        shape: RoundedRectangleBorder(
+            side: BorderSide(width: 2, color: Colors.lightBlue),
+            borderRadius: BorderRadius.circular(20)),
+        leading: Icon(Icons.email_rounded),
+        title: Text('Email'),
+        trailing: Text('xxxxxxx'),
+      );
   Widget Moblie() => ListTile(
-    shape: RoundedRectangleBorder(
-        side: BorderSide(width: 2, color: Colors.lightBlue),
-        borderRadius: BorderRadius.circular(20)
-    ),
-    leading: Icon(Icons.phone_android),
-    title: Text('Mobile phone'),
-    trailing: Text('xxxxxxx'),
-
-  );
+        shape: RoundedRectangleBorder(
+            side: BorderSide(width: 2, color: Colors.lightBlue),
+            borderRadius: BorderRadius.circular(20)),
+        leading: Icon(Icons.phone_android),
+        title: Text('Mobile phone'),
+        trailing: Text('xxxxxxx'),
+      );
   Widget Address() => ListTile(
-    shape: RoundedRectangleBorder(
-        side: BorderSide(width: 2, color: Colors.lightBlue),
-        borderRadius: BorderRadius.circular(20)
-    ),
-    leading: Icon(Icons.phone_android),
-    title: Text('Address'),
-    trailing: Text('xxxxxxx'),
-
-  );
+        shape: RoundedRectangleBorder(
+            side: BorderSide(width: 2, color: Colors.lightBlue),
+            borderRadius: BorderRadius.circular(20)),
+        leading: Icon(Icons.phone_android),
+        title: Text('Address'),
+        trailing: Text('xxxxxxx'),
+      );
   Widget password() => ListTile(
-    shape: RoundedRectangleBorder(
-        side: BorderSide(width: 2, color: Colors.lightBlue),
-        borderRadius: BorderRadius.circular(20)
-    ),
-    leading: Icon(Icons.lock_outline_rounded),
-    title: Text('Change Password'),
-    trailing: Icon(Icons.arrow_forward_ios_outlined),
-
-  );
+        shape: RoundedRectangleBorder(
+            side: BorderSide(width: 2, color: Colors.lightBlue),
+            borderRadius: BorderRadius.circular(20)),
+        leading: Icon(Icons.lock_outline_rounded),
+        title: Text('Change Password'),
+        trailing: Icon(Icons.arrow_forward_ios_outlined),
+      );
   Widget MyWallet() => ListTile(
-    shape: RoundedRectangleBorder(
-        side: BorderSide(width: 2, color: Colors.lightBlue),
-        borderRadius: BorderRadius.circular(20)
-    ),
-    leading: Icon(Icons.card_membership_rounded),
-    title: Text('Change Password'),
-    trailing: Icon(Icons.arrow_forward_ios_outlined),
-
-  );
+        shape: RoundedRectangleBorder(
+            side: BorderSide(width: 2, color: Colors.lightBlue),
+            borderRadius: BorderRadius.circular(20)),
+        leading: Icon(Icons.card_membership_rounded),
+        title: Text('Change Password'),
+        trailing: Icon(Icons.arrow_forward_ios_outlined),
+      );
 }
