@@ -46,7 +46,6 @@ class SignInProvide extends ChangeNotifier {
   SignInProvide() {
     checkSignInUser();
   }
-
   Future checkSignInUser() async {
     final SharedPreferences s = await SharedPreferences.getInstance();
     _isSignedIn = s.getBool("signed_in") ?? false;
@@ -124,10 +123,8 @@ class SignInProvide extends ChangeNotifier {
         );
 
         //signing to firebase user intance
-
         final User userDetails =
             (await _firebaseAuth.signInWithCredential(credential)).user!;
-
         // now save all values
         _name = userDetails.displayName;
         _email = userDetails.email;
@@ -229,7 +226,7 @@ class SignInProvide extends ChangeNotifier {
     await googleSignIn.signOut();
     _isSignedIn = false;
     notifyListeners();
-    // claer all Storage information
+    // claer all Storage information (ล้างข้อมูล)
     clearStoreData();
   }
 

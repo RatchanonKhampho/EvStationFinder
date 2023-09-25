@@ -342,7 +342,7 @@ class _sign_inState extends State<sign_in> {
     }
   }
 
-  // handle after signin
+  // handle after signin(จัดการหลังจากลงชื่อเข้าใช้)
   handleAfterSignIn() {
     Future.delayed(const Duration(milliseconds: 1000)).then((value) {
       nextScreenReplace(context, const HomeScreen());
