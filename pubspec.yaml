@@ -45,7 +45,7 @@ dependency_overrides:
   flutter_facebook_auth: any
   sign_button: ^2.0.5
   sizer: any
-  google_maps_flutter: any
+  google_maps_flutter: ^2.5.0
   http: any
   flutter_polyline_points: any
   salomon_bottom_bar: any
@@ -55,6 +55,8 @@ dependency_overrides:
   firebase_core_platform_interface: any
   geolocator: ^10.0.1
   provider: ^6.0.2
+  anim_search_bar: ^2.0.3
+  bottom_sheet: ^4.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
