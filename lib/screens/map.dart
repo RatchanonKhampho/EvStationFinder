@@ -12,8 +12,10 @@ class map extends StatefulWidget {
 }
 
 class _mapState extends State<map> {
-  TextEditingController textController = TextEditingController();
+  final searchController = TextEditingController();
+
   GoogleMapController? _mapController;
+  List<DocumentSnapshot> _searchResults = [];
   // ตั้งค่าพิกัดเริ่มต้น
   static const LatLng _initialCameraPosition = const LatLng(13.7563, 100.5018);
   List<Marker> _markers = [];
@@ -24,6 +26,7 @@ class _mapState extends State<map> {
   void initState() {
     super.initState();
     _loadMarkersFromFirestore();
+    _searchLocation('');
   }
     // ดึงข้อมูลหมุดจาก Firestore และสร้าง Marker
     Future<void> _loadMarkersFromFirestore() async {
@@ -75,7 +78,8 @@ shape: RoundedRectangleBorder(
                         child: Text('Detail',textAlign: TextAlign.center,   style: TextStyle(
                         fontSize: 20 ),),
                       ),
-                      Image.network('${data['images']}'),
+                      Image.network('${data['images']}',
+                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: ListTile(
@@ -108,7 +112,6 @@ shape: RoundedRectangleBorder(
         },
       );
     }
-
     @override
     Widget build(BuildContext context) {
       return Scaffold(
@@ -190,24 +193,79 @@ shape: RoundedRectangleBorder(
           ]),
         ),
       );
+
     }
-
-
     Widget seachBar() {
       return AnimSearchBar(
         width: 400,
-        textController: textController,
+        textController: searchController,
         onSuffixTap: () {
           setState(() {
-            textController.clear();
+            searchController.clear();
           });
-        }, onSubmitted: (String) {
-
+        }, onSubmitted: (query) {
+        _searchLocation(searchController.text);
       },
       );
     }
-
+// ค้นหาหมุดจาก Firestore
+  void _searchLocation(String query) {
+    FirebaseFirestore.instance
+        .collection('locations')
+        .where('name', arrayContains: )
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      if (querySnapshot.docs.isNotEmpty) {
+        setState(() {
+          _markers.clear();
+          querySnapshot.docs.forEach((doc) {
+            var location = doc.data() as Map<String, dynamic>;
+            var marker = Marker(
+              markerId: MarkerId(doc.id),
+              position: LatLng(location!['latitude'], location!['longitude']),
+              infoWindow: InfoWindow(
+                title: location['name'],
+              ),
+            );
+            _markers.add(marker);
+          });
+        });
+        // ขยายแผนที่เพื่อแสดงหมุด
+        _mapController?.animateCamera(CameraUpdate.newLatLngBounds(
+          _boundsFromLatLngList(_markers.map((m) => m.position).toList()),
+          50.0,
+        ));
+      } else {
+        // ไม่พบข้อมูล
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('ไม่พบข้อมูลที่ค้นหา'),
+          ),
+        );
+      }
+    });
   }
+
+  // คำนวณขอบเขตของหมุดทั้งหมด
+  LatLngBounds _boundsFromLatLngList(List<LatLng> list) {
+    double south = 90;
+    double west = 180;
+    double north = -90;
+    double east = -180;
+
+    for (LatLng latLng in list) {
+      if (latLng.latitude < south) south = latLng.latitude;
+      if (latLng.longitude < west) west = latLng.longitude;
+      if (latLng.latitude > north) north = latLng.latitude;
+      if (latLng.longitude > east) east = latLng.longitude;
+    }
+
+    return LatLngBounds(
+      southwest: LatLng(south, west),
+      northeast: LatLng(north, east),
+    );
+  }
+}
 
 
 
