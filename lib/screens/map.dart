@@ -1,8 +1,8 @@
+import 'package:anim_search_bar/anim_search_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
-import 'package:anim_search_bar/anim_search_bar.dart';
+
 class map extends StatefulWidget {
   const map({super.key});
 
@@ -24,10 +24,11 @@ class _mapState extends State<map> {
     super.initState();
     _loadMarkersFromFirestore();
   }
+
   // ดึงข้อมูลหมุดจาก Firestore และสร้าง Marker
   Future<void> _loadMarkersFromFirestore() async {
-    final markers = await FirebaseFirestore.instance.collection('locations')
-        .get();
+    final markers =
+        await FirebaseFirestore.instance.collection('locations').get();
     setState(() {
       _markers = markers.docs.map((doc) {
         final data = doc.data() as Map<String, dynamic>;
@@ -40,6 +41,7 @@ class _mapState extends State<map> {
       }).toList();
     });
   }
+
   // แสดงข้อมูลของหมุดผ่าน BottomSheet
   void _showMarkerDetails(String markerId) {
     showModalBottomSheet(
@@ -50,8 +52,10 @@ class _mapState extends State<map> {
       builder: (context) {
         // ดึงข้อมูลจาก Firestore โดยใช้ markerId
         return FutureBuilder<DocumentSnapshot>(
-          future: FirebaseFirestore.instance.collection('locations').doc(
-              markerId).get(),
+          future: FirebaseFirestore.instance
+              .collection('locations')
+              .doc(markerId)
+              .get(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return CircularProgressIndicator();
@@ -62,35 +66,38 @@ class _mapState extends State<map> {
             final data = snapshot.data!.data() as Map<String, dynamic>;
             // สร้าง UI สำหรับแสดงข้อมูล
             return ListView(
-              children :[
+              children: [
                 Container(
-                  width: MediaQuery.of(context).size.width-30,
-                  height: MediaQuery.of(context).size.height-30 ,
+                  width: MediaQuery.of(context).size.width - 30,
+                  height: MediaQuery.of(context).size.height - 30,
                   child: Column(
-
                     children: [
                       Padding(
                         padding: const EdgeInsets.all(20.0),
-                        child: Text('Detail',textAlign: TextAlign.center,   style: TextStyle(
-                            fontSize: 20 ),),
+                        child: Text(
+                          'Detail',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 20),
+                        ),
                       ),
                       Image.network('${data['images']}'),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: ListTile(
-
-                          title: Text('ชื่อ: ${data['name']}',style: TextStyle(
-                              fontSize: 20 ),),
+                          title: Text(
+                            'ชื่อ: ${data['name']}',
+                            style: TextStyle(fontSize: 20),
+                          ),
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(right: 8.0,left: 8.0),
+                        padding: const EdgeInsets.only(right: 8.0, left: 8.0),
                         child: ListTile(
                           title: Text('ที่อยู่: ${data['address']}'),
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(right: 8.0,left: 8.0),
+                        padding: const EdgeInsets.only(right: 8.0, left: 8.0),
                         child: ListTile(
                           title: Text('เวลา: ${data['time']}'),
                         ),
@@ -111,11 +118,10 @@ class _mapState extends State<map> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: SalomonBottomBar(
+      /*bottomNavigationBar: SalomonBottomBar(
         currentIndex: _currentIndex,
         onTap: (i) => setState(() => _currentIndex = i),
         items: [
-
           /// Home
           SalomonBottomBarItem(
             icon: Icon(Icons.search),
@@ -144,7 +150,7 @@ class _mapState extends State<map> {
             selectedColor: Colors.teal,
           ),
         ],
-      ),
+      ),*/
       body: SafeArea(
         child: Stack(children: [
           GoogleMap(
@@ -179,18 +185,15 @@ class _mapState extends State<map> {
             children: [
               Positioned(
                   child: Padding(
-                    padding: const EdgeInsets.only(
-                        top: 10.0, left: 20, right: 20),
-                    child: seachBar(),
-                  )
-              ),
+                padding: const EdgeInsets.only(top: 10.0, left: 20, right: 20),
+                child: seachBar(),
+              )),
             ],
           ),
         ]),
       ),
     );
   }
-
 
   Widget seachBar() {
     return AnimSearchBar(
@@ -200,13 +203,8 @@ class _mapState extends State<map> {
         setState(() {
           textController.clear();
         });
-      }, onSubmitted: (String) {
-
-    },
+      },
+      onSubmitted: (String) {},
     );
   }
-
 }
-
-
-

@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:ev_charger/provider/internet_provider.dart';
 import 'package:ev_charger/provider/sign_in_provider.dart';
-import 'package:ev_charger/screens/profile.dart';
 import 'package:ev_charger/screens/register.dart';
 import 'package:ev_charger/utils/snack_bar.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +13,7 @@ import '../main.dart';
 import '../utils/next_Screen.dart';
 import '../widgetd/text_fild.dart';
 import 'forget_phone.dart';
+import 'home_screens.dart';
 
 class sign_in extends StatefulWidget {
   const sign_in({super.key});
@@ -314,7 +314,7 @@ class _sign_inState extends State<sign_in> {
   // handle after signin(จัดการหลังจากลงชื่อเข้าใช้)
   handleAfterSignIn() {
     Future.delayed(const Duration(milliseconds: 1000)).then((value) {
-      nextScreenReplace(context, const profile());
+      nextScreenReplace(context, HomeScreen());
     });
   }
 }

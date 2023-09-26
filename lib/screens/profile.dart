@@ -1,9 +1,11 @@
+import 'package:ev_charger/main.dart';
 import 'package:ev_charger/provider/sign_in_provider.dart';
 import 'package:ev_charger/screens/Signin.dart';
-import 'package:ev_charger/screens/map.dart';
 import 'package:ev_charger/utils/next_Screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import 'home_screens.dart';
 
 class profile extends StatefulWidget {
   const profile({super.key});
@@ -34,9 +36,12 @@ class _profileState extends State<profile> {
                 IconButton(
                   onPressed: () {
                     sp.userSignout();
-                    nextScreenReplace(context, const map());
+                    nextScreenReplace(context, HomeScreen());
                   },
-                  icon: const Icon(Icons.arrow_back_ios_new),
+                  icon: const Icon(
+                    Icons.arrow_back_ios_new,
+                    color: backgroundwhite,
+                  ),
                 ),
                 const Text(
                   "Profile",
