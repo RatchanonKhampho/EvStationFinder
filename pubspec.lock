@@ -205,10 +205,10 @@ packages:
     dependency: transitive
     description:
       name: file
-      sha256: "5fc22d7c25582e38ad9a8515372cd9a93834027aacf1801cf01164dac0ffa08c"
+      sha256: "1b92bec4fc2a72f59a8e15af5f52cd441e4a7860b49499d69dfa817af20e925d"
       url: "https://pub.dev"
     source: hosted
-    version: "7.0.0"
+    version: "6.1.4"
   firebase_auth:
     dependency: "direct overridden"
     description:
@@ -428,58 +428,58 @@ packages:
     dependency: "direct overridden"
     description:
       name: geolocator
-      sha256: "9f1c9a70dd25fc9d9574ff17ba714cf3bc7894258efd7d1ce0debfafe2f8e1d8"
+      sha256: e946395fc608842bb2f6c914807e9183f86f3cb787f6b8f832753e5251036f02
       url: "https://pub.dev"
     source: hosted
-    version: "10.0.1"
+    version: "10.1.0"
   geolocator_android:
     dependency: transitive
     description:
       name: geolocator_android
-      sha256: db75aacf93fcdc2c0ba20066019da30e3fde7b102cf579d4bd4ea542e8a8cf17
+      sha256: "93906636752ea4d4e778afa981fdfe7409f545b3147046300df194330044d349"
       url: "https://pub.dev"
     source: hosted
-    version: "4.2.4"
+    version: "4.3.1"
   geolocator_apple:
     dependency: transitive
     description:
       name: geolocator_apple
-      sha256: "36527c555f4c425f7d8fa8c7c07d67b78e3ff7590d40448051959e1860c1cfb4"
+      sha256: ab90ae811c42ec2f6021e01eca71df00dee6ff1e69d2c2dafd4daeb0b793f73d
       url: "https://pub.dev"
     source: hosted
-    version: "2.2.7"
+    version: "2.3.2"
   geolocator_platform_interface:
     dependency: transitive
     description:
       name: geolocator_platform_interface
-      sha256: b2a0c09d2cfe8ad6a8cc44fada5c1092c49286e8c30922914dfe2b23799a682f
+      sha256: b8cc1d3be0ca039a3f2174b0b026feab8af3610e220b8532e42cff8ec6658535
       url: "https://pub.dev"
     source: hosted
-    version: "4.0.8"
+    version: "4.1.0"
   geolocator_web:
     dependency: transitive
     description:
       name: geolocator_web
-      sha256: f68a122da48fcfff68bbc9846bb0b74ef651afe84a1b1f6ec20939de4d6860e1
+      sha256: "59083f7e0871b78299918d92bf930a14377f711d2d1156c558cd5ebae6c20d58"
       url: "https://pub.dev"
     source: hosted
-    version: "2.1.6"
+    version: "2.2.0"
   geolocator_windows:
     dependency: transitive
     description:
       name: geolocator_windows
-      sha256: "463045515b08bd83f73e014359c4ad063b902eb3899952cfb784497ae6c6583b"
+      sha256: "8725beaa00db2b52f53d9811584cb4488240b250b04a09763e80945017f65c9c"
       url: "https://pub.dev"
     source: hosted
-    version: "0.2.0"
+    version: "0.2.1"
   get:
     dependency: "direct overridden"
     description:
       name: get
-      sha256: e4e7335ede17452b391ed3b2ede016545706c01a02292a6c97619705e7d2a85e
+      sha256: "2ba20a47c8f1f233bed775ba2dd0d3ac97b4cf32fc17731b3dfc672b06b0e92a"
       url: "https://pub.dev"
     source: hosted
-    version: "4.6.6"
+    version: "4.6.5"
   glob:
     dependency: transitive
     description:
@@ -548,10 +548,10 @@ packages:
     dependency: transitive
     description:
       name: google_maps_flutter_web
-      sha256: f893d1542c6562bc8299ef768fbbe92ade83c220ab3209b9477ec9f81ad585e4
+      sha256: "05067c5aa762ebee44b7ef4902a311ed8cf891ef655e2798bae063aa3050c8d9"
       url: "https://pub.dev"
     source: hosted
-    version: "0.5.4+2"
+    version: "0.5.4+1"
   google_sign_in:
     dependency: "direct overridden"
     description:
@@ -588,10 +588,10 @@ packages:
     dependency: transitive
     description:
       name: google_sign_in_web
-      sha256: "939e9172a378ec4eaeb7f71eeddac9b55ebd0e8546d336daec476a68e5279766"
+      sha256: b48263e47f9493ba4120ccdfffe7412549ee297e82b97be9b8fa16ea8919ffbe
       url: "https://pub.dev"
     source: hosted
-    version: "0.12.0+5"
+    version: "0.12.0+4"
   html:
     dependency: transitive
     description:
@@ -937,18 +937,18 @@ packages:
     dependency: transitive
     description:
       name: syncfusion_flutter_core
-      sha256: aea119c8117953fa5decf4a313b431e556b0959cd35ff88f8fbdc0eda9bedb06
+      sha256: "295954bc4bda923c88f361da35611801b56f4258179aa355730b236e4ae3ec60"
       url: "https://pub.dev"
     source: hosted
-    version: "23.1.36"
+    version: "23.1.38"
   syncfusion_flutter_maps:
     dependency: "direct overridden"
     description:
       name: syncfusion_flutter_maps
-      sha256: c5a778837a1a717de5e764a7a4683348426d4f8a541844db680836affc4e9db3
+      sha256: ef8f1ae0ee2b4694612e49dcdc2e7e62e53a5a8cbb847ff7148f092c69411812
       url: "https://pub.dev"
     source: hosted
-    version: "23.1.36"
+    version: "23.1.38"
   synchronized:
     dependency: transitive
     description:
@@ -1046,5 +1046,5 @@ packages:
     source: hosted
     version: "3.1.2"
 sdks:
-  dart: ">=3.1.0 <4.0.0"
-  flutter: ">=3.13.0"
+  dart: ">=3.1.0-185.0.dev <4.0.0"
+  flutter: ">=3.7.0"
