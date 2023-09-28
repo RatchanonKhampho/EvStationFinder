@@ -41,8 +41,10 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
+      body: Container(
+        child: Center(
+          child: _widgetOptions.elementAt(_selectedIndex),
+        ),
       ),
       bottomNavigationBar: Container(
         padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
@@ -58,8 +60,8 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
         child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8),
+          child: Container(
+            width: MediaQuery.of(context).size.width,
             child: GNav(
               rippleColor: Colors.grey[300]!,
               hoverColor: text3,

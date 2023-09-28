@@ -46,15 +46,15 @@ class _profileState extends State<profile> {
                 const Text(
                   "Profile",
                   style: TextStyle(
-                      color: Colors.grey,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold),
+                      color: text3, fontSize: 20, fontWeight: FontWeight.bold),
                 ),
                 IconButton(
                   onPressed: () {
-                    nextScreen(context, sign_in());
+                    sp.userSignout();
+                    nextScreenReplace(context, const sign_in());
                   },
                   icon: const Icon(Icons.logout_rounded),
+                  color: backgroundblue,
                 ),
               ],
             ),
