@@ -37,11 +37,11 @@ class SignInProvide extends ChangeNotifier {
   String? _name;
   String? get name => _name;
 
-  String? _email;
-  String get email => _email!;
-
   String? _imageUrl;
   String? get imageUrl => _imageUrl;
+
+  String? _email;
+  String get email => _email!;
 
   SignInProvide() {
     checkSignInUser();
@@ -158,7 +158,7 @@ class SignInProvide extends ChangeNotifier {
     }
   }
 
-  // ENTRY FOR CLOUDFIRESTORE
+  // ENTRY FOR CLOUDFIRESTORE(เข้าสู่ Cloud Firestore)
   Future getUserDataFromFirestore(uid) async {
     await FirebaseFirestore.instance
         .collection("users")
@@ -173,7 +173,7 @@ class SignInProvide extends ChangeNotifier {
             });
   }
 
-// saveDataToFirestore
+// saveDataToFirestore(บันทึกข้อมูลไปยัง Firestore)
   Future saveDataToFirestore() async {
     final DocumentReference r =
         FirebaseFirestore.instance.collection("users").doc(uid);
@@ -187,6 +187,7 @@ class SignInProvide extends ChangeNotifier {
     notifyListeners();
   }
 
+  //(บันทึกข้อมูลไปยังการตั้งค่าที่ใช้ร่วมกัน)
   Future saveDataToSharedPreferences() async {
     final SharedPreferences s = await SharedPreferences.getInstance();
     await s.setString('name', _name!);
@@ -197,6 +198,7 @@ class SignInProvide extends ChangeNotifier {
     notifyListeners();
   }
 
+  //(รับข้อมูลจากการตั้งค่าที่ใช้ร่วมกัน)
   Future getDataFromSharedPreferences() async {
     final SharedPreferences s = await SharedPreferences.getInstance();
     _name = s.getString('name');
@@ -207,7 +209,7 @@ class SignInProvide extends ChangeNotifier {
     notifyListeners();
   }
 
-  // chackUser Exists or not in cloundfirestore
+  // chackUser Exists or not in cloundfirestore(chackUser มีอยู่แล้วหรือไม่อยู่ใน cloundfirestore)
   Future<bool> checkUserExists() async {
     DocumentSnapshot snap =
         await FirebaseFirestore.instance.collection('users').doc(_uid).get();
@@ -235,63 +237,7 @@ class SignInProvide extends ChangeNotifier {
     s.clear();
   }
 
-  // Sigin with phone
-  void signInWithPhone(BuildContext context, String phoneNumber) async {
-    try {
-      await _firebaseAuth.verifyPhoneNumber(
-          phoneNumber: phoneNumber,
-          verificationCompleted:
-              (PhoneAuthCredential phoneAuthCredential) async {
-            await _firebaseAuth.signInWithCredential(phoneAuthCredential);
-          },
-          verificationFailed: (error) {
-            throw Exception(error.message);
-          },
-          codeSent: (verificationId, forceResendingToken) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) =>
-                    Forget_otp(verificationId: verificationId),
-              ),
-            );
-          },
-          codeAutoRetrievalTimeout: (verificationId) {});
-    } on FirebaseAuthException catch (e) {
-      showSnackBar(context, e.message.toString());
-    }
-  }
-
-// verifyOtp
-  void verifyOtp({
-    required BuildContext context,
-    required String verificationId,
-    required String userOtp,
-    required Function onSuccess,
-  }) async {
-    _isLoading = true;
-    notifyListeners();
-
-    try {
-      PhoneAuthCredential creds = PhoneAuthProvider.credential(
-          verificationId: verificationId, smsCode: userOtp);
-      User? user = (await _firebaseAuth.signInWithCredential(creds)).user!;
-      if (user != null) {
-        //carry our logic
-
-        onSuccess();
-      }
-      _uid = user.uid;
-      _isLoading = false;
-      notifyListeners();
-    } on FirebaseAuthException catch (e) {
-      showSnackBar(context, e.message.toString());
-      _isLoading = false;
-      notifyListeners();
-    }
-  }
-
-// Database opertaions
+//(ตรวจสอบผู้ใช้ที่มีอยู่)
   Future<bool> checkExistingUser() async {
     DocumentSnapshot snapshot =
         await _firebaseFirestore.collection("user").doc(_uid).get();
@@ -302,5 +248,71 @@ class SignInProvide extends ChangeNotifier {
       print("NEW USER");
       return false;
     }
+
+    // Sigin with phone
+    void signInWithPhone(BuildContext context, String phoneNumber) async {
+      try {
+        await _firebaseAuth.verifyPhoneNumber(
+            phoneNumber: phoneNumber,
+            verificationCompleted:
+                (PhoneAuthCredential phoneAuthCredential) async {
+              await _firebaseAuth.signInWithCredential(phoneAuthCredential);
+            },
+            verificationFailed: (error) {
+              throw Exception(error.message);
+            },
+            codeSent: (verificationId, forceResendingToken) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      Forget_otp(verificationId: verificationId),
+                ),
+              );
+            },
+            codeAutoRetrievalTimeout: (verificationId) {});
+      } on FirebaseAuthException catch (e) {
+        showSnackBar(context, e.message.toString());
+      }
+    }
+
+// verifyOtp
+    void verifyOtp({
+      required BuildContext context,
+      required String verificationId,
+      required String userOtp,
+      required Function onSuccess,
+    }) async {
+      _isLoading = true;
+      notifyListeners();
+
+      try {
+        PhoneAuthCredential creds = PhoneAuthProvider.credential(
+            verificationId: verificationId, smsCode: userOtp);
+        User? user = (await _firebaseAuth.signInWithCredential(creds)).user!;
+        if (user != null) {
+          //carry our logic
+
+          onSuccess();
+        }
+        _uid = user.uid;
+        _isLoading = false;
+        notifyListeners();
+      } on FirebaseAuthException catch (e) {
+        showSnackBar(context, e.message.toString());
+        _isLoading = false;
+        notifyListeners();
+      }
+    }
+
+// Database opertaions
   }
+
+  void verifyOtp(
+      {required BuildContext context,
+      required String verificationId,
+      required String userOtp,
+      required Null Function() onSuccess}) {}
+
+  void signInWithPhone(BuildContext context, String s) {}
 }

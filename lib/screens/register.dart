@@ -1,10 +1,8 @@
 import 'package:ev_charger/main.dart';
-import 'package:ev_charger/services/auth_service.dart';
+import 'package:ev_charger/screens/home_screens.dart';
+import 'package:ev_charger/widgetd/reusable_widget.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:sign_button/sign_button.dart';
-
-import '../widgetd/text_fild.dart';
-import 'complete.dart';
 
 class register extends StatefulWidget {
   const register({super.key});
@@ -15,6 +13,10 @@ class register extends StatefulWidget {
 
 // ignore: camel_case_types
 class _registerState extends State<register> {
+  final TextEditingController _userNameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,10 +48,8 @@ class _registerState extends State<register> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Container(
-                      width: 200,
-                      height: 200,
-                      color: backgroundwhite,
-                      child: Image.asset("images/register.png")),
+                    child: logoWidget("images/create.png"),
+                  ),
                   Container(
                     child: Column(
                       children: [
@@ -79,50 +79,41 @@ class _registerState extends State<register> {
                   Container(
                     child: Column(
                       children: [
-                        Container(
-                          child: TextFromFile(
-                            labelText: 'Email',
-                            hintText: ' Enter your email',
-                            suffixIcon: Icons.email,
-                          ),
-                        ),
-                        TextFromFile(
-                          labelText: 'Password ',
-                          hintText: 'Enter your password',
-                          suffixIcon: Icons.lock,
-                        ),
-                        TextFromFile(
-                          labelText: 'Confirm Password ',
-                          hintText: 'Enter your password',
-                          suffixIcon: Icons.lock,
-                        ),
-                        SizedBox(height: 20),
-                        ElevatedButton(
-                          onPressed: () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => CompleteProfile())),
-                          style: ElevatedButton.styleFrom(
-                              padding: const EdgeInsets.all(15.0),
-                              fixedSize: const Size(300, 50),
-                              textStyle: const TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w600,
-                                  letterSpacing: 3),
-                              primary: backgroundblue,
-                              elevation: 10,
-                              shadowColor: backgroundblue,
-                              shape: const StadiumBorder()),
-                          child: const Text(
-                            "CONTINUE",
-                            style:
-                                TextStyle(fontSize: 20, color: backgroundwhite),
-                          ),
-                        ),
+                        reusableTextField("Enter UserName",
+                            Icons.person_outline, false, _userNameController),
+                        const SizedBox(height: 20),
+                        reusableTextField("Enter Email Id",
+                            Icons.person_outline, false, _emailController),
+                        const SizedBox(height: 20),
+                        reusableTextField("Enter Password", Icons.lock_outlined,
+                            true, _passwordController),
+                        const SizedBox(height: 20),
+                        reusableTextField(
+                            "Enter Phone Number",
+                            Icons.phone_android_outlined,
+                            false,
+                            _phoneController),
+                        const SizedBox(height: 20),
+                        firebaseUIButton(context, "Sign Up", () {
+                          FirebaseAuth.instance
+                              .createUserWithEmailAndPassword(
+                            email: _emailController.text,
+                            password: _passwordController.text,
+                          )
+                              .then((value) {
+                            print("Created New Account");
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => HomeScreen()));
+                          }).onError((error, stackTrace) {
+                            print("Error ${error.toString()}");
+                          });
+                        })
                       ],
                     ),
                   ),
-                  Container(
+                  /*Container(
                     child: Column(
                       children: [
                         Row(
@@ -177,7 +168,7 @@ class _registerState extends State<register> {
                             ])
                       ],
                     ),
-                  ),
+                  ),*/
                   Container(),
                   Container(),
                 ],

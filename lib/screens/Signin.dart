@@ -4,6 +4,8 @@ import 'package:ev_charger/provider/internet_provider.dart';
 import 'package:ev_charger/provider/sign_in_provider.dart';
 import 'package:ev_charger/screens/register.dart';
 import 'package:ev_charger/utils/snack_bar.dart';
+import 'package:ev_charger/widgetd/reusable_widget.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
@@ -11,7 +13,6 @@ import 'package:rounded_loading_button/rounded_loading_button.dart';
 
 import '../main.dart';
 import '../utils/next_Screen.dart';
-import '../widgetd/text_fild.dart';
 import 'forget_phone.dart';
 import 'home_screens.dart';
 
@@ -29,6 +30,8 @@ class _sign_inState extends State<sign_in> {
       RoundedLoadingButtonController();
   final RoundedLoadingButtonController facebookController =
       RoundedLoadingButtonController();
+  final TextEditingController _emaiController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   void _doSomething() async {
     Timer(const Duration(seconds: 1), () {
@@ -50,11 +53,7 @@ class _sign_inState extends State<sign_in> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Container(
-                      width: 80,
-                      height: 80,
-                      color: backgroundwhite,
-                      child: Image.asset('images/login.png')),
+                  Container(child: logoWidget('images/login.png')),
                   Container(
                     child: const Column(
                       children: [
@@ -85,50 +84,45 @@ class _sign_inState extends State<sign_in> {
                     child: Column(
                       children: [
                         Container(
-                          child: TextFromFile(
-                            labelText: 'Email',
-                            hintText: ' Enter your email',
-                            suffixIcon: Icons.email,
+                          child: Column(
+                            children: [
+                              reusableTextField(
+                                  "Enter UserName",
+                                  Icons.person_outlined,
+                                  false,
+                                  _emaiController),
+                              SizedBox(height: 20),
+                              reusableTextField("Enter Password", Icons.lock,
+                                  false, _passwordController),
+                            ],
                           ),
-                        ),
-                        const SizedBox(height: 25),
-                        TextFromFile(
-                          labelText: 'Password ',
-                          hintText: 'Enter your password',
-                          suffixIcon: Icons.lock,
                         ),
                         Align(
                           alignment: Alignment.centerRight,
                           child: TextButton(
-                            onPressed: () => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const ForgetPhone())),
+                            onPressed: () {
+                              nextScreen(context, ForgetPhone());
+                            },
                             child: const Text(
                               'Forget Password',
                               textAlign: TextAlign.center,
                             ),
                           ),
                         ),
-                        RoundedLoadingButton(
-                          onPressed: () {},
-                          controller: googleController,
-                          successColor: backgroundblue,
-                          width: MediaQuery.of(context).size.width * 0.80,
-                          elevation: 0,
-                          borderRadius: 25,
-                          color: backgroundblue,
-                          child: Wrap(
-                            children: const [
-                              Text("Sign in",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.w500,
-                                      letterSpacing: 3)),
-                            ],
-                          ),
-                        ),
+                        firebaseUIButton(context, "Sign In", () {
+                          FirebaseAuth.instance
+                              .signInWithEmailAndPassword(
+                                  email: _emaiController.text,
+                                  password: _passwordController.text)
+                              .then((value) {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => HomeScreen()));
+                          }).onError((error, stackTrace) {
+                            print("Error ${error.toString()}");
+                          });
+                        }),
                       ],
                     ),
                   ),
