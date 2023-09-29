@@ -1,8 +1,16 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ev_charger/main.dart';
 import 'package:ev_charger/screens/home_screens.dart';
 import 'package:ev_charger/widgetd/reusable_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../Models/Usermodel.dart';
+import '../provider/internet_provider.dart';
+import '../provider/sign_in_provider.dart';
+import '../utils/next_Screen.dart';
+import '../utils/snack_bar.dart';
 
 class register extends StatefulWidget {
   const register({super.key});
@@ -17,6 +25,14 @@ class _registerState extends State<register> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
+
+
+  void  controller() {
+    _emailController.text;
+    _passwordController.text;
+    _phoneController.text;
+    _userNameController.text;
+}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -94,81 +110,31 @@ class _registerState extends State<register> {
                             false,
                             _phoneController),
                         const SizedBox(height: 20),
-                        firebaseUIButton(context, "Sign Up", () {
-                          FirebaseAuth.instance
-                              .createUserWithEmailAndPassword(
-                            email: _emailController.text,
-                            password: _passwordController.text,
-                          )
-                              .then((value) {
-                            print("Created New Account");
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => HomeScreen()));
-                          }).onError((error, stackTrace) {
-                            print("Error ${error.toString()}");
-                          });
-                        })
+                    ElevatedButton(
+                      onPressed: () {
+                        handleSignUp();
+                      },
+                      style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.all(15.0),
+                          fixedSize: const Size(300, 50),
+                          textStyle: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600,
+                              letterSpacing: 3),
+                          primary: backgroundblue,
+                          elevation: 10,
+                          shadowColor: backgroundblue,
+                          shape: const StadiumBorder()),
+                      child: const Text(
+                        "CONTINUE",
+                        style: TextStyle(
+                            fontSize: 20, color: backgroundwhite),
+                      ),
+                    ),
                       ],
                     ),
                   ),
-                  /*Container(
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SignInButton.mini(
-                                buttonType: ButtonType.apple,
-                                buttonSize: ButtonSize.large,
-                                btnColor: text3,
-                                onPressed: () {
-                                  print('click');
-                                }),
-                            SignInButton.mini(
-                              buttonType: ButtonType.google,
-                              elevation: 4,
-                              buttonSize: ButtonSize.large,
-                              btnColor: text3,
-                              onPressed: () => AuthService().signInWithGoogle(),
-                            ),
-                            SignInButton.mini(
-                                buttonType: ButtonType.facebook,
-                                buttonSize: ButtonSize.large,
-                                btnColor: text3,
-                                onPressed: () {
-                                  print('click');
-                                }),
-                          ],
-                        ),
-                        SizedBox(height: 20),
-                        Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Text(
-                                "Don't have an account? ",
-                                style: TextStyle(
-                                  fontSize: 16,
-                                ),
-                              ),
-                              TextButton(
-                                  onPressed: () => Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const register())),
-                                  child: const Text(
-                                    'Sign up',
-                                    style: TextStyle(
-                                        fontSize: 16, color: backgroundblue),
-                                  ))
-                            ])
-                      ],
-                    ),
-                  ),*/
+
                   Container(),
                   Container(),
                 ],
@@ -179,4 +145,55 @@ class _registerState extends State<register> {
       ),
     );
   }
+
+Future handleSignUp() async {
+    final   email = _emailController.text;
+    final password = _passwordController.text;
+
+  final sp = context.read<SignInProvide>();
+  final ip = context.read<InternetProvider>();
+  await ip.checkInternetConnection();
+
+  if (ip.hasInternet == false) {
+    openSnackbar(context, "Check your Internet connection ", Colors.red);
+  } else {
+    await sp.signUpWithEmailAndPassword(email, password).then((value) {
+      if (sp.hasError == true) {
+        openSnackbar(context, "snackMessage", Colors.red);
+        _emailController.dispose;
+        _passwordController.dispose;
+        _phoneController.dispose;
+        _userNameController.dispose;
+        handleAfterSignIn();
+      } else {
+        // checking whether user exists or not(ตรวจสอบว่ามีผู้ใช้อยู่หรือไม่)
+        sp.checkExistingUser().then((value) async {
+          if (value == true) {
+            // user exists
+            await sp.getUserDataFromFirestore(sp.uid).then((value) => sp
+                .saveDataToSharedPreferences()
+                .then((value) => sp.setSignIn().then((value) {
+              controller();
+              handleAfterSignIn();
+            })));
+          } else {
+            // user  does not exists
+            sp.saveDataToFirestore().then((value) => sp
+                .saveDataToSharedPreferences()
+                .then((value) => sp.setSignIn().then((value) {
+              controller();
+              handleAfterSignIn();
+            })));
+          }
+        });
+      }
+    });
+  }
+}
+// handle after signin(จัดการหลังจากลงชื่อเข้าใช้)
+handleAfterSignIn() {
+  Future.delayed(const Duration(milliseconds: 1000)).then((value) {
+    nextScreenReplace(context, HomeScreen());
+  });
+}
 }

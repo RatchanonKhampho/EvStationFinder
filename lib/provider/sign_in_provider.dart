@@ -16,6 +16,8 @@ class SignInProvide extends ChangeNotifier {
   final FacebookAuth facebookAuth = FacebookAuth.instance;
   final GoogleSignIn googleSignIn = GoogleSignIn();
 
+
+
   bool _isSignedIn = false;
   bool get isSignedIn => _isSignedIn;
 
@@ -42,6 +44,13 @@ class SignInProvide extends ChangeNotifier {
 
   String? _email;
   String get email => _email!;
+
+  String? _password;
+  String get password => _password!;
+
+  String? _phone;
+  String get phone => _phone!;
+
 
   SignInProvide() {
     checkSignInUser();
@@ -158,6 +167,49 @@ class SignInProvide extends ChangeNotifier {
     }
   }
 
+  // sigin with Emailpassword
+  Future<User?> signUpWithEmailAndPassword(String email, String password) async {
+
+    try {
+      UserCredential credential =await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
+
+      final User userDetails =
+      (await _firebaseAuth.signInWithCredential(credential as AuthCredential)).user!;
+      // now save all values
+      _name = userDetails.displayName;
+      _email = userDetails.email;
+      _imageUrl = userDetails.photoURL;
+      _provider = "Email";
+      _uid = userDetails.uid;
+      _phone = userDetails.phoneNumber;
+
+      notifyListeners();
+
+    } on FirebaseAuthException catch (e) {
+      switch (e.code) {
+        case "account-exists-with-different-credential":
+          _errorCode =
+          "You already have an account with us. Use correct provider";
+          _hasError = true;
+          notifyListeners();
+          break;
+
+        case "null":
+          _errorCode = "Some unexpected error while trying to sign in";
+          _hasError = true;
+          notifyListeners();
+          break;
+        default:
+          _errorCode = e.toString();
+          _hasError = true;
+          notifyListeners();
+      }
+    }_hasError = true;
+    notifyListeners();
+  }
+
+
+
   // ENTRY FOR CLOUDFIRESTORE(เข้าสู่ Cloud Firestore)
   Future getUserDataFromFirestore(uid) async {
     await FirebaseFirestore.instance
@@ -170,6 +222,7 @@ class SignInProvide extends ChangeNotifier {
               _email = snapshot['email'],
               _imageUrl = snapshot['image_url'],
               _provider = snapshot['provider'],
+              _phone = snapshot['phone'],
             });
   }
 
@@ -183,6 +236,7 @@ class SignInProvide extends ChangeNotifier {
       "uid": _uid,
       "image_url": _imageUrl,
       "provider": _provider,
+      "phone": _phone,
     });
     notifyListeners();
   }
@@ -195,6 +249,7 @@ class SignInProvide extends ChangeNotifier {
     await s.setString('uid', _uid!);
     await s.setString('image_url', _imageUrl!);
     await s.setString('provider', _provider!);
+    await s.setString('phone', _phone!);
     notifyListeners();
   }
 
@@ -206,6 +261,7 @@ class SignInProvide extends ChangeNotifier {
     _imageUrl = s.getString('image_url');
     _uid = s.getString('uid');
     _provider = s.getString('provider');
+    _phone = s.getString('phone');
     notifyListeners();
   }
 
@@ -306,7 +362,7 @@ class SignInProvide extends ChangeNotifier {
     }
   }
 
-// Database opertaions
+
 
 
 
