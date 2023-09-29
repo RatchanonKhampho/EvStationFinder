@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ev_charger/components/seach.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
-import 'package:anim_search_bar/anim_search_bar.dart';
-import 'package:bottom_sheet/bottom_sheet.dart';
+
 
 class map extends StatefulWidget {
   const map({super.key});
@@ -90,6 +90,12 @@ class _mapState extends State<map> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(actions: [
+        IconButton(
+          icon: Icon(Icons.search),
+          onPressed: _openSearchPage,
+        ),
+      ],),
       bottomNavigationBar: SalomonBottomBar(
         currentIndex: _currentIndex,
         onTap: (i) => setState(() => _currentIndex = i),
@@ -144,36 +150,19 @@ class _mapState extends State<map> {
               right: 0,
               child: _buildSearchResults(),
             ),
-          Column(
-            children: [
-              Positioned(
-                  child: Padding(
-                padding: const EdgeInsets.only(top: 10.0, left: 20, right: 20),
-                child: seachBar(),
-              )),
-            ],
-          ),
+
         ]),
       ),
     );
   }
 
-  Widget seachBar() {
-    return TextField(
-      controller: _searchController,
-      onChanged: (query) => _performSearch(query),
-      decoration: InputDecoration(
-        labelText: 'ค้นหา',
-        prefixIcon: Icon(Icons.search),
-      ),
-    );
-  }
+
 
   void _performSearch(String query) {
     FirebaseFirestore.instance
         .collection('locations')
         .where('name', isGreaterThanOrEqualTo: query)
-        .where('name', isLessThan: query + 'z')
+        .where('name', isLessThanOrEqualTo: query + '\uf8ff') // อัปเดตเครื่องหมาย '\uf8ff'
         .get()
         .then((QuerySnapshot querySnapshot) {
       setState(() {
@@ -182,6 +171,7 @@ class _mapState extends State<map> {
       });
     });
   }
+
 
 
 
@@ -212,14 +202,15 @@ class _mapState extends State<map> {
     // ย้ายกล้องให้ชี้ที่ตำแหน่งของหมุด
     _mapController!.animateCamera(CameraUpdate.newLatLng(position));
 
-    // แสดงข้อมูลของหมุดที่เลือกผ่าน BottomSheet
-    _showMarkerDetails(result.id);
+
   }
 
   Widget _buildSearchResults() {
     return Container(
       color: Colors.white,
       child: ListView.builder(
+        shrinkWrap: true, // ตั้งค่า shrinkWrap เป็น true
+        physics: NeverScrollableScrollPhysics(), // ตั้งค่า physics เป็น NeverScrollableScrollPhysics
         itemCount: _searchResults.length,
         itemBuilder: (context, index) {
           final data = _searchResults[index].data() as Map<String, dynamic>;
@@ -231,4 +222,14 @@ class _mapState extends State<map> {
       ),
     );
   }
+  void _openSearchPage() async {
+    final selectedLocation = await showSearch(
+      context: context,
+      delegate: LocationSearchDelegate(context)
+    );
+
+    // ทำอะไรกับผลลัพธ์ที่ได้จากหน้าค้นหา (selectedLocation)
+    // หรือไม่ต้องทำอะไรก็ได้ตามความเหมาะสม
+  }
+
 }
