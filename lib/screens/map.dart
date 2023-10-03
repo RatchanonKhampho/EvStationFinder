@@ -161,16 +161,17 @@ class _mapState extends State<map> {
   void _performSearch(String query) {
     FirebaseFirestore.instance
         .collection('locations')
-        .where('name', isGreaterThanOrEqualTo: query)
-        .where('name', isLessThanOrEqualTo: query + '\uf8ff') // อัปเดตเครื่องหมาย '\uf8ff'
+        .where('keywords', arrayContainsAny: [query.toLowerCase()])
         .get()
         .then((QuerySnapshot querySnapshot) {
       setState(() {
         _searchResults = querySnapshot.docs;
-        _bottomSheetVisible = true; // ทำให้ BottomSheet แสดงผล
+        _bottomSheetVisible = true;
       });
     });
   }
+
+
 
 
 
@@ -202,8 +203,12 @@ class _mapState extends State<map> {
     // ย้ายกล้องให้ชี้ที่ตำแหน่งของหมุด
     _mapController!.animateCamera(CameraUpdate.newLatLng(position));
 
-
+    // ปิด BottomSheet ที่แสดงผลลัพธ์การค้นหา
+    setState(() {
+      _bottomSheetVisible = false;
+    });
   }
+
 
   Widget _buildSearchResults() {
     return Container(
@@ -225,11 +230,14 @@ class _mapState extends State<map> {
   void _openSearchPage() async {
     final selectedLocation = await showSearch(
       context: context,
-      delegate: LocationSearchDelegate(context)
+      delegate: LocationSearchDelegate(context),
+
+      //เหลือแก้ search fillter
     );
 
-    // ทำอะไรกับผลลัพธ์ที่ได้จากหน้าค้นหา (selectedLocation)
-    // หรือไม่ต้องทำอะไรก็ได้ตามความเหมาะสม
+    if (selectedLocation != null) {
+      _selectSearchResult(selectedLocation);
+    }
   }
 
 }

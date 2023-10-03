@@ -1,32 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-class LocationSearchDelegate extends SearchDelegate<void> {
-  List<DocumentSnapshot> _searchResults = [];
-  BuildContext _context;
+class LocationSearchDelegate extends SearchDelegate {
+  final BuildContext context;
 
-  LocationSearchDelegate(this._context);
-
-  void _performSearch(String query) {
-    FirebaseFirestore.instance
-        .collection('locations')
-        .where('name', isGreaterThanOrEqualTo: query)
-        .where('name', isLessThanOrEqualTo: query + '\uf8ff')
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-      _searchResults = querySnapshot.docs;
-      Scaffold.of(_context).setState(() {}); // อัปเดต UI หลังจากได้ผลลัพธ์ค้นหา
-    });
-  }
-
+  LocationSearchDelegate(this.context);
 
   @override
-  List<IconButton> buildActions(BuildContext context) {
+  List<Widget> buildActions(BuildContext context) {
     return [
       IconButton(
         icon: Icon(Icons.clear),
         onPressed: () {
           query = '';
-          _searchResults.clear(); // เคลียร์ผลลัพธ์ค้นหาเมื่อกดปุ่มลบ
         },
       ),
     ];
@@ -44,24 +29,69 @@ class LocationSearchDelegate extends SearchDelegate<void> {
 
   @override
   Widget buildResults(BuildContext context) {
-    // แสดงผลลัพธ์การค้นหาที่พบ
+    // สร้างรายการผลลัพธ์การค้นหาที่เป็นไปได้
+    return _buildSearchResults();
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    // แสดงรายการค้นหาแบบ dropdown ขณะพิมพ์คำ
+    if (query.isNotEmpty) {
+      return FutureBuilder<List<DocumentSnapshot>>(
+        future: _performSearch(query),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return CircularProgressIndicator();
+          }
+          if (snapshot.hasError) {
+            return Text('เกิดข้อผิดพลาดในการค้นหา');
+          }
+          final searchResults = snapshot.data;
+          return _buildDropdownResults(searchResults);
+        },
+      );
+    } else {
+      return Container();
+    }
+  }
+
+  Future<List<DocumentSnapshot>> _performSearch(String query) async {
+    final querySnapshot = await FirebaseFirestore.instance
+        .collection('locations')
+        .where('name', isGreaterThanOrEqualTo: query)
+        .where('name', isLessThanOrEqualTo: query + '\uf8ff')
+        .get();
+
+
+    return querySnapshot.docs;
+  }
+
+
+
+  Widget _buildDropdownResults(List<DocumentSnapshot>? searchResults) {
+    if (searchResults == null || searchResults.isEmpty) {
+      return Center(
+        child: Text('ไม่พบผลลัพธ์'),
+      );
+    }
     return ListView.builder(
-      itemCount: _searchResults.length,
+      itemCount: searchResults.length,
       itemBuilder: (context, index) {
-        final data = _searchResults[index].data() as Map<String, dynamic>;
+        final data = searchResults[index].data() as Map<String, dynamic>;
         return ListTile(
           title: Text(data['name']),
           onTap: () {
-            close(context, data);
+            close(context, searchResults[index]);
           },
         );
       },
     );
   }
 
-  @override
-  Widget buildSuggestions(BuildContext context) {
-    // แนะนำคำค้นหาที่เกี่ยวข้อง หรือแสดงคำค้นหาล่าสุด ตามที่คุณต้องการ
-    return Container();
+  Widget _buildSearchResults() {
+    return Container(
+      // แสดงผลลัพธ์การค้นหาแบบเต็มหน้าจอ
+      // คุณสามารถแสดงผลตามความต้องการ
+    );
   }
-}
+  }
