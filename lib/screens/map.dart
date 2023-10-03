@@ -16,10 +16,10 @@ class _mapState extends State<map> {
   final TextEditingController _searchController = TextEditingController();
   GoogleMapController? _mapController;
   List<DocumentSnapshot> _searchResults = [];
-
+  bool _showFilteredMarkers = false;
   // ตั้งค่าพิกัดเริ่มต้น
   static const LatLng _initialCameraPosition = const LatLng(13.7563, 100.5018);
-  List<Marker> _markers = [];
+  List<Marker?> _markers = [];
   bool _bottomSheetVisible = false;
   String _selectedMarkerId = "";
   var _currentIndex = 0;
@@ -29,23 +29,46 @@ class _mapState extends State<map> {
     super.initState();
     _loadMarkersFromFirestore();
   }
+  bool _filterActive = false;
+
+  void _toggleFilter() {
+    setState(() {
+      _filterActive = !_filterActive;
+    });
+  }
 
   // ดึงข้อมูลหมุดจาก Firestore และสร้าง Marker
   Future<void> _loadMarkersFromFirestore() async {
-    final markers =
-        await FirebaseFirestore.instance.collection('locations').get();
+    final markers = await FirebaseFirestore.instance.collection('locations').get();
     setState(() {
       _markers = markers.docs.map((doc) {
         final data = doc.data() as Map<String, dynamic>;
         final LatLng position = LatLng(data['latitude'], data['longitude']);
-        return Marker(
-          markerId: MarkerId(doc.id),
-          position: position,
-          onTap: () => _showMarkerDetails(doc.id),
-        );
-      }).toList();
+
+        // เช็คว่าข้อมูลหมุดต้องมีเงื่อนไขที่คุณต้องการกรองหรือไม่
+        if (_filterActive) {
+          // ตรวจสอบเงื่อนไขกรอง ยกตัวอย่างเช่น 'category' คือชื่อของฟิลด์ที่คุณใช้ในการกรอง
+          if (data['Type'] == 'Type 1') {
+            return Marker(
+              markerId: MarkerId(doc.id),
+              position: position,
+              onTap: () => _showMarkerDetails(doc.id),
+            );
+          } else {
+            return null; // ถ้าไม่ตรงเงื่อนไขจะไม่สร้าง Marker
+          }
+        } else {
+          // ถ้าไม่มีการกรองให้สร้าง Marker ทุกตัว
+          return Marker(
+            markerId: MarkerId(doc.id),
+            position: position,
+            onTap: () => _showMarkerDetails(doc.id),
+          );
+        }
+      }).where((marker) => marker != null).toList();
     });
   }
+
 
   void _showMarkerDetails(String markerId) {
     setState(() {
@@ -90,12 +113,19 @@ class _mapState extends State<map> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(actions: [
-        IconButton(
-          icon: Icon(Icons.search),
-          onPressed: _openSearchPage,
-        ),
-      ],),
+      appBar: AppBar(
+        actions: [
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: _openSearchPage,
+          ),
+          IconButton(
+            icon: _filterActive ? Icon(Icons.filter_alt) : Icon(Icons.filter_list),
+            onPressed: _toggleFilter,
+          ),
+        ],
+      ),
+
       bottomNavigationBar: SalomonBottomBar(
         currentIndex: _currentIndex,
         onTap: (i) => setState(() => _currentIndex = i),
