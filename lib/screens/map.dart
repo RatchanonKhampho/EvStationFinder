@@ -126,39 +126,6 @@ class _mapState extends State<map> {
         ],
       ),
 
-      bottomNavigationBar: SalomonBottomBar(
-        currentIndex: _currentIndex,
-        onTap: (i) => setState(() => _currentIndex = i),
-        items: [
-          /// Home
-          SalomonBottomBarItem(
-            icon: Icon(Icons.search),
-            title: Text(''),
-            selectedColor: Colors.black,
-          ),
-
-          /// Likes
-          SalomonBottomBarItem(
-            icon: Icon(Icons.qr_code),
-            title: Text(""),
-            selectedColor: Colors.pink,
-          ),
-
-          /// Search
-          SalomonBottomBarItem(
-            icon: Icon(Icons.wallet),
-            title: Text(""),
-            selectedColor: Colors.orange,
-          ),
-
-          /// Profile
-          SalomonBottomBarItem(
-            icon: Icon(Icons.person_2_rounded),
-            title: Text(""),
-            selectedColor: Colors.teal,
-          ),
-        ],
-      ),
       body: SafeArea(
         child: Stack(children: [
           GoogleMap(

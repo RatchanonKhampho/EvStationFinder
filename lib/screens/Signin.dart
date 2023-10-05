@@ -58,7 +58,7 @@ class _sign_inState extends State<sign_in> {
                     child: const Column(
                       children: [
                         Text(
-                          'Welcome Back',
+                          'Welcome',
                           style: TextStyle(
                               fontSize: 36,
                               fontWeight: FontWeight.w700,
