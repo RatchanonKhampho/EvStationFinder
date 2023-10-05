@@ -13,6 +13,11 @@ class map extends StatefulWidget {
 class _mapState extends State<map> {
   TextEditingController textController = TextEditingController();
   GoogleMapController? _mapController;
+<<<<<<< HEAD
+=======
+  List<DocumentSnapshot> _searchResults = [];
+
+>>>>>>> parent of 7636882 (Update map.dart)
   // ตั้งค่าพิกัดเริ่มต้น
   static const LatLng _initialCameraPosition = const LatLng(13.7563, 100.5018);
   List<Marker> _markers = [];
@@ -42,7 +47,10 @@ class _mapState extends State<map> {
     });
   }
 
+<<<<<<< HEAD
   // แสดงข้อมูลของหมุดผ่าน BottomSheet
+=======
+>>>>>>> parent of 7636882 (Update map.dart)
   void _showMarkerDetails(String markerId) {
     showModalBottomSheet(
       shape: RoundedRectangleBorder(
@@ -118,7 +126,17 @@ class _mapState extends State<map> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+<<<<<<< HEAD
       /*bottomNavigationBar: SalomonBottomBar(
+=======
+      appBar: AppBar(actions: [
+        IconButton(
+          icon: Icon(Icons.search),
+          onPressed: _openSearchPage,
+        ),
+      ],),
+      bottomNavigationBar: SalomonBottomBar(
+>>>>>>> parent of 7636882 (Update map.dart)
         currentIndex: _currentIndex,
         onTap: (i) => setState(() => _currentIndex = i),
         items: [
