@@ -172,7 +172,7 @@ class _mapState extends State<map> {
               right: 0,
               child: Container(
                 color: Colors.white,
-                child: Column(
+                child: const Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Text('ข้อมูลจาก Firestore'),

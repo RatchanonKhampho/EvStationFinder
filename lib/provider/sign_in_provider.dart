@@ -16,41 +16,28 @@ class SignInProvide extends ChangeNotifier {
   final FacebookAuth facebookAuth = FacebookAuth.instance;
   final GoogleSignIn googleSignIn = GoogleSignIn();
 
-
-
   bool _isSignedIn = false;
   bool get isSignedIn => _isSignedIn;
-
   bool _isLoading = false;
   bool get isLoading => _isLoading;
-
   bool _hasError = false;
   bool get hasError => _hasError;
-
   String? _errorCode;
   String? get errorCode => _errorCode;
-
   String? _provider;
   String? get provider => _provider;
-
   String? _uid;
   String get uid => _uid!;
-
   String? _name;
   String? get name => _name;
-
   String? _imageUrl;
   String? get imageUrl => _imageUrl;
-
   String? _email;
   String get email => _email!;
-
   String? _password;
   String get password => _password!;
-
   String? _phone;
   String get phone => _phone!;
-
 
   SignInProvide() {
     checkSignInUser();
@@ -168,28 +155,29 @@ class SignInProvide extends ChangeNotifier {
   }
 
   // sigin with Emailpassword
-  Future<User?> signUpWithEmailAndPassword(String email, String password) async {
-
+  Future<User?> signUpWithEmailAndPassword(
+      String email, String password) async {
     try {
-      UserCredential credential =await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
+      UserCredential credential = await _firebaseAuth
+          .createUserWithEmailAndPassword(email: email, password: password);
 
-      final User userDetails =
-      (await _firebaseAuth.signInWithCredential(credential as AuthCredential)).user!;
+      final User userDetails = (await _firebaseAuth
+              .signInWithCredential(credential as AuthCredential))
+          .user!;
       // now save all values
       _name = userDetails.displayName;
       _email = userDetails.email;
-      _imageUrl = userDetails.photoURL;
+      //_imageUrl = userDetails.photoURL;
       _provider = "Email";
       _uid = userDetails.uid;
       _phone = userDetails.phoneNumber;
 
       notifyListeners();
-
     } on FirebaseAuthException catch (e) {
       switch (e.code) {
         case "account-exists-with-different-credential":
           _errorCode =
-          "You already have an account with us. Use correct provider";
+              "You already have an account with us. Use correct provider";
           _hasError = true;
           notifyListeners();
           break;
@@ -204,11 +192,10 @@ class SignInProvide extends ChangeNotifier {
           _hasError = true;
           notifyListeners();
       }
-    }_hasError = true;
+    }
+    _hasError = true;
     notifyListeners();
   }
-
-
 
   // ENTRY FOR CLOUDFIRESTORE(เข้าสู่ Cloud Firestore)
   Future getUserDataFromFirestore(uid) async {
@@ -361,9 +348,4 @@ class SignInProvide extends ChangeNotifier {
       notifyListeners();
     }
   }
-
-
-
-
-
 }
