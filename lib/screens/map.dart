@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
+import 'package:material_symbols_icons/material_symbols_icons.dart';
 
 
 class map extends StatefulWidget {
@@ -16,7 +17,6 @@ class _mapState extends State<map> {
   GoogleMapController? _mapController;
   List<DocumentSnapshot> _searchResults = [];
   List<DocumentSnapshot> _allLocations = [];
-
   bool _showFilteredMarkers = false;
   // ตั้งค่าพิกัดเริ่มต้น
   static const LatLng _initialCameraPosition = const LatLng(13.7563, 100.5018);
@@ -80,6 +80,11 @@ class _mapState extends State<map> {
       _selectedMarkerId = markerId;
     });
     showModalBottomSheet(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(20),
+        ),
+      ),
       context: context,
       builder: (context) {
         return FutureBuilder<DocumentSnapshot>(
@@ -95,15 +100,37 @@ class _mapState extends State<map> {
             return ListView(
               shrinkWrap: true,
               children: [
+                  Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Container(child: Text("Detail",
+                      style: TextStyle(fontSize: 25),),),
+                    ),
+                  ),
                 Image.network('${data['images']}'),
-                ListTile(
-                  title: Text('ชื่อ: ${data['name']}'),
+                Padding(
+                  padding: const EdgeInsets.only(left: 15.0, top: 10),
+                  child: ListTile(
+                    leading: Image.network('${data['logo']}'),
+                    title: Text('ชื่อ: ${data['name']}'),
+                  ),
                 ),
-                ListTile(
-                  title: Text('ที่อยู่: ${data['address']}'),
+                Padding(
+                  padding: const EdgeInsets.only(left: 30.0),
+                  child: ListTile(
+                    leading: Icon(Icons.location_on_outlined,
+                    color: Colors.blue,
+                    ),
+                    title: Text('ที่อยู่: ${data['address']}'),
+                  ),
                 ),
-                ListTile(
-                  title: Text('เวลา: ${data['time']}'),
+                Padding(
+                  padding: const EdgeInsets.only(left: 30.0),
+                  child: ListTile(
+                    leading:Icon(Icons.timer_outlined,
+                    color: Colors.blue,) ,
+                    title: Text('เวลา: ${data['time']}'),
+                  ),
                 ),
                 // เพิ่มข้อมูลอื่น ๆ ตามที่ต้องการ
               ],
