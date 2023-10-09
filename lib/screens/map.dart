@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ev_charger/components/seach.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
@@ -16,6 +15,8 @@ class _mapState extends State<map> {
   final TextEditingController _searchController = TextEditingController();
   GoogleMapController? _mapController;
   List<DocumentSnapshot> _searchResults = [];
+  List<DocumentSnapshot> _allLocations = [];
+
   bool _showFilteredMarkers = false;
   // ตั้งค่าพิกัดเริ่มต้น
   static const LatLng _initialCameraPosition = const LatLng(13.7563, 100.5018);
@@ -66,8 +67,12 @@ class _mapState extends State<map> {
           );
         }
       }).where((marker) => marker != null).toList();
+
+      // อัพเดต _allLocations
+      _allLocations = markers.docs;
     });
   }
+
 
 
   void _showMarkerDetails(String markerId) {
@@ -116,16 +121,17 @@ class _mapState extends State<map> {
       appBar: AppBar(
         actions: [
           IconButton(
-            icon: Icon(Icons.search),
-            onPressed: _openSearchPage,
+            icon: Icon(Icons.location_on),
+            onPressed: () {
+              _showAllLocations(); // เรียกใช้ _openShowAllLocations
+            },
           ),
           IconButton(
             icon: _filterActive ? Icon(Icons.filter_alt) : Icon(Icons.filter_list),
             onPressed: _toggleFilter,
           ),
         ],
-      ),
-
+    ),
       body: SafeArea(
         child: Stack(children: [
           GoogleMap(
@@ -224,17 +230,37 @@ class _mapState extends State<map> {
       ),
     );
   }
-  void _openSearchPage() async {
-    final selectedLocation = await showSearch(
+  void _showAllLocations() {
+    showModalBottomSheet(
       context: context,
-      delegate: LocationSearchDelegate(context),
+      builder: (context) {
+        return ListView(
+          shrinkWrap: true,
+          children: _allLocations.map((doc) {
+            final data = doc.data() as Map<String, dynamic>;
+            return ListTile(
+              leading: Image.network('${data['logo']}',
+                width: 50,
+                height: 50,),
+              title: Text('${data['name']}'), // แสดงชื่อสถานที่
+              onTap: () {
+                // ปิด BottomSheet และทำอะไรกับสถานที่ที่เลือก (เช่น นำคุณไปยังสถานที่นั้น)
+                final LatLng position = LatLng(data['latitude'], data['longitude']);
+                _mapController!.animateCamera(CameraUpdate.newLatLng(position));
+                setState(() {
+                  _bottomSheetVisible = false;
+                });
 
-      //เหลือแก้ search fillter
+                // คืนค่า Navigator เพื่อปิด BottomSheet
+                Navigator.of(context).pop();
+              },
+            );
+          }).toList(),
+        );
+      },
     );
-
-    if (selectedLocation != null) {
-      _selectSearchResult(selectedLocation);
-    }
   }
+
+
 
 }
