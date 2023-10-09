@@ -2,6 +2,7 @@ import 'package:ev_charger/main.dart';
 import 'package:flutter/material.dart';
 
 Widget TextFromFile({
+  required TextEditingController controller,
   required String labelText,
   required String hintText,
   required IconData suffixIcon,
@@ -10,6 +11,7 @@ Widget TextFromFile({
       width: 370,
       height: 70,
       child: TextFormField(
+        controller: controller,
         cursorColor: Colors.purple,
         style: TextStyle(
             fontSize: 20,
@@ -48,10 +50,14 @@ Widget TextFromFile({
       ),
     );
 
-Widget TextFromFileEmail() => Container(
+Widget TextFromFileEmail({
+  required TextEditingController controller,
+}) =>
+    Container(
       width: 370,
       height: 70,
       child: TextFormField(
+        controller: controller,
         autofillHints: [AutofillHints.email],
         keyboardType: TextInputType.emailAddress,
         cursorColor: Colors.purple,
@@ -95,10 +101,14 @@ Widget TextFromFileEmail() => Container(
       ),
     );
 
-Widget TextFromFilePassword() => Container(
+Widget TextFromFilePassword({
+  required TextEditingController controller,
+}) =>
+    Container(
       width: 370,
       height: 70,
       child: TextFormField(
+        controller: controller,
         keyboardType: TextInputType.visiblePassword,
         cursorColor: Colors.purple,
         style: TextStyle(

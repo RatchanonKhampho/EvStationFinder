@@ -43,6 +43,9 @@ class SignInProvide extends ChangeNotifier {
   String? _email;
   String get email => _email!;
 
+  String? _phone;
+  String get phone => _phone!;
+
   SignInProvide() {
     checkSignInUser();
   }
@@ -248,6 +251,47 @@ class SignInProvide extends ChangeNotifier {
       _hasError = true;
       notifyListeners();
     }
+  }
+
+  // sigin with Emailpassword
+  Future signUpWithEmailAndPassword(String email, String password) async {
+    try {
+      UserCredential credential = await _firebaseAuth
+          .createUserWithEmailAndPassword(email: email, password: password);
+
+      final User userDetails = (await _firebaseAuth
+              .signInWithCredential(credential as AuthCredential))
+          .user!;
+      // now save all values
+      _name = name;
+      _email = email;
+      //_imageUrl = userDetails.photoURL;
+      _provider = "Email";
+      _uid = userDetails.uid;
+      _phone = userDetails.phoneNumber;
+      notifyListeners();
+    } on FirebaseAuthException catch (e) {
+      switch (e.code) {
+        case "account-exists-with-different-credential":
+          _errorCode =
+              "You already have an account with us. Use correct provider";
+          _hasError = true;
+          notifyListeners();
+          break;
+
+        case "null":
+          _errorCode = "Some unexpected error while trying to sign in";
+          _hasError = true;
+          notifyListeners();
+          break;
+        default:
+          _errorCode = e.toString();
+          _hasError = true;
+          notifyListeners();
+      }
+    }
+    _hasError = true;
+    notifyListeners();
   }
 
   // Sigin with phone

@@ -2,8 +2,6 @@ import 'package:ev_charger/main.dart';
 import 'package:ev_charger/screens/register.dart';
 import 'package:flutter/material.dart';
 
-import '../widgetd/text_fild.dart';
-
 class CreatePassword extends StatefulWidget {
   const CreatePassword({super.key});
 
@@ -73,7 +71,7 @@ class _CreatePasswordState extends State<CreatePassword> {
                           ],
                         ),
                       ),
-                      Container(
+                      /*Container(
                         child: Column(
                           children: [
                             TextFromFile(
@@ -88,7 +86,7 @@ class _CreatePasswordState extends State<CreatePassword> {
                             ),
                           ],
                         ),
-                      ),
+                      ),*/
                       Container(
                         child: Column(
                           children: [

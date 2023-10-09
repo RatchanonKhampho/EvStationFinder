@@ -2,8 +2,6 @@ import 'package:ev_charger/main.dart';
 import 'package:ev_charger/screens/register.dart';
 import 'package:flutter/material.dart';
 
-import '../widgetd/text_fild.dart';
-
 class CompleteProfile extends StatefulWidget {
   const CompleteProfile({super.key});
 
@@ -74,11 +72,12 @@ class _CompleteProfileState extends State<CompleteProfile> {
                       ],
                     ),
                   ),
-                  Container(
+                  /* Container(
                     child: Column(
                       children: [
                         Container(
                           child: TextFromFile(
+                            
                             labelText: 'Email',
                             hintText: ' Enter your email',
                             suffixIcon: Icons.email,
@@ -101,7 +100,7 @@ class _CompleteProfileState extends State<CompleteProfile> {
                         ),
                       ],
                     ),
-                  ),
+                  ),*/
                   Container(
                     child: Column(
                       children: [

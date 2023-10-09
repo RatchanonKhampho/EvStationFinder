@@ -88,9 +88,10 @@ class _sign_inState extends State<sign_in> {
                         Container(
                           child: Column(
                             children: [
-                              TextFromFileEmail(),
+                              TextFromFileEmail(controller: _emaiController),
                               SizedBox(height: 20),
-                              TextFromFilePassword()
+                              TextFromFilePassword(
+                                  controller: _passwordController)
                             ],
                           ),
                         ),
