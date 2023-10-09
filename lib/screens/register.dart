@@ -160,7 +160,6 @@ class _registerState extends State<register> {
           _passwordController.dispose;
           _phoneController.dispose;
           _userNameController.dispose;
-          handleAfterSignIn();
         } else {
           // checking whether user exists or not(ตรวจสอบว่ามีผู้ใช้อยู่หรือไม่)
           sp.checkExistingUser().then((value) async {
@@ -169,7 +168,8 @@ class _registerState extends State<register> {
               await sp.getUserDataFromFirestore(sp.uid).then((value) => sp
                   .saveDataToSharedPreferences()
                   .then((value) => sp.setSignIn().then((value) {
-                        controller();
+                        email;
+                        password;
                         handleAfterSignIn();
                       })));
             } else {
@@ -177,7 +177,8 @@ class _registerState extends State<register> {
               sp.saveDataToFirestore().then((value) => sp
                   .saveDataToSharedPreferences()
                   .then((value) => sp.setSignIn().then((value) {
-                        controller();
+                        email;
+                        password;
                         handleAfterSignIn();
                       })));
             }
