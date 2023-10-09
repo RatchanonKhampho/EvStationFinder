@@ -98,7 +98,7 @@ class SignInProvide extends ChangeNotifier {
     await s.setString('email', _email!);
     await s.setString('uid', _uid!);
     await s.setString('image_url', _imageUrl!);
-    await s.setString('provider', _provider!);
+    await s.setString('provider', _provider!); // signup error message image url
     notifyListeners();
   }
 
@@ -254,21 +254,18 @@ class SignInProvide extends ChangeNotifier {
   }
 
   // sigin with Emailpassword
-  Future signUpWithEmailAndPassword(String email, String password) async {
+  Future signUpWithEmailAndPassword(
+      String email, String password, String name, String phone) async {
     try {
-      UserCredential credential = await _firebaseAuth
+      UserCredential userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
 
-      final User userDetails = (await _firebaseAuth
-              .signInWithCredential(credential as AuthCredential))
-          .user!;
-      // now save all values
       _name = name;
       _email = email;
       //_imageUrl = userDetails.photoURL;
       _provider = "Email";
-      _uid = userDetails.uid;
-      _phone = userDetails.phoneNumber;
+      _uid = userCredential.user?.uid;
+      _phone = phone;
       notifyListeners();
     } on FirebaseAuthException catch (e) {
       switch (e.code) {
@@ -290,7 +287,6 @@ class SignInProvide extends ChangeNotifier {
           notifyListeners();
       }
     }
-    _hasError = true;
     notifyListeners();
   }
 

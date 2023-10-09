@@ -116,12 +116,14 @@ class _registerState extends State<register> {
       ),
     );
   }
-void clear(){
-  _emailController.clear();
-  _passwordController.clear();
-  _phoneController.clear();
-  _userNameController.clear();
-}
+
+  void clear() {
+    _emailController.clear();
+    _passwordController.clear();
+    _phoneController.clear();
+    _userNameController.clear();
+  }
+
   Future handleSignUp() async {
     final email = _emailController.text;
     final password = _passwordController.text;
@@ -135,9 +137,11 @@ void clear(){
     if (ip.hasInternet == false) {
       openSnackbar(context, "Check your Internet connection ", Colors.red);
     } else {
-      await sp.signUpWithEmailAndPassword(email, password,).then((value) {
+      await sp
+          .signUpWithEmailAndPassword(email, password, name, phone)
+          .then((value) {
         if (sp.hasError == true) {
-          openSnackbar(context, "Error", Colors.red);
+          openSnackbar(context, "snackMessage", Colors.red);
           clear();
         } else {
           // checking whether user exists or not(ตรวจสอบว่ามีผู้ใช้อยู่หรือไม่)
@@ -147,8 +151,6 @@ void clear(){
               await sp.getUserDataFromFirestore(sp.uid).then((value) => sp
                   .saveDataToSharedPreferences()
                   .then((value) => sp.setSignIn().then((value) {
-
-
                         handleAfterSignIn();
                       })));
             } else {
@@ -156,11 +158,8 @@ void clear(){
               sp.saveDataToFirestore().then((value) => sp
                   .saveDataToSharedPreferences()
                   .then((value) => sp.setSignIn().then((value) {
-                handleAfterSignIn();
-                      },
-              ),
-              ),
-              );
+                        handleAfterSignIn();
+                      })));
             }
           });
         }
