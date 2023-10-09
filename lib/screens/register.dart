@@ -1,5 +1,6 @@
 import 'package:ev_charger/main.dart';
 import 'package:ev_charger/screens/home_screens.dart';
+import 'package:ev_charger/widgetd/image.dart';
 import 'package:ev_charger/widgetd/reusable_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -113,62 +114,6 @@ class _registerState extends State<register> {
                       ],
                     ),
                   ),
-                  /*Container(
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SignInButton.mini(
-                                buttonType: ButtonType.apple,
-                                buttonSize: ButtonSize.large,
-                                btnColor: text3,
-                                onPressed: () {
-                                  print('click');
-                                }),
-                            SignInButton.mini(
-                              buttonType: ButtonType.google,
-                              elevation: 4,
-                              buttonSize: ButtonSize.large,
-                              btnColor: text3,
-                              onPressed: () => AuthService().signInWithGoogle(),
-                            ),
-                            SignInButton.mini(
-                                buttonType: ButtonType.facebook,
-                                buttonSize: ButtonSize.large,
-                                btnColor: text3,
-                                onPressed: () {
-                                  print('click');
-                                }),
-                          ],
-                        ),
-                        SizedBox(height: 20),
-                        Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Text(
-                                "Don't have an account? ",
-                                style: TextStyle(
-                                  fontSize: 16,
-                                ),
-                              ),
-                              TextButton(
-                                  onPressed: () => Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const register())),
-                                  child: const Text(
-                                    'Sign up',
-                                    style: TextStyle(
-                                        fontSize: 16, color: backgroundblue),
-                                  ))
-                            ])
-                      ],
-                    ),
-                  ),*/
                   Container(),
                   Container(),
                 ],

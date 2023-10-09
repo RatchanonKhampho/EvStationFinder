@@ -59,6 +59,98 @@ class SignInProvide extends ChangeNotifier {
     notifyListeners();
   }
 
+  // ENTRY FOR CLOUDFIRESTORE(เข้าสู่ Cloud Firestore)
+  Future getUserDataFromFirestore(uid) async {
+    await FirebaseFirestore.instance
+        .collection("users")
+        .doc(uid)
+        .get()
+        .then((DocumentSnapshot snapshot) => {
+              _uid = snapshot['uid'],
+              _name = snapshot['name'],
+              _email = snapshot['email'],
+              _imageUrl = snapshot['image_url'],
+              _provider = snapshot['provider'],
+            });
+  }
+
+// saveDataToFirestore(บันทึกข้อมูลไปยัง Firestore)
+  Future saveDataToFirestore() async {
+    final DocumentReference r =
+        FirebaseFirestore.instance.collection("users").doc(uid);
+    await r.set({
+      "name": _name,
+      "email": _email,
+      "uid": _uid,
+      "image_url": _imageUrl,
+      "provider": _provider,
+    });
+    notifyListeners();
+  }
+
+  //(บันทึกข้อมูลไปยังการตั้งค่าที่ใช้ร่วมกัน)
+  Future saveDataToSharedPreferences() async {
+    final SharedPreferences s = await SharedPreferences.getInstance();
+    await s.setString('name', _name!);
+    await s.setString('email', _email!);
+    await s.setString('uid', _uid!);
+    await s.setString('image_url', _imageUrl!);
+    await s.setString('provider', _provider!);
+    notifyListeners();
+  }
+
+  //(รับข้อมูลจากการตั้งค่าที่ใช้ร่วมกัน)
+  Future getDataFromSharedPreferences() async {
+    final SharedPreferences s = await SharedPreferences.getInstance();
+    _name = s.getString('name');
+    _email = s.getString('email');
+    _imageUrl = s.getString('image_url');
+    _uid = s.getString('uid');
+    _provider = s.getString('provider');
+    notifyListeners();
+  }
+
+  // chackUser Exists or not in cloundfirestore(chackUser มีอยู่แล้วหรือไม่อยู่ใน cloundfirestore)
+  Future<bool> checkUserExists() async {
+    DocumentSnapshot snap =
+        await FirebaseFirestore.instance.collection('users').doc(_uid).get();
+    if (snap.exists) {
+      print("EXISTING USER");
+      return true;
+    } else {
+      print("NEW USER");
+      return false;
+    }
+  }
+
+  // signout the user
+  Future userSignout() async {
+    await _firebaseAuth.signOut();
+    await googleSignIn.signOut();
+    _isSignedIn = false;
+    notifyListeners();
+    // claer all Storage information (ล้างข้อมูล)
+    clearStoreData();
+  }
+
+  Future clearStoreData() async {
+    final SharedPreferences s = await SharedPreferences.getInstance();
+    s.clear();
+  }
+
+//(ตรวจสอบผู้ใช้ที่มีอยู่)
+  Future<bool> checkExistingUser() async {
+    DocumentSnapshot snapshot =
+        await _firebaseFirestore.collection("user").doc(_uid).get();
+    if (snapshot.exists) {
+      print("USER EXUSTS");
+      return true;
+    } else {
+      print("NEW USER");
+      return false;
+    }
+  }
+
   // sign in with facebook
   Future signInWithFacebook() async {
     final LoginResult result = await facebookAuth.login();
@@ -158,98 +250,6 @@ class SignInProvide extends ChangeNotifier {
     }
   }
 
-  // ENTRY FOR CLOUDFIRESTORE(เข้าสู่ Cloud Firestore)
-  Future getUserDataFromFirestore(uid) async {
-    await FirebaseFirestore.instance
-        .collection("users")
-        .doc(uid)
-        .get()
-        .then((DocumentSnapshot snapshot) => {
-              _uid = snapshot['uid'],
-              _name = snapshot['name'],
-              _email = snapshot['email'],
-              _imageUrl = snapshot['image_url'],
-              _provider = snapshot['provider'],
-            });
-  }
-
-// saveDataToFirestore(บันทึกข้อมูลไปยัง Firestore)
-  Future saveDataToFirestore() async {
-    final DocumentReference r =
-        FirebaseFirestore.instance.collection("users").doc(uid);
-    await r.set({
-      "name": _name,
-      "email": _email,
-      "uid": _uid,
-      "image_url": _imageUrl,
-      "provider": _provider,
-    });
-    notifyListeners();
-  }
-
-  //(บันทึกข้อมูลไปยังการตั้งค่าที่ใช้ร่วมกัน)
-  Future saveDataToSharedPreferences() async {
-    final SharedPreferences s = await SharedPreferences.getInstance();
-    await s.setString('name', _name!);
-    await s.setString('email', _email!);
-    await s.setString('uid', _uid!);
-    await s.setString('image_url', _imageUrl!);
-    await s.setString('provider', _provider!);
-    notifyListeners();
-  }
-
-  //(รับข้อมูลจากการตั้งค่าที่ใช้ร่วมกัน)
-  Future getDataFromSharedPreferences() async {
-    final SharedPreferences s = await SharedPreferences.getInstance();
-    _name = s.getString('name');
-    _email = s.getString('email');
-    _imageUrl = s.getString('image_url');
-    _uid = s.getString('uid');
-    _provider = s.getString('provider');
-    notifyListeners();
-  }
-
-  // chackUser Exists or not in cloundfirestore(chackUser มีอยู่แล้วหรือไม่อยู่ใน cloundfirestore)
-  Future<bool> checkUserExists() async {
-    DocumentSnapshot snap =
-        await FirebaseFirestore.instance.collection('users').doc(_uid).get();
-    if (snap.exists) {
-      print("EXISTING USER");
-      return true;
-    } else {
-      print("NEW USER");
-      return false;
-    }
-  }
-
-  // signout the user
-  Future userSignout() async {
-    await _firebaseAuth.signOut();
-    await googleSignIn.signOut();
-    _isSignedIn = false;
-    notifyListeners();
-    // claer all Storage information (ล้างข้อมูล)
-    clearStoreData();
-  }
-
-  Future clearStoreData() async {
-    final SharedPreferences s = await SharedPreferences.getInstance();
-    s.clear();
-  }
-
-//(ตรวจสอบผู้ใช้ที่มีอยู่)
-  Future<bool> checkExistingUser() async {
-    DocumentSnapshot snapshot =
-        await _firebaseFirestore.collection("user").doc(_uid).get();
-    if (snapshot.exists) {
-      print("USER EXUSTS");
-      return true;
-    } else {
-      print("NEW USER");
-      return false;
-    }
-  }
-
   // Sigin with phone
   void signInWithPhone(BuildContext context, String phoneNumber) async {
     try {
@@ -305,9 +305,4 @@ class SignInProvide extends ChangeNotifier {
       notifyListeners();
     }
   }
-
-// Database opertaions
-
-
-
 }

@@ -4,7 +4,9 @@ import 'package:ev_charger/provider/internet_provider.dart';
 import 'package:ev_charger/provider/sign_in_provider.dart';
 import 'package:ev_charger/screens/register.dart';
 import 'package:ev_charger/utils/snack_bar.dart';
+import 'package:ev_charger/widgetd/image.dart';
 import 'package:ev_charger/widgetd/reusable_widget.dart';
+import 'package:ev_charger/widgetd/text_fild.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -53,7 +55,7 @@ class _sign_inState extends State<sign_in> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Container(child: logoWidget('images/login.png')),
+                  Container(child: logoWidget('images/logo_app.png')),
                   Container(
                     child: const Column(
                       children: [
@@ -86,14 +88,9 @@ class _sign_inState extends State<sign_in> {
                         Container(
                           child: Column(
                             children: [
-                              reusableTextField(
-                                  "Enter UserName",
-                                  Icons.person_outlined,
-                                  false,
-                                  _emaiController),
+                              TextFromFileEmail(),
                               SizedBox(height: 20),
-                              reusableTextField("Enter Password", Icons.lock,
-                                  false, _passwordController),
+                              TextFromFilePassword()
                             ],
                           ),
                         ),
@@ -139,7 +136,7 @@ class _sign_inState extends State<sign_in> {
                           elevation: 0,
                           borderRadius: 25,
                           color: Colors.red,
-                          child: Wrap(
+                          child: const Wrap(
                             children: [
                               Icon(
                                 FontAwesomeIcons.google,
@@ -171,8 +168,8 @@ class _sign_inState extends State<sign_in> {
                           elevation: 0,
                           borderRadius: 25,
                           color: Colors.blue,
-                          child: Wrap(
-                            children: const [
+                          child: const Wrap(
+                            children: [
                               Icon(
                                 FontAwesomeIcons.facebook,
                                 size: 20,
