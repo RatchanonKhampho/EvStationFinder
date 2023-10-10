@@ -4,6 +4,7 @@ import 'package:ev_charger/provider/internet_provider.dart';
 import 'package:ev_charger/provider/sign_in_provider.dart';
 import 'package:ev_charger/screens/register.dart';
 import 'package:ev_charger/utils/snack_bar.dart';
+import 'package:ev_charger/widgetd/custombutton.dart';
 import 'package:ev_charger/widgetd/image.dart';
 import 'package:ev_charger/widgetd/reusable_widget.dart';
 import 'package:ev_charger/widgetd/text_fild.dart';
@@ -32,7 +33,7 @@ class _sign_inState extends State<sign_in> {
       RoundedLoadingButtonController();
   final RoundedLoadingButtonController facebookController =
       RoundedLoadingButtonController();
-  final TextEditingController _emaiController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
   void _doSomething() async {
@@ -88,7 +89,7 @@ class _sign_inState extends State<sign_in> {
                         Container(
                           child: Column(
                             children: [
-                              TextFromFileEmail(controller: _emaiController),
+                              TextFromFileEmail(controller: _emailController),
                               SizedBox(height: 20),
                               TextFromFilePassword(
                                   controller: _passwordController)
@@ -107,10 +108,10 @@ class _sign_inState extends State<sign_in> {
                             ),
                           ),
                         ),
-                        firebaseUIButton(context, "Sign In", () {
+                       /* firebaseUIButton(context, "Sign In", () {
                           FirebaseAuth.instance
                               .signInWithEmailAndPassword(
-                                  email: _emaiController.text,
+                                  email: _emailController.text,
                                   password: _passwordController.text)
                               .then((value) {
                             Navigator.push(
@@ -118,9 +119,11 @@ class _sign_inState extends State<sign_in> {
                                 MaterialPageRoute(
                                     builder: (context) => HomeScreen()));
                           }).onError((error, stackTrace) {
-                            print("Error ${error.toString()}");
+                            //print("Error ${error.toString()}");
+                            openSnackbar(context, "Error Account not found ", Colors.red);
                           });
-                        }),
+                        }),*/
+                        CustomButton(text: 'Sign In ', onPressed: handleSignIn)
                       ],
                     ),
                   ),
@@ -262,7 +265,6 @@ class _sign_inState extends State<sign_in> {
       });
     }
   }
-
   // handle Facebook Signin
   Future handleFacebookAuth() async {
     final sp = context.read<SignInProvide>();
@@ -303,6 +305,40 @@ class _sign_inState extends State<sign_in> {
     }
   }
 
+
+  Future handleSignIn() async {
+    final email = _emailController.text;
+    final password = _passwordController.text;
+
+    final sp = context.read<SignInProvide>();
+    final ip = context.read<InternetProvider>();
+    await ip.checkInternetConnection();
+
+    if (ip.hasInternet == false) {
+      openSnackbar(context, "Check your Internet connection ", Colors.red);
+    } else {
+      await sp
+          .signInWithEmailAndPassword(email, password)
+          .then((value) {
+        if (sp.hasError == true ) {
+          openSnackbar(context, " Errors ", Colors.red);
+        } else {
+          // checking whether user exists or not(ตรวจสอบว่ามีผู้ใช้อยู่หรือไม่)
+          sp.checkExistingUser().then((value) async {
+            if (value == true) {
+              openSnackbar(context, "Succress your Account", Colors.green);
+              handleAfterSignIn();
+            } else {
+              _emailController.clear();
+              _passwordController.clear();
+              openSnackbar(context, "Error Account not found ", Colors.red);
+              //openSnackbar(context, '$hashCode', Colors.red);
+            }
+          });
+        }
+      });
+    }
+  }
   // handle after signin(จัดการหลังจากลงชื่อเข้าใช้)
   handleAfterSignIn() {
     Future.delayed(const Duration(milliseconds: 1000)).then((value) {

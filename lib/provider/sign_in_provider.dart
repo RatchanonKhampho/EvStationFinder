@@ -147,7 +147,7 @@ class SignInProvide extends ChangeNotifier {
 //(ตรวจสอบผู้ใช้ที่มีอยู่)
   Future<bool> checkExistingUser() async {
     DocumentSnapshot snapshot =
-        await _firebaseFirestore.collection("user").doc(_uid).get();
+        await _firebaseFirestore.collection("users").doc(_uid).get();
     if (snapshot.exists) {
       print("USER EXUSTS");
       return true;
@@ -257,7 +257,7 @@ class SignInProvide extends ChangeNotifier {
     }
   }
 
-  // sigin with Emailpassword
+  // sigup with Emailpassword
   Future signUpWithEmailAndPassword(
       String email, String password, String name, String phone) async {
     try {
@@ -275,6 +275,36 @@ class SignInProvide extends ChangeNotifier {
         case "account-exists-with-different-credential":
           _errorCode =
               "You already have an account with us. Use correct provider";
+          _hasError = true;
+          notifyListeners();
+          break;
+
+        case "null":
+          _errorCode = "Some unexpected error while trying to sign in";
+          _hasError = true;
+          notifyListeners();
+          break;
+        default:
+          _errorCode = e.toString();
+          _hasError = true;
+          notifyListeners();
+      }
+    }
+    notifyListeners();
+  }
+
+  //SignIn with Emailpassword
+  Future signInWithEmailAndPassword(
+      String email, String password,) async {
+    try {
+      await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password);
+      notifyListeners();
+    } on FirebaseAuthException catch (e) {
+      switch (e.code) {
+        case "account-exists-with-different-credential":
+          _errorCode =
+          "You already have an account with us. Use correct provider";
           _hasError = true;
           notifyListeners();
           break;
@@ -321,12 +351,7 @@ class SignInProvide extends ChangeNotifier {
   }
 
 // verifyOtp
-  void verifyOtp({
-    required BuildContext context,
-    required String verificationId,
-    required String userOtp,
-    required Function onSuccess,
-  }) async {
+  void verifyOtp({required BuildContext context, required String verificationId, required String userOtp, required Function onSuccess,}) async {
     _isLoading = true;
     notifyListeners();
 
