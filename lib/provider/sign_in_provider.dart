@@ -97,7 +97,7 @@ class SignInProvide extends ChangeNotifier {
     await s.setString('name', _name!);
     await s.setString('email', _email!);
     await s.setString('uid', _uid!);
-    await s.setString('image_url', _imageUrl!);
+    //await s.setString('image_url', _imageUrl!);
     await s.setString('provider', _provider!); // signup error message image url
     notifyListeners();
   }
