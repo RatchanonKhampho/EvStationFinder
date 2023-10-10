@@ -6,7 +6,6 @@ import 'package:ev_charger/screens/register.dart';
 import 'package:ev_charger/utils/snack_bar.dart';
 import 'package:ev_charger/widgetd/custombutton.dart';
 import 'package:ev_charger/widgetd/image.dart';
-import 'package:ev_charger/widgetd/reusable_widget.dart';
 import 'package:ev_charger/widgetd/text_fild.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -108,7 +107,7 @@ class _sign_inState extends State<sign_in> {
                             ),
                           ),
                         ),
-                       /* firebaseUIButton(context, "Sign In", () {
+                        /* firebaseUIButton(context, "Sign In", () {
                           FirebaseAuth.instance
                               .signInWithEmailAndPassword(
                                   email: _emailController.text,
@@ -123,7 +122,20 @@ class _sign_inState extends State<sign_in> {
                             openSnackbar(context, "Error Account not found ", Colors.red);
                           });
                         }),*/
-                        CustomButton(text: 'Sign In ', onPressed: handleSignIn)
+                        CustomButton(text: 'Sign In ', onPressed:() {
+                          FirebaseAuth.instance
+                              .signInWithEmailAndPassword(
+                              email: _emailController.text,
+                              password: _passwordController.text)
+                              .then((value) {
+                            handleAfterSignIn();
+                          }).onError((error, stackTrace) {
+                            //print("Error ${error.toString()}");
+                            _emailController.clear();
+                            _passwordController.clear();
+                            openSnackbar(context, "Error Account not found ", Colors.red);
+                          });
+                        }),
                       ],
                     ),
                   ),
@@ -265,6 +277,7 @@ class _sign_inState extends State<sign_in> {
       });
     }
   }
+
   // handle Facebook Signin
   Future handleFacebookAuth() async {
     final sp = context.read<SignInProvide>();
@@ -305,8 +318,7 @@ class _sign_inState extends State<sign_in> {
     }
   }
 
-
-  Future handleSignIn() async {
+ /* Future handleSignIn() async {
     final email = _emailController.text;
     final password = _passwordController.text;
 
@@ -317,14 +329,14 @@ class _sign_inState extends State<sign_in> {
     if (ip.hasInternet == false) {
       openSnackbar(context, "Check your Internet connection ", Colors.red);
     } else {
-      await sp
-          .signInWithEmailAndPassword(email, password)
-          .then((value) {
-        if (sp.hasError == true ) {
-          openSnackbar(context, " Errors ", Colors.red);
+      await sp.signInWithEmailAndPassword(email, password).then((value) {
+        if (sp.hasError == true) {
+          openSnackbar(context, sp.errorCode.toString(), Colors.red);
+          _emailController.clear();
+          _passwordController.clear();
         } else {
           // checking whether user exists or not(ตรวจสอบว่ามีผู้ใช้อยู่หรือไม่)
-          sp.checkExistingUser().then((value) async {
+          sp.checkUserExists().then((value) async {
             if (value == true) {
               openSnackbar(context, "Succress your Account", Colors.green);
               handleAfterSignIn();
@@ -338,7 +350,8 @@ class _sign_inState extends State<sign_in> {
         }
       });
     }
-  }
+  }*/
+
   // handle after signin(จัดการหลังจากลงชื่อเข้าใช้)
   handleAfterSignIn() {
     Future.delayed(const Duration(milliseconds: 1000)).then((value) {

@@ -37,7 +37,7 @@ class SignInProvide extends ChangeNotifier {
   String? _name;
   String? get name => _name;
 
- /* String? _imageUrl;
+  /* String? _imageUrl;
   String? get imageUrl => _imageUrl;*/
 
   String? _email;
@@ -74,7 +74,6 @@ class SignInProvide extends ChangeNotifier {
               _email = snapshot['email'],
               //_imageUrl = snapshot['image_url'],
               _provider = snapshot['provider'],
-
             });
   }
 
@@ -88,7 +87,6 @@ class SignInProvide extends ChangeNotifier {
       "uid": _uid,
       //"image_url": _imageUrl,
       "provider": _provider,
-
     });
     notifyListeners();
   }
@@ -116,7 +114,7 @@ class SignInProvide extends ChangeNotifier {
     notifyListeners();
   }
 
-  // chackUser Exists or not in cloundfirestore(chackUser มีอยู่แล้วหรือไม่อยู่ใน cloundfirestore)
+  //chackUser Exists or not in cloundfirestore(chackUser มีอยู่แล้วหรือไม่อยู่ใน cloundfirestore)
   Future<bool> checkUserExists() async {
     DocumentSnapshot snap =
         await FirebaseFirestore.instance.collection('users').doc(_uid).get();
@@ -128,7 +126,18 @@ class SignInProvide extends ChangeNotifier {
       return false;
     }
   }
-
+//(ตรวจสอบผู้ใช้ที่มีอยู่)
+  Future<bool> checkExistingUser() async {
+    DocumentSnapshot snapshot =
+    await _firebaseFirestore.collection("user").doc(_uid).get();
+    if (snapshot.exists) {
+      print("USER EXUSTS");
+      return true;
+    } else {
+      print("NEW USER");
+      return false;
+    }
+  }
   // signout the user
   Future userSignout() async {
     await _firebaseAuth.signOut();
@@ -144,18 +153,7 @@ class SignInProvide extends ChangeNotifier {
     s.clear();
   }
 
-//(ตรวจสอบผู้ใช้ที่มีอยู่)
-  Future<bool> checkExistingUser() async {
-    DocumentSnapshot snapshot =
-        await _firebaseFirestore.collection("users").doc(_uid).get();
-    if (snapshot.exists) {
-      print("USER EXUSTS");
-      return true;
-    } else {
-      print("NEW USER");
-      return false;
-    }
-  }
+
 
   // sign in with facebook
   Future signInWithFacebook() async {
@@ -257,7 +255,7 @@ class SignInProvide extends ChangeNotifier {
     }
   }
 
-  // sigup with Emailpassword
+  // SignUp with Emailpassword
   Future signUpWithEmailAndPassword(
       String email, String password, String name, String phone) async {
     try {
@@ -294,8 +292,10 @@ class SignInProvide extends ChangeNotifier {
   }
 
   //SignIn with Emailpassword
-  Future signInWithEmailAndPassword(
-      String email, String password,) async {
+ /* Future signInWithEmailAndPassword(
+    String email,
+    String password,
+  ) async {
     try {
       await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
@@ -304,7 +304,7 @@ class SignInProvide extends ChangeNotifier {
       switch (e.code) {
         case "account-exists-with-different-credential":
           _errorCode =
-          "You already have an account with us. Use correct provider";
+              "You already have an account with us. Use correct provider";
           _hasError = true;
           notifyListeners();
           break;
@@ -321,7 +321,7 @@ class SignInProvide extends ChangeNotifier {
       }
     }
     notifyListeners();
-  }
+  }*/
 
   // Sigin with phone
   void signInWithPhone(BuildContext context, String phoneNumber) async {
@@ -351,7 +351,12 @@ class SignInProvide extends ChangeNotifier {
   }
 
 // verifyOtp
-  void verifyOtp({required BuildContext context, required String verificationId, required String userOtp, required Function onSuccess,}) async {
+  void verifyOtp({
+    required BuildContext context,
+    required String verificationId,
+    required String userOtp,
+    required Function onSuccess,
+  }) async {
     _isLoading = true;
     notifyListeners();
 
