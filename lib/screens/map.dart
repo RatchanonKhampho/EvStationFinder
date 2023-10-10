@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 
 class map extends StatefulWidget {
@@ -132,7 +133,16 @@ class _mapState extends State<map> {
                     title: Text('เวลา: ${data['time']}'),
                   ),
                 ),
-                // เพิ่มข้อมูลอื่น ๆ ตามที่ต้องการ
+                Center(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      // แทน latitude และ longitude ด้วยค่าที่คุณต้องการ
+                      _launchGoogleMaps(data['latitude'], data['longitude']);
+                    },
+                    child: Text('เปิด Google Maps'),
+                  ),
+                )
+
               ],
             );
           },
@@ -157,6 +167,7 @@ class _mapState extends State<map> {
             icon: _filterActive ? Icon(Icons.filter_alt) : Icon(Icons.filter_list),
             onPressed: _toggleFilter,
           ),
+
         ],
     ),
       body: SafeArea(
@@ -287,6 +298,17 @@ class _mapState extends State<map> {
       },
     );
   }
+  void _launchGoogleMaps(double latitude, double longitude) async {
+    final String googleMapsUrl =
+        'https://www.google.com/maps/search/?api=1&query=$latitude,$longitude';
+
+    if (await canLaunch(googleMapsUrl)) {
+      await launch(googleMapsUrl);
+    } else {
+      throw 'ไม่สามารถเปิด Google Maps ได้: $googleMapsUrl';
+    }
+  }
+
 
 
 
