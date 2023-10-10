@@ -37,8 +37,8 @@ class SignInProvide extends ChangeNotifier {
   String? _name;
   String? get name => _name;
 
-  String? _imageUrl;
-  String? get imageUrl => _imageUrl;
+ /* String? _imageUrl;
+  String? get imageUrl => _imageUrl;*/
 
   String? _email;
   String get email => _email!;
@@ -72,8 +72,9 @@ class SignInProvide extends ChangeNotifier {
               _uid = snapshot['uid'],
               _name = snapshot['name'],
               _email = snapshot['email'],
-              _imageUrl = snapshot['image_url'],
+              //_imageUrl = snapshot['image_url'],
               _provider = snapshot['provider'],
+
             });
   }
 
@@ -85,8 +86,9 @@ class SignInProvide extends ChangeNotifier {
       "name": _name,
       "email": _email,
       "uid": _uid,
-      "image_url": _imageUrl,
+      //"image_url": _imageUrl,
       "provider": _provider,
+
     });
     notifyListeners();
   }
@@ -98,7 +100,7 @@ class SignInProvide extends ChangeNotifier {
     await s.setString('email', _email!);
     await s.setString('uid', _uid!);
     //await s.setString('image_url', _imageUrl!);
-    await s.setString('provider', _provider!); // signup error message image url
+    await s.setString('provider', _provider!);
     notifyListeners();
   }
 
@@ -107,9 +109,10 @@ class SignInProvide extends ChangeNotifier {
     final SharedPreferences s = await SharedPreferences.getInstance();
     _name = s.getString('name');
     _email = s.getString('email');
-    _imageUrl = s.getString('image_url');
+    //_imageUrl = s.getString('image_url');
     _uid = s.getString('uid');
     _provider = s.getString('provider');
+
     notifyListeners();
   }
 
@@ -171,7 +174,8 @@ class SignInProvide extends ChangeNotifier {
         // saving the values
         _name = profile['name'];
         _email = profile['email'];
-        _imageUrl = profile['picture']['data']['url'];
+
+        //_imageUrl = profile['picture']['data']['url'];
         _uid = profile['id'];
         _hasError = false;
         _provider = "FACEBOOK";
@@ -223,7 +227,7 @@ class SignInProvide extends ChangeNotifier {
         // now save all values
         _name = userDetails.displayName;
         _email = userDetails.email;
-        _imageUrl = userDetails.photoURL;
+        //_imageUrl = userDetails.photoURL;
         _provider = "Google";
         _uid = userDetails.uid;
         notifyListeners();
@@ -259,7 +263,6 @@ class SignInProvide extends ChangeNotifier {
     try {
       UserCredential userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
-
       _name = name;
       _email = email;
       //_imageUrl = userDetails.photoURL;

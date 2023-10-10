@@ -141,7 +141,7 @@ class _registerState extends State<register> {
           .signUpWithEmailAndPassword(email, password, name, phone)
           .then((value) {
         if (sp.hasError == true) {
-          openSnackbar(context, "snackMessage", Colors.red);
+          openSnackbar(context, "Error ", Colors.red);
           clear();
         } else {
           // checking whether user exists or not(ตรวจสอบว่ามีผู้ใช้อยู่หรือไม่)
