@@ -155,21 +155,6 @@ class _mapState extends State<map> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        actions: [
-          IconButton(
-            icon: Icon(Icons.location_on),
-            onPressed: () {
-              _showAllLocations(); // เรียกใช้ _openShowAllLocations
-            },
-          ),
-          IconButton(
-            icon: _filterActive ? Icon(Icons.filter_alt) : Icon(Icons.filter_list),
-            onPressed: _toggleFilter,
-          ),
-
-        ],
-    ),
       body: SafeArea(
         child: Stack(children: [
           GoogleMap(
@@ -191,9 +176,15 @@ class _mapState extends State<map> {
               right: 0,
               child: _buildSearchResults(),
             ),
-
         ]),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          _showAllLocations();
+        },
+        child: Icon(Icons.location_on),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 
