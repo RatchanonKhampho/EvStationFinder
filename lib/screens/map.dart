@@ -133,6 +133,16 @@ class _mapState extends State<map> {
                     title: Text('เวลา: ${data['time']}'),
                   ),
                 ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 30.0),
+                  child: ListTile(
+                    leading: Image.network (data['type images'],
+                    width: 20,
+                    height: 20,
+                    ),
+                    title: Text('Type: ${data['Type']}'),
+                  ),
+                ),
                 Center(
                   child: ElevatedButton(
                     onPressed: () {
@@ -291,7 +301,7 @@ class _mapState extends State<map> {
   }
   void _launchGoogleMaps(double latitude, double longitude) async {
     final String googleMapsUrl =
-        'https://www.google.com/maps/search/?api=1&query=$latitude,$longitude';
+        'http://maps.google.com/maps?daddr=$latitude,$longitude&mode=driving';
 
     if (await canLaunch(googleMapsUrl)) {
       await launch(googleMapsUrl);
