@@ -16,8 +16,14 @@ class profile extends StatefulWidget {
 
 class _profileState extends State<profile> {
   Future getData() async {
-    final sp = context.read()<SignInProvide>();
+    final sp = context.read<SignInProvide>();
     sp.getDataFromSharedPreferences();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getData();
   }
 
   @override
@@ -74,20 +80,41 @@ class _profileState extends State<profile> {
                       style: TextStyle(fontSize: 25),
                     ),
                   ),
-                  Name(),
-                  Email(),
-                  Moblie(),
-                  Address(),
-                  Text(
-                    'Security',
-                    style: TextStyle(fontSize: 25),
+                  SizedBox(height: 20),
+                  textfilewidget(
+                    leading: Icons.person_2_outlined,
+                    title: 'Name',
+                    trailing: '${sp.name}',
                   ),
-                  password(),
-                  Text(
+                  SizedBox(height: 20),
+                  textfilewidget(
+                      leading: Icons.email_outlined,
+                      trailing: '${sp.email}',
+                      title: 'Email'),
+                  SizedBox(height: 20),
+                  textfilewidget(
+                      leading: Icons.phone_android_outlined,
+                      title: 'Mobile Phone',
+                      trailing: '${sp.provider}'),
+                  SizedBox(height: 20),
+
+                  Align(
+                    alignment: Alignment.bottomLeft,
+                    child: Text(
+                      'Security',
+                      style: TextStyle(fontSize: 25),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  change(
+                    leading: Icons.lock,
+                    title: "Change Password",
+                  )
+                  /*Text(
                     'Payment',
                     style: TextStyle(fontSize: 25),
-                  ),
-                  MyWallet()
+                  ),*/
+                  // MyWallet()
                 ],
               ),
             )
@@ -97,52 +124,33 @@ class _profileState extends State<profile> {
     );
   }
 
-  Widget Name() => ListTile(
+  Widget textfilewidget({
+    required IconData leading,
+    required String title,
+    required String trailing,
+  }) =>
+      ListTile(
         shape: RoundedRectangleBorder(
             side: BorderSide(width: 2, color: Colors.lightBlue),
             borderRadius: BorderRadius.circular(20)),
-        leading: Icon(Icons.person_2_rounded),
-        title: Text('Name'),
-        trailing: Text('chayut yuttapornpong'),
+        leading: Icon(leading),
+        title: Text(title),
+        trailing: Text(trailing),
       );
-  Widget Email() => ListTile(
+
+  Widget change({
+    required IconData leading,
+    required String title,
+  }) =>
+      ListTile(
         shape: RoundedRectangleBorder(
             side: BorderSide(width: 2, color: Colors.lightBlue),
             borderRadius: BorderRadius.circular(20)),
-        leading: Icon(Icons.email_rounded),
-        title: Text('Email'),
-        trailing: Text('xxxxxxx'),
-      );
-  Widget Moblie() => ListTile(
-        shape: RoundedRectangleBorder(
-            side: BorderSide(width: 2, color: Colors.lightBlue),
-            borderRadius: BorderRadius.circular(20)),
-        leading: Icon(Icons.phone_android),
-        title: Text('Mobile phone'),
-        trailing: Text('xxxxxxx'),
-      );
-  Widget Address() => ListTile(
-        shape: RoundedRectangleBorder(
-            side: BorderSide(width: 2, color: Colors.lightBlue),
-            borderRadius: BorderRadius.circular(20)),
-        leading: Icon(Icons.phone_android),
-        title: Text('Address'),
-        trailing: Text('xxxxxxx'),
-      );
-  Widget password() => ListTile(
-        shape: RoundedRectangleBorder(
-            side: BorderSide(width: 2, color: Colors.lightBlue),
-            borderRadius: BorderRadius.circular(20)),
-        leading: Icon(Icons.lock_outline_rounded),
-        title: Text('Change Password'),
-        trailing: Icon(Icons.arrow_forward_ios_outlined),
-      );
-  Widget MyWallet() => ListTile(
-        shape: RoundedRectangleBorder(
-            side: BorderSide(width: 2, color: Colors.lightBlue),
-            borderRadius: BorderRadius.circular(20)),
-        leading: Icon(Icons.card_membership_rounded),
-        title: Text('Change Password'),
-        trailing: Icon(Icons.arrow_forward_ios_outlined),
+        leading: Icon(leading),
+        title: Text(title),
+        trailing: IconButton(
+          icon: Icon(Icons.arrow_forward_ios_outlined),
+          onPressed: () => null,
+        ),
       );
 }

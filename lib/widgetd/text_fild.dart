@@ -150,3 +150,36 @@ Widget TextFromFilePassword({
         },*/
       ),
     );
+
+
+Widget change(
+    {
+      required IconData leading,
+      required String title,
+    }
+    ) => ListTile(
+  shape: RoundedRectangleBorder(
+      side: BorderSide(width: 2, color: Colors.lightBlue),
+      borderRadius: BorderRadius.circular(20)),
+  leading: Icon(leading),
+  title: Text('title'),
+  trailing: IconButton(
+    icon:Icon(Icons.lock) ,
+    onPressed: () =>  null,
+  ),
+);
+Widget textfilewidget(
+    {
+      required IconData leading,
+      required String title,
+      required String trailing,
+
+    }
+    ) => ListTile(
+  shape: RoundedRectangleBorder(
+      side: BorderSide(width: 2, color: Colors.lightBlue),
+      borderRadius: BorderRadius.circular(20)),
+  leading: Icon(leading),
+  title: Text('title'),
+  trailing: Text('trailing'),
+);

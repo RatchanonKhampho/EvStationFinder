@@ -107,21 +107,6 @@ class _sign_inState extends State<sign_in> {
                             ),
                           ),
                         ),
-                        /* firebaseUIButton(context, "Sign In", () {
-                          FirebaseAuth.instance
-                              .signInWithEmailAndPassword(
-                                  email: _emailController.text,
-                                  password: _passwordController.text)
-                              .then((value) {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => HomeScreen()));
-                          }).onError((error, stackTrace) {
-                            //print("Error ${error.toString()}");
-                            openSnackbar(context, "Error Account not found ", Colors.red);
-                          });
-                        }),*/
                         CustomButton(text: 'Sign In ', onPressed:() {
                           FirebaseAuth.instance
                               .signInWithEmailAndPassword(
@@ -277,7 +262,6 @@ class _sign_inState extends State<sign_in> {
       });
     }
   }
-
   // handle Facebook Signin
   Future handleFacebookAuth() async {
     final sp = context.read<SignInProvide>();

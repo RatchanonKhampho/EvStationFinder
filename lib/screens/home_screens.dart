@@ -25,7 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.w600);
 
-  static const List<Widget> _widgetOptions = <Widget>[
+  static  List<Widget> _widgetOptions = <Widget>[
     map(),
     Text(
       'Likes',
@@ -35,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
       'Search',
       style: optionStyle,
     ),
-    profile()
+    profile(),
   ];
 
   @override
