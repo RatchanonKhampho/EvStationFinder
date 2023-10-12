@@ -4,7 +4,9 @@ import 'package:ev_charger/provider/internet_provider.dart';
 import 'package:ev_charger/provider/sign_in_provider.dart';
 import 'package:ev_charger/screens/register.dart';
 import 'package:ev_charger/utils/snack_bar.dart';
-import 'package:ev_charger/widgetd/reusable_widget.dart';
+import 'package:ev_charger/widgetd/custombutton.dart';
+import 'package:ev_charger/widgetd/image.dart';
+import 'package:ev_charger/widgetd/text_fild.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -30,7 +32,7 @@ class _sign_inState extends State<sign_in> {
       RoundedLoadingButtonController();
   final RoundedLoadingButtonController facebookController =
       RoundedLoadingButtonController();
-  final TextEditingController _emaiController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
   void _doSomething() async {
@@ -53,7 +55,7 @@ class _sign_inState extends State<sign_in> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Container(child: logoWidget('images/login.png')),
+                  Container(child: logoWidget('images/logo_app.png')),
                   Container(
                     child: const Column(
                       children: [
@@ -86,14 +88,10 @@ class _sign_inState extends State<sign_in> {
                         Container(
                           child: Column(
                             children: [
-                              reusableTextField(
-                                  "Enter UserName",
-                                  Icons.person_outlined,
-                                  false,
-                                  _emaiController),
+                              TextFromFileEmail(controller: _emailController),
                               SizedBox(height: 20),
-                              reusableTextField("Enter Password", Icons.lock,
-                                  false, _passwordController),
+                              TextFromFilePassword(
+                                  controller: _passwordController)
                             ],
                           ),
                         ),
@@ -109,10 +107,10 @@ class _sign_inState extends State<sign_in> {
                             ),
                           ),
                         ),
-                        firebaseUIButton(context, "Sign In", () {
+                        /* firebaseUIButton(context, "Sign In", () {
                           FirebaseAuth.instance
                               .signInWithEmailAndPassword(
-                                  email: _emaiController.text,
+                                  email: _emailController.text,
                                   password: _passwordController.text)
                               .then((value) {
                             Navigator.push(
@@ -120,7 +118,22 @@ class _sign_inState extends State<sign_in> {
                                 MaterialPageRoute(
                                     builder: (context) => HomeScreen()));
                           }).onError((error, stackTrace) {
-                            print("Error ${error.toString()}");
+                            //print("Error ${error.toString()}");
+                            openSnackbar(context, "Error Account not found ", Colors.red);
+                          });
+                        }),*/
+                        CustomButton(text: 'Sign In ', onPressed:() {
+                          FirebaseAuth.instance
+                              .signInWithEmailAndPassword(
+                              email: _emailController.text,
+                              password: _passwordController.text)
+                              .then((value) {
+                            handleAfterSignIn();
+                          }).onError((error, stackTrace) {
+                            //print("Error ${error.toString()}");
+                            _emailController.clear();
+                            _passwordController.clear();
+                            openSnackbar(context, "Error Account not found ", Colors.red);
                           });
                         }),
                       ],
@@ -139,7 +152,7 @@ class _sign_inState extends State<sign_in> {
                           elevation: 0,
                           borderRadius: 25,
                           color: Colors.red,
-                          child: Wrap(
+                          child: const Wrap(
                             children: [
                               Icon(
                                 FontAwesomeIcons.google,
@@ -171,8 +184,8 @@ class _sign_inState extends State<sign_in> {
                           elevation: 0,
                           borderRadius: 25,
                           color: Colors.blue,
-                          child: Wrap(
-                            children: const [
+                          child: const Wrap(
+                            children: [
                               Icon(
                                 FontAwesomeIcons.facebook,
                                 size: 20,
@@ -304,6 +317,40 @@ class _sign_inState extends State<sign_in> {
       });
     }
   }
+
+ /* Future handleSignIn() async {
+    final email = _emailController.text;
+    final password = _passwordController.text;
+
+    final sp = context.read<SignInProvide>();
+    final ip = context.read<InternetProvider>();
+    await ip.checkInternetConnection();
+
+    if (ip.hasInternet == false) {
+      openSnackbar(context, "Check your Internet connection ", Colors.red);
+    } else {
+      await sp.signInWithEmailAndPassword(email, password).then((value) {
+        if (sp.hasError == true) {
+          openSnackbar(context, sp.errorCode.toString(), Colors.red);
+          _emailController.clear();
+          _passwordController.clear();
+        } else {
+          // checking whether user exists or not(ตรวจสอบว่ามีผู้ใช้อยู่หรือไม่)
+          sp.checkUserExists().then((value) async {
+            if (value == true) {
+              openSnackbar(context, "Succress your Account", Colors.green);
+              handleAfterSignIn();
+            } else {
+              _emailController.clear();
+              _passwordController.clear();
+              openSnackbar(context, "Error Account not found ", Colors.red);
+              //openSnackbar(context, '$hashCode', Colors.red);
+            }
+          });
+        }
+      });
+    }
+  }*/
 
   // handle after signin(จัดการหลังจากลงชื่อเข้าใช้)
   handleAfterSignIn() {

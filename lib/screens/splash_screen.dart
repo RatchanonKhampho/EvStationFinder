@@ -4,7 +4,6 @@ import 'package:ev_charger/provider/sign_in_provider.dart';
 import 'package:ev_charger/screens/Signin.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import '../utils/next_Screen.dart';
 import 'home_screens.dart';
 
@@ -35,7 +34,7 @@ class _SplashScreenState extends State<SplashScreen> {
       body: SafeArea(
           child: Center(
         child: Image(
-          image: AssetImage("images/login.png"),
+          image: AssetImage("images/logo_app.png"),
           height: 200,
           width: 200,
         ),

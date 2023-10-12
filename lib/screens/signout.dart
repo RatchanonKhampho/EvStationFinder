@@ -35,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
           children: <Widget>[
             CircleAvatar(
               backgroundColor: Colors.white,
-              backgroundImage: NetworkImage("${sp.imageUrl}"),
+              //backgroundImage: NetworkImage("${sp.imageUrl}"),
               radius: 50,
             ),
             const SizedBox(

@@ -1,15 +1,6 @@
 import 'package:ev_charger/main.dart';
 import 'package:flutter/material.dart';
 
-Image logoWidget(String imageName) {
-  return Image.asset(
-    imageName,
-    fit: BoxFit.fitWidth,
-    width: 80,
-    height: 80,
-  );
-}
-
 TextField reusableTextField(String text, IconData icon, bool isPasswordType,
     TextEditingController controller) {
   return TextField(

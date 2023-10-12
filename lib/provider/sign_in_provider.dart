@@ -37,11 +37,14 @@ class SignInProvide extends ChangeNotifier {
   String? _name;
   String? get name => _name;
 
-  String? _imageUrl;
-  String? get imageUrl => _imageUrl;
+  /* String? _imageUrl;
+  String? get imageUrl => _imageUrl;*/
 
   String? _email;
   String get email => _email!;
+
+  String? _phone;
+  String get phone => _phone!;
 
   SignInProvide() {
     checkSignInUser();
@@ -58,6 +61,99 @@ class SignInProvide extends ChangeNotifier {
     _isSignedIn = true;
     notifyListeners();
   }
+
+  // ENTRY FOR CLOUDFIRESTORE(เข้าสู่ Cloud Firestore)
+  Future getUserDataFromFirestore(uid) async {
+    await FirebaseFirestore.instance
+        .collection("users")
+        .doc(uid)
+        .get()
+        .then((DocumentSnapshot snapshot) => {
+              _uid = snapshot['uid'],
+              _name = snapshot['name'],
+              _email = snapshot['email'],
+              //_imageUrl = snapshot['image_url'],
+              _provider = snapshot['provider'],
+            });
+  }
+
+// saveDataToFirestore(บันทึกข้อมูลไปยัง Firestore)
+  Future saveDataToFirestore() async {
+    final DocumentReference r =
+        FirebaseFirestore.instance.collection("users").doc(uid);
+    await r.set({
+      "name": _name,
+      "email": _email,
+      "uid": _uid,
+      //"image_url": _imageUrl,
+      "provider": _provider,
+    });
+    notifyListeners();
+  }
+
+  //(บันทึกข้อมูลไปยังการตั้งค่าที่ใช้ร่วมกัน)
+  Future saveDataToSharedPreferences() async {
+    final SharedPreferences s = await SharedPreferences.getInstance();
+    await s.setString('name', _name!);
+    await s.setString('email', _email!);
+    await s.setString('uid', _uid!);
+    //await s.setString('image_url', _imageUrl!);
+    await s.setString('provider', _provider!);
+    notifyListeners();
+  }
+
+  //(รับข้อมูลจากการตั้งค่าที่ใช้ร่วมกัน)
+  Future getDataFromSharedPreferences() async {
+    final SharedPreferences s = await SharedPreferences.getInstance();
+    _name = s.getString('name');
+    _email = s.getString('email');
+    //_imageUrl = s.getString('image_url');
+    _uid = s.getString('uid');
+    _provider = s.getString('provider');
+
+    notifyListeners();
+  }
+
+  //chackUser Exists or not in cloundfirestore(chackUser มีอยู่แล้วหรือไม่อยู่ใน cloundfirestore)
+  Future<bool> checkUserExists() async {
+    DocumentSnapshot snap =
+        await FirebaseFirestore.instance.collection('users').doc(_uid).get();
+    if (snap.exists) {
+      print("EXISTING USER");
+      return true;
+    } else {
+      print("NEW USER");
+      return false;
+    }
+  }
+//(ตรวจสอบผู้ใช้ที่มีอยู่)
+  Future<bool> checkExistingUser() async {
+    DocumentSnapshot snapshot =
+    await _firebaseFirestore.collection("user").doc(_uid).get();
+    if (snapshot.exists) {
+      print("USER EXUSTS");
+      return true;
+    } else {
+      print("NEW USER");
+      return false;
+    }
+  }
+  // signout the user
+  Future userSignout() async {
+    await _firebaseAuth.signOut();
+    await googleSignIn.signOut();
+    _isSignedIn = false;
+    notifyListeners();
+    // claer all Storage information (ล้างข้อมูล)
+    clearStoreData();
+  }
+
+  Future clearStoreData() async {
+    final SharedPreferences s = await SharedPreferences.getInstance();
+    s.clear();
+  }
+
+
 
   // sign in with facebook
   Future signInWithFacebook() async {
@@ -76,7 +172,8 @@ class SignInProvide extends ChangeNotifier {
         // saving the values
         _name = profile['name'];
         _email = profile['email'];
-        _imageUrl = profile['picture']['data']['url'];
+
+        //_imageUrl = profile['picture']['data']['url'];
         _uid = profile['id'];
         _hasError = false;
         _provider = "FACEBOOK";
@@ -128,7 +225,7 @@ class SignInProvide extends ChangeNotifier {
         // now save all values
         _name = userDetails.displayName;
         _email = userDetails.email;
-        _imageUrl = userDetails.photoURL;
+        //_imageUrl = userDetails.photoURL;
         _provider = "Google";
         _uid = userDetails.uid;
         notifyListeners();
@@ -158,97 +255,73 @@ class SignInProvide extends ChangeNotifier {
     }
   }
 
-  // ENTRY FOR CLOUDFIRESTORE(เข้าสู่ Cloud Firestore)
-  Future getUserDataFromFirestore(uid) async {
-    await FirebaseFirestore.instance
-        .collection("users")
-        .doc(uid)
-        .get()
-        .then((DocumentSnapshot snapshot) => {
-              _uid = snapshot['uid'],
-              _name = snapshot['name'],
-              _email = snapshot['email'],
-              _imageUrl = snapshot['image_url'],
-              _provider = snapshot['provider'],
-            });
-  }
+  // SignUp with Emailpassword
+  Future signUpWithEmailAndPassword(
+      String email, String password, String name, String phone) async {
+    try {
+      UserCredential userCredential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: email, password: password);
+      _name = name;
+      _email = email;
+      //_imageUrl = userDetails.photoURL;
+      _provider = "Email";
+      _uid = userCredential.user?.uid;
+      _phone = phone;
+      notifyListeners();
+    } on FirebaseAuthException catch (e) {
+      switch (e.code) {
+        case "account-exists-with-different-credential":
+          _errorCode =
+              "You already have an account with us. Use correct provider";
+          _hasError = true;
+          notifyListeners();
+          break;
 
-// saveDataToFirestore(บันทึกข้อมูลไปยัง Firestore)
-  Future saveDataToFirestore() async {
-    final DocumentReference r =
-        FirebaseFirestore.instance.collection("users").doc(uid);
-    await r.set({
-      "name": _name,
-      "email": _email,
-      "uid": _uid,
-      "image_url": _imageUrl,
-      "provider": _provider,
-    });
-    notifyListeners();
-  }
-
-  //(บันทึกข้อมูลไปยังการตั้งค่าที่ใช้ร่วมกัน)
-  Future saveDataToSharedPreferences() async {
-    final SharedPreferences s = await SharedPreferences.getInstance();
-    await s.setString('name', _name!);
-    await s.setString('email', _email!);
-    await s.setString('uid', _uid!);
-    await s.setString('image_url', _imageUrl!);
-    await s.setString('provider', _provider!);
-    notifyListeners();
-  }
-
-  //(รับข้อมูลจากการตั้งค่าที่ใช้ร่วมกัน)
-  Future getDataFromSharedPreferences() async {
-    final SharedPreferences s = await SharedPreferences.getInstance();
-    _name = s.getString('name');
-    _email = s.getString('email');
-    _imageUrl = s.getString('image_url');
-    _uid = s.getString('uid');
-    _provider = s.getString('provider');
-    notifyListeners();
-  }
-
-  // chackUser Exists or not in cloundfirestore(chackUser มีอยู่แล้วหรือไม่อยู่ใน cloundfirestore)
-  Future<bool> checkUserExists() async {
-    DocumentSnapshot snap =
-        await FirebaseFirestore.instance.collection('users').doc(_uid).get();
-    if (snap.exists) {
-      print("EXISTING USER");
-      return true;
-    } else {
-      print("NEW USER");
-      return false;
+        case "null":
+          _errorCode = "Some unexpected error while trying to sign in";
+          _hasError = true;
+          notifyListeners();
+          break;
+        default:
+          _errorCode = e.toString();
+          _hasError = true;
+          notifyListeners();
+      }
     }
-  }
-
-  // signout the user
-  Future userSignout() async {
-    await _firebaseAuth.signOut();
-    await googleSignIn.signOut();
-    _isSignedIn = false;
     notifyListeners();
-    // claer all Storage information (ล้างข้อมูล)
-    clearStoreData();
   }
 
-  Future clearStoreData() async {
-    final SharedPreferences s = await SharedPreferences.getInstance();
-    s.clear();
-  }
+  //SignIn with Emailpassword
+ /* Future signInWithEmailAndPassword(
+    String email,
+    String password,
+  ) async {
+    try {
+      await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password);
+      notifyListeners();
+    } on FirebaseAuthException catch (e) {
+      switch (e.code) {
+        case "account-exists-with-different-credential":
+          _errorCode =
+              "You already have an account with us. Use correct provider";
+          _hasError = true;
+          notifyListeners();
+          break;
 
-//(ตรวจสอบผู้ใช้ที่มีอยู่)
-  Future<bool> checkExistingUser() async {
-    DocumentSnapshot snapshot =
-        await _firebaseFirestore.collection("user").doc(_uid).get();
-    if (snapshot.exists) {
-      print("USER EXUSTS");
-      return true;
-    } else {
-      print("NEW USER");
-      return false;
+        case "null":
+          _errorCode = "Some unexpected error while trying to sign in";
+          _hasError = true;
+          notifyListeners();
+          break;
+        default:
+          _errorCode = e.toString();
+          _hasError = true;
+          notifyListeners();
+      }
     }
-  }
+    notifyListeners();
+  }*/
 
   // Sigin with phone
   void signInWithPhone(BuildContext context, String phoneNumber) async {
@@ -305,9 +378,4 @@ class SignInProvide extends ChangeNotifier {
       notifyListeners();
     }
   }
-
-// Database opertaions
-
-
-
 }

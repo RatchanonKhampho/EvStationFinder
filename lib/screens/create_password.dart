@@ -14,6 +14,8 @@ class CreatePassword extends StatefulWidget {
 class _CreatePasswordState extends State<CreatePassword> {
   @override
   Widget build(BuildContext context) {
+    final TextEditingController _confirmController = TextEditingController();
+    final TextEditingController _passwordController = TextEditingController();
     return Scaffold(
         appBar: AppBar(
           backgroundColor: backgroundwhite,
@@ -77,14 +79,17 @@ class _CreatePasswordState extends State<CreatePassword> {
                         child: Column(
                           children: [
                             TextFromFile(
+
                               labelText: 'Password ',
                               hintText: 'Enter your password',
                               suffixIcon: Icons.lock,
+                              controller: _passwordController,
                             ),
                             TextFromFile(
                               labelText: 'Confirm Password ',
                               hintText: 'Enter your password',
                               suffixIcon: Icons.lock,
+                              controller: _confirmController,
                             ),
                           ],
                         ),

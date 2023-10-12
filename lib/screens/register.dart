@@ -1,8 +1,15 @@
 import 'package:ev_charger/main.dart';
 import 'package:ev_charger/screens/home_screens.dart';
-import 'package:ev_charger/widgetd/reusable_widget.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:ev_charger/widgetd/custombutton.dart';
+import 'package:ev_charger/widgetd/image.dart';
+import 'package:ev_charger/widgetd/text_fild.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../provider/internet_provider.dart';
+import '../provider/sign_in_provider.dart';
+import '../utils/next_Screen.dart';
+import '../utils/snack_bar.dart';
 
 class register extends StatefulWidget {
   const register({super.key});
@@ -79,96 +86,26 @@ class _registerState extends State<register> {
                   Container(
                     child: Column(
                       children: [
-                        reusableTextField("Enter UserName",
-                            Icons.person_outline, false, _userNameController),
+                        TextFromFile(
+                            controller: _userNameController,
+                            labelText: 'Name',
+                            hintText: 'Enter your username  ',
+                            suffixIcon: Icons.person_2_outlined),
                         const SizedBox(height: 20),
-                        reusableTextField("Enter Email Id",
-                            Icons.person_outline, false, _emailController),
+                        TextFromFileEmail(controller: _emailController),
                         const SizedBox(height: 20),
-                        reusableTextField("Enter Password", Icons.lock_outlined,
-                            true, _passwordController),
+                        TextFromFilePassword(controller: _passwordController),
                         const SizedBox(height: 20),
-                        reusableTextField(
-                            "Enter Phone Number",
-                            Icons.phone_android_outlined,
-                            false,
-                            _phoneController),
+                        TextFromFile(
+                            controller: _phoneController,
+                            labelText: 'Phone',
+                            hintText: 'Enter your phonenumber  ',
+                            suffixIcon: Icons.phone_android_outlined),
                         const SizedBox(height: 20),
-                        firebaseUIButton(context, "Sign Up", () {
-                          FirebaseAuth.instance
-                              .createUserWithEmailAndPassword(
-                            email: _emailController.text,
-                            password: _passwordController.text,
-                          )
-                              .then((value) {
-                            print("Created New Account");
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => HomeScreen()));
-                          }).onError((error, stackTrace) {
-                            print("Error ${error.toString()}");
-                          });
-                        })
+                        CustomButton(text: "SignUp", onPressed: handleSignUp)
                       ],
                     ),
                   ),
-                  /*Container(
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SignInButton.mini(
-                                buttonType: ButtonType.apple,
-                                buttonSize: ButtonSize.large,
-                                btnColor: text3,
-                                onPressed: () {
-                                  print('click');
-                                }),
-                            SignInButton.mini(
-                              buttonType: ButtonType.google,
-                              elevation: 4,
-                              buttonSize: ButtonSize.large,
-                              btnColor: text3,
-                              onPressed: () => AuthService().signInWithGoogle(),
-                            ),
-                            SignInButton.mini(
-                                buttonType: ButtonType.facebook,
-                                buttonSize: ButtonSize.large,
-                                btnColor: text3,
-                                onPressed: () {
-                                  print('click');
-                                }),
-                          ],
-                        ),
-                        SizedBox(height: 20),
-                        Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Text(
-                                "Don't have an account? ",
-                                style: TextStyle(
-                                  fontSize: 16,
-                                ),
-                              ),
-                              TextButton(
-                                  onPressed: () => Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const register())),
-                                  child: const Text(
-                                    'Sign up',
-                                    style: TextStyle(
-                                        fontSize: 16, color: backgroundblue),
-                                  ))
-                            ])
-                      ],
-                    ),
-                  ),*/
                   Container(),
                   Container(),
                 ],
@@ -178,5 +115,62 @@ class _registerState extends State<register> {
         )),
       ),
     );
+  }
+
+  void clear() {
+    _emailController.clear();
+    _passwordController.clear();
+    _phoneController.clear();
+    _userNameController.clear();
+  }
+
+  Future handleSignUp() async {
+    final email = _emailController.text;
+    final password = _passwordController.text;
+    final name = _userNameController.text;
+    final phone = _phoneController.text;
+
+    final sp = context.read<SignInProvide>();
+    final ip = context.read<InternetProvider>();
+    await ip.checkInternetConnection();
+
+    if (ip.hasInternet == false) {
+      openSnackbar(context, "Check your Internet connection ", Colors.red);
+    } else {
+      await sp
+          .signUpWithEmailAndPassword(email, password, name, phone)
+          .then((value) {
+        if (sp.hasError == true) {
+          openSnackbar(context, "Error ", Colors.red);
+          clear();
+        } else {
+          // checking whether user exists or not(ตรวจสอบว่ามีผู้ใช้อยู่หรือไม่)
+          sp.checkExistingUser().then((value) async {
+            if (value == true) {
+              // user exists
+              await sp.getUserDataFromFirestore(sp.uid).then((value) => sp
+                  .saveDataToSharedPreferences()
+                  .then((value) => sp.setSignIn().then((value) {
+                        handleAfterSignIn();
+                      })));
+            } else {
+              // user  does not exists
+              sp.saveDataToFirestore().then((value) => sp
+                  .saveDataToSharedPreferences()
+                  .then((value) => sp.setSignIn().then((value) {
+                        handleAfterSignIn();
+                      })));
+            }
+          });
+        }
+      });
+    }
+  }
+
+// handle after signin(จัดการหลังจากลงชื่อเข้าใช้)
+  handleAfterSignIn() {
+    Future.delayed(const Duration(milliseconds: 1000)).then((value) {
+      nextScreenReplace(context, HomeScreen());
+    });
   }
 }
