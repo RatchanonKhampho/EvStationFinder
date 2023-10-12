@@ -2,6 +2,8 @@ import 'package:ev_charger/main.dart';
 import 'package:ev_charger/screens/register.dart';
 import 'package:flutter/material.dart';
 
+import '../widgetd/text_fild.dart';
+
 class CreatePassword extends StatefulWidget {
   const CreatePassword({super.key});
 
@@ -12,6 +14,8 @@ class CreatePassword extends StatefulWidget {
 class _CreatePasswordState extends State<CreatePassword> {
   @override
   Widget build(BuildContext context) {
+    final TextEditingController _confirmController = TextEditingController();
+    final TextEditingController _passwordController = TextEditingController();
     return Scaffold(
         appBar: AppBar(
           backgroundColor: backgroundwhite,
@@ -71,22 +75,25 @@ class _CreatePasswordState extends State<CreatePassword> {
                           ],
                         ),
                       ),
-                      /*Container(
+                      Container(
                         child: Column(
                           children: [
                             TextFromFile(
+
                               labelText: 'Password ',
                               hintText: 'Enter your password',
                               suffixIcon: Icons.lock,
+                              controller: _passwordController,
                             ),
                             TextFromFile(
                               labelText: 'Confirm Password ',
                               hintText: 'Enter your password',
                               suffixIcon: Icons.lock,
+                              controller: _confirmController,
                             ),
                           ],
                         ),
-                      ),*/
+                      ),
                       Container(
                         child: Column(
                           children: [
