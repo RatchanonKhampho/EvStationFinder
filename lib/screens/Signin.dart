@@ -1,11 +1,10 @@
 import 'dart:async';
 
+import 'package:ev_charger/main.dart';
 import 'package:ev_charger/provider/internet_provider.dart';
 import 'package:ev_charger/provider/sign_in_provider.dart';
 import 'package:ev_charger/screens/register.dart';
 import 'package:ev_charger/utils/snack_bar.dart';
-import 'package:ev_charger/widgetd/custombutton.dart';
-import 'package:ev_charger/widgetd/image.dart';
 import 'package:ev_charger/widgetd/text_fild.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -13,8 +12,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 
-import '../main.dart';
 import '../utils/next_Screen.dart';
+import '../widgetd/custombutton.dart';
 import 'forget_phone.dart';
 import 'home_screens.dart';
 
@@ -32,6 +31,7 @@ class _sign_inState extends State<sign_in> {
       RoundedLoadingButtonController();
   final RoundedLoadingButtonController facebookController =
       RoundedLoadingButtonController();
+
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
@@ -44,44 +44,55 @@ class _sign_inState extends State<sign_in> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: SafeArea(
-            child: SingleChildScrollView(
-          child: Container(
-            width: double.infinity,
-            height: MediaQuery.of(context).size.height,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Container(child: logoWidget('images/logo_app.png')),
-                  Container(
-                    child: const Column(
-                      children: [
-                        Text(
-                          'Welcome',
-                          style: TextStyle(
-                              fontSize: 36,
-                              fontWeight: FontWeight.w700,
-                              letterSpacing: 3.2,
-                              color: Text1),
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Text(
-                          'Complete your details or conitnue with social media',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              color: Text2,
-                              fontSize: 16,
-                              letterSpacing: 1.5,
-                              fontWeight: FontWeight.w600),
-                        ),
-                      ],
+        body: SafeArea(
+      child: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("images/bg.png"),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Column(
+              children: [
+                Container(
+                  width: 150,
+                  height: 150,
+                  color: buttoncolors,
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Container(
+                  child: const Text(
+                    "EV Station",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 45,
                     ),
                   ),
+                )
+              ],
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width * 0.7,
+              child: Column(
+                children: [
+                  Container(
+                    child: Align(
+                      alignment: Alignment.bottomLeft,
+                      child: Text(
+                        "Welcome",
+                        style: TextStyle(
+                            fontSize: 30,
+                            color: textmain2,
+                            fontWeight: FontWeight.w400),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
                   Container(
                     child: Column(
                       children: [
@@ -91,137 +102,160 @@ class _sign_inState extends State<sign_in> {
                               TextFromFileEmail(controller: _emailController),
                               SizedBox(height: 20),
                               TextFromFilePassword(
-                                  controller: _passwordController)
-                            ],
-                          ),
-                        ),
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: TextButton(
-                            onPressed: () {
-                              nextScreen(context, ForgetPhone());
-                            },
-                            child: const Text(
-                              'Forget Password',
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        ),
-                        CustomButton(text: 'Sign In ', onPressed:() {
-                          FirebaseAuth.instance
-                              .signInWithEmailAndPassword(
-                              email: _emailController.text,
-                              password: _passwordController.text)
-                              .then((value) {
-                            handleAfterSignIn();
-                          }).onError((error, stackTrace) {
-                            //print("Error ${error.toString()}");
-                            _emailController.clear();
-                            _passwordController.clear();
-                            openSnackbar(context, "Error Account not found ", Colors.red);
-                          });
-                        }),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    child: Column(
-                      children: [
-                        RoundedLoadingButton(
-                          onPressed: () {
-                            handleGoogleSignIn();
-                          },
-                          controller: googleController,
-                          successColor: Colors.red,
-                          width: MediaQuery.of(context).size.width * 0.80,
-                          elevation: 0,
-                          borderRadius: 25,
-                          color: Colors.red,
-                          child: const Wrap(
-                            children: [
-                              Icon(
-                                FontAwesomeIcons.google,
-                                size: 20,
-                                color: Colors.white,
-                              ),
-                              SizedBox(
-                                width: 15,
-                              ),
-                              Text("Sign in with Google",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w500)),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        // facebook login button
-                        RoundedLoadingButton(
-                          onPressed: () {
-                            handleFacebookAuth();
-                          },
-                          controller: facebookController,
-                          successColor: Colors.blue,
-                          width: MediaQuery.of(context).size.width * 0.80,
-                          elevation: 0,
-                          borderRadius: 25,
-                          color: Colors.blue,
-                          child: const Wrap(
-                            children: [
-                              Icon(
-                                FontAwesomeIcons.facebook,
-                                size: 20,
-                                color: Colors.white,
-                              ),
-                              SizedBox(
-                                width: 15,
-                              ),
-                              Text("Sign in with Facebook",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w500)),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-
-                        Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Text(
-                                "Don't have an account? ",
+                                  controller: _passwordController),
+                              //SizedBox(height: 10),
+                              Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    const Text(
+                                      "Forgot ",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                    TextButton(
+                                        onPressed: () {
+                                          nextScreen(context, ForgetPhone());
+                                        },
+                                        child: const Text(
+                                          'Password?',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16,
+                                            color: buttoncolors,
+                                            //letterSpacing: 0.5
+                                          ),
+                                        ))
+                                  ]),
+                              SizedBox(height: 20),
+                              CustomButton(
+                                  text: 'Sign In ',
+                                  onPressed: () {
+                                    FirebaseAuth.instance
+                                        .signInWithEmailAndPassword(
+                                            email: _emailController.text,
+                                            password: _passwordController.text)
+                                        .then((value) {
+                                      handleAfterSignIn();
+                                    }).onError((error, stackTrace) {
+                                      //print("Error ${error.toString()}");
+                                      _emailController.clear();
+                                      _passwordController.clear();
+                                      openSnackbar(
+                                          context,
+                                          "Error Account not found ",
+                                          const Color.fromARGB(
+                                              255, 244, 54, 54));
+                                    });
+                                  }),
+                              SizedBox(height: 20),
+                              Text(
+                                "OR",
                                 style: TextStyle(
-                                  fontSize: 16,
+                                    color: textmain2,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16),
+                              ),
+                              SizedBox(height: 20),
+
+                              // facebook login button
+                              RoundedLoadingButton(
+                                onPressed: () {
+                                  handleFacebookAuth();
+                                },
+                                controller: facebookController,
+                                successColor: Colors.blue,
+                                width: MediaQuery.of(context).size.width * 0.80,
+                                elevation: 0,
+                                borderRadius: 10,
+                                color: Colors.blue,
+                                child: const Wrap(
+                                  children: [
+                                    Icon(
+                                      FontAwesomeIcons.facebook,
+                                      size: 20,
+                                      color: Colors.white,
+                                    ),
+                                    SizedBox(
+                                      width: 15,
+                                    ),
+                                    Text("Sign in with Facebook",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w500)),
+                                  ],
                                 ),
                               ),
-                              TextButton(
-                                  onPressed: () {
-                                    nextScreen(context, register());
-                                  },
-                                  child: const Text(
-                                    'Sign up',
-                                    style: TextStyle(
-                                        fontSize: 16, color: backgroundblue),
-                                  ))
-                            ])
+                              SizedBox(height: 10),
+                              RoundedLoadingButton(
+                                onPressed: () {
+                                  handleGoogleSignIn();
+                                },
+                                controller: googleController,
+                                successColor: Colors.red,
+                                width: MediaQuery.of(context).size.width * 0.80,
+                                elevation: 0,
+                                borderRadius: 10,
+                                color: Colors.red,
+                                child: const Wrap(
+                                  children: [
+                                    Icon(
+                                      FontAwesomeIcons.google,
+                                      size: 20,
+                                      color: Colors.white,
+                                    ),
+                                    SizedBox(
+                                      width: 15,
+                                    ),
+                                    Text("Sign in with Google",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w500)),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ],
                     ),
                   ),
                 ],
               ),
             ),
-          ),
-        )),
+            Container(
+              child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      "Don’t have an account? ",
+                      style: TextStyle(
+                        fontSize: 16,
+                      ),
+                    ),
+                    TextButton(
+                        onPressed: () {
+                          nextScreen(context, register());
+                        },
+                        child: const Text(
+                          'Sign Up',
+                          style: TextStyle(
+                              fontSize: 16,
+                              color: buttoncolors,
+                              letterSpacing: 0.5),
+                        ))
+                  ]),
+            ),
+          ],
+        ),
       ),
-    );
+    ));
   }
 
 // handle Google Signin
@@ -259,9 +293,10 @@ class _sign_inState extends State<sign_in> {
             }
           });
         }
-         });
+      });
     }
   }
+
   // handle Facebook Signin
   Future handleFacebookAuth() async {
     final sp = context.read<SignInProvide>();
@@ -302,7 +337,7 @@ class _sign_inState extends State<sign_in> {
     }
   }
 
- /* Future handleSignIn() async {
+  /* Future handleSignIn() async {
     final email = _emailController.text;
     final password = _passwordController.text;
 

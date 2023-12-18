@@ -126,10 +126,11 @@ class SignInProvide extends ChangeNotifier {
       return false;
     }
   }
+
 //(ตรวจสอบผู้ใช้ที่มีอยู่)
   Future<bool> checkExistingUser() async {
     DocumentSnapshot snapshot =
-    await _firebaseFirestore.collection("user").doc(_uid).get();
+        await _firebaseFirestore.collection("user").doc(_uid).get();
     if (snapshot.exists) {
       print("USER EXUSTS");
       return true;
@@ -138,6 +139,7 @@ class SignInProvide extends ChangeNotifier {
       return false;
     }
   }
+
   // signout the user
   Future userSignout() async {
     await _firebaseAuth.signOut();
@@ -152,8 +154,6 @@ class SignInProvide extends ChangeNotifier {
     final SharedPreferences s = await SharedPreferences.getInstance();
     s.clear();
   }
-
-
 
   // sign in with facebook
   Future signInWithFacebook() async {
@@ -292,7 +292,7 @@ class SignInProvide extends ChangeNotifier {
   }
 
   //SignIn with Emailpassword
- /* Future signInWithEmailAndPassword(
+  /* Future signInWithEmailAndPassword(
     String email,
     String password,
   ) async {

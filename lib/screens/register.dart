@@ -92,7 +92,7 @@ class _registerState extends State<register> {
                             hintText: 'Enter your username  ',
                             suffixIcon: Icons.person_2_outlined),
                         const SizedBox(height: 20),
-                        TextFromFileEmail(controller: _emailController),
+                        //TextFromFileEmail(controller: _emailController),
                         const SizedBox(height: 20),
                         TextFromFilePassword(controller: _passwordController),
                         const SizedBox(height: 20),

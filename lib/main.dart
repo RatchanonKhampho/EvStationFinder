@@ -11,6 +11,12 @@ const Text1 = Color(0xFF252644);
 const Text2 = Color(0xFFACACAE);
 const text3 = Color(0xFFE7E7EE);
 
+const buttoncolors = Color(0xFFEC5E26);
+const textmain = Color(0xFF252422);
+const textmain2 = Color(0xFF403D38);
+const textmain3 = Color(0xFFCCC6BA);
+const bacolor = Color(0xFFFFFDF1);
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();

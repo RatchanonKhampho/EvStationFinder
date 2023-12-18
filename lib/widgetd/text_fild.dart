@@ -54,45 +54,27 @@ Widget TextFromFileEmail({
   required TextEditingController controller,
 }) =>
     Container(
-      width: 370,
-      height: 70,
       child: TextFormField(
         controller: controller,
         autofillHints: [AutofillHints.email],
         keyboardType: TextInputType.emailAddress,
-        cursorColor: Colors.purple,
-        style: TextStyle(
+        cursorColor: buttoncolors,
+        style: const TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.w700,
-            letterSpacing: 1,
+            letterSpacing: 1.5,
             color: Text1),
-        decoration: InputDecoration(
-          labelText: 'Email Address',
-          labelStyle: TextStyle(fontSize: 16, color: backgroundblue),
-          hintText: 'Emter your email address',
-          hintStyle: TextStyle(
-              fontWeight: FontWeight.w600,
-              color: text3,
-              letterSpacing: 2,
-              fontSize: 16),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(20.0),
-            borderSide: const BorderSide(color: Colors.black12),
+        decoration: const InputDecoration(
+          label: Text("Username"),
+          labelStyle: TextStyle(
+            fontSize: 16,
+            color: textmain2,
+            fontWeight: FontWeight.w400,
+            letterSpacing: 1,
           ),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(20.0),
-            borderSide: const BorderSide(color: Colors.black12),
-          ),
-          suffixIcon: Container(
-            margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            decoration: const BoxDecoration(
-              shape: BoxShape.circle,
-              color: backgroundwhite,
-            ),
-            child: Icon(
-              Icons.email_outlined,
-              color: backgroundblue,
-              size: 25,
+          enabledBorder: UnderlineInputBorder(
+            borderSide: const BorderSide(
+              color: buttoncolors,
             ),
           ),
         ),
@@ -105,81 +87,66 @@ Widget TextFromFilePassword({
   required TextEditingController controller,
 }) =>
     Container(
-      width: 370,
-      height: 70,
       child: TextFormField(
         controller: controller,
-        keyboardType: TextInputType.visiblePassword,
-        cursorColor: Colors.purple,
-        style: TextStyle(
+        autofillHints: [AutofillHints.email],
+        keyboardType: TextInputType.emailAddress,
+        cursorColor: buttoncolors,
+        style: const TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.w700,
-            letterSpacing: 1,
+            letterSpacing: 1.5,
             color: Text1),
-        decoration: InputDecoration(
-          labelText: 'Password',
-          labelStyle: TextStyle(fontSize: 16, color: backgroundblue),
-          hintText: 'Emter your  password',
-          hintStyle: TextStyle(
-              fontWeight: FontWeight.w600,
-              color: text3,
-              letterSpacing: 2,
-              fontSize: 16),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(20.0),
-            borderSide: const BorderSide(color: Colors.black12),
+        decoration: const InputDecoration(
+          label: Text("Password"),
+          labelStyle: TextStyle(
+            fontSize: 16,
+            color: textmain2,
+            fontWeight: FontWeight.w400,
+            letterSpacing: 1,
           ),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(20.0),
-            borderSide: const BorderSide(color: Colors.black12),
-          ),
-          suffixIcon: Container(
-            margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            decoration: const BoxDecoration(
-              shape: BoxShape.circle,
-              color: backgroundwhite,
+          enabledBorder: UnderlineInputBorder(
+            //borderRadius: BorderRadius.circular(50.0),
+            borderSide: const BorderSide(
+              color: buttoncolors,
             ),
-            child: Icon(
-              Icons.lock_clock_outlined,
-              color: backgroundblue,
-              size: 25,
+          ),
+          disabledBorder: UnderlineInputBorder(
+            //borderRadius: BorderRadius.circular(50.0),
+            borderSide: const BorderSide(
+              color: buttoncolors,
             ),
           ),
         ),
-        /*validator:
+        /*validator: 
         },*/
       ),
     );
-
-
-Widget change(
-    {
-      required IconData leading,
-      required String title,
-    }
-    ) => ListTile(
-  shape: RoundedRectangleBorder(
-      side: BorderSide(width: 2, color: Colors.lightBlue),
-      borderRadius: BorderRadius.circular(20)),
-  leading: Icon(leading),
-  title: Text('title'),
-  trailing: IconButton(
-    icon:Icon(Icons.lock) ,
-    onPressed: () =>  null,
-  ),
-);
-Widget textfilewidget(
-    {
-      required IconData leading,
-      required String title,
-      required String trailing,
-
-    }
-    ) => ListTile(
-  shape: RoundedRectangleBorder(
-      side: BorderSide(width: 2, color: Colors.lightBlue),
-      borderRadius: BorderRadius.circular(20)),
-  leading: Icon(leading),
-  title: Text('title'),
-  trailing: Text('trailing'),
-);
+Widget change({
+  required IconData leading,
+  required String title,
+}) =>
+    ListTile(
+      shape: RoundedRectangleBorder(
+          side: BorderSide(width: 2, color: Colors.lightBlue),
+          borderRadius: BorderRadius.circular(20)),
+      leading: Icon(leading),
+      title: Text('title'),
+      trailing: IconButton(
+        icon: Icon(Icons.lock),
+        onPressed: () => null,
+      ),
+    );
+Widget textfilewidget({
+  required IconData leading,
+  required String title,
+  required String trailing,
+}) =>
+    ListTile(
+      shape: RoundedRectangleBorder(
+          side: BorderSide(width: 2, color: Colors.lightBlue),
+          borderRadius: BorderRadius.circular(20)),
+      leading: Icon(leading),
+      title: Text('title'),
+      trailing: Text('trailing'),
+    );
