@@ -83,7 +83,6 @@ class _sign_inState extends State<sign_in> {
               SizedBox(height: 30),
               Container(
                 width: MediaQuery.of(context).size.width * 0.7,
-                //height: MediaQuery.of(context).size.height + 20,
                 child: Column(
                   children: [
                     Container(
