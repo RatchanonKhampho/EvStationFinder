@@ -9,7 +9,7 @@ Widget TextFromFile({
 }) =>
     Container(
       width: 370,
-      height: 70,
+      height: 50,
       child: TextFormField(
         controller: controller,
         cursorColor: Colors.purple,
@@ -77,6 +77,11 @@ Widget TextFromFileEmail({
               color: buttoncolors,
             ),
           ),
+          focusedBorder: UnderlineInputBorder(
+            borderSide: const BorderSide(
+              color: buttoncolors,
+            ),
+          ),
         ),
         /*validator: 
         },*/
@@ -104,6 +109,11 @@ Widget TextFromFilePassword({
             color: textmain2,
             fontWeight: FontWeight.w400,
             letterSpacing: 1,
+          ),
+          focusedBorder: UnderlineInputBorder(
+            borderSide: const BorderSide(
+              color: buttoncolors,
+            ),
           ),
           enabledBorder: UnderlineInputBorder(
             //borderRadius: BorderRadius.circular(50.0),

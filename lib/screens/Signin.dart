@@ -14,7 +14,7 @@ import 'package:rounded_loading_button/rounded_loading_button.dart';
 
 import '../utils/next_Screen.dart';
 import '../widgetd/custombutton.dart';
-import 'forget_phone.dart';
+import 'Forgot password.dart';
 import 'home_screens.dart';
 
 class sign_in extends StatefulWidget {
@@ -157,12 +157,27 @@ class _sign_inState extends State<sign_in> {
                                       });
                                     }),
                                 const SizedBox(height: 20),
-                                const Text(
-                                  "OR",
-                                  style: TextStyle(
-                                      color: textmain2,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Container(
+                                        width: 100,
+                                        height: 1,
+                                        color: buttoncolors),
+                                    Text(
+                                      "  OR  ",
+                                      style: TextStyle(
+                                          color: textmain2,
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    Container(
+                                      width: 100,
+                                      height: 1,
+                                      color: buttoncolors,
+                                    ),
+                                  ],
                                 ),
                                 const SizedBox(height: 20),
 
@@ -234,6 +249,7 @@ class _sign_inState extends State<sign_in> {
               ),
               SizedBox(height: 20),
               Container(
+                width: MediaQuery.of(context).size.width * 0.8,
                 child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisSize: MainAxisSize.max,
@@ -252,7 +268,7 @@ class _sign_inState extends State<sign_in> {
                           child: const Text(
                             'Sign Up',
                             style: TextStyle(
-                                fontSize: 16,
+                                fontSize: 18,
                                 color: buttoncolors,
                                 letterSpacing: 0.5),
                           ))

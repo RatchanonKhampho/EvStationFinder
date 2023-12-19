@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:ev_charger/main.dart';
 import 'package:ev_charger/provider/sign_in_provider.dart';
 import 'package:ev_charger/screens/Signin.dart';
 import 'package:flutter/material.dart';
@@ -31,14 +32,16 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: SafeArea(
-          child: Center(
-        child: Image(
-          image: AssetImage("images/logo_app.png"),
-          height: 200,
-          width: 200,
+      backgroundColor: buttoncolors,
+      /*body: SafeArea(
+        child: Center(
+          child: Image(
+            image: AssetImage("images/logo_app.png"),
+            height: 200,
+            width: 200,
+          ),
         ),
-      )),
+      ),*/
     );
   }
 }
