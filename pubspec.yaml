@@ -42,7 +42,7 @@ dependencies:
   google_sign_in: any
   flutter_credit_card: any
   flutter_facebook_auth: any
-  sign_in_button: ^3.2.0
+  sign_button: ^2.0.5
   sizer: any
   material_text_fields: ^1.0.3
   country_picker: ^2.0.21
@@ -58,9 +58,8 @@ dependencies:
   line_icons: ^2.0.3
   anim_search_bar: ^2.0.3
   url_launcher: ^6.1.14
-  sign_button: ^2.0.6
-
-
+  pathfinding: ^3.0.1
+  geolocator: ^10.1.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
