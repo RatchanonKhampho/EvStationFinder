@@ -1,5 +1,8 @@
+import 'dart:html';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
@@ -19,6 +22,7 @@ class _mapState extends State<map> {
   GoogleMapController? _mapController;
   List<DocumentSnapshot> _searchResults = [];
   List<DocumentSnapshot> _allLocations = [];
+  late Position _currentPosition;
   bool _showFilteredMarkers = false;
   String _location = "Press the FAB to get location";
   // ตั้งค่าพิกัดเริ่มต้น
@@ -27,28 +31,13 @@ class _mapState extends State<map> {
   bool _bottomSheetVisible = false;
   String _selectedMarkerId = "";
   var _currentIndex = 0;
-  Position? _currentPosition;
   @override
   void initState() {
     super.initState();
     _loadMarkersFromFirestore();
+    _getCurrentLocation();
   }
-
-  Future<void> _getLocation() async {
-    try {
-      Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high,
-      );
-      setState(() {
-        _location =
-            "Latitude: ${position.latitude}, Longitude: ${position.longitude}";
-      });
-    } catch (e) {
-      setState(() {
-        _location = "Error getting location: $e";
-      });
-    }
-  }
+   
 
   bool _filterActive = false;
 
@@ -57,7 +46,18 @@ class _mapState extends State<map> {
       _filterActive = !_filterActive;
     });
   }
-
+Future<void> _getCurrentLocation() async {
+    try {
+      Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+      );
+      setState(() {
+        _currentPosition = position;
+      });
+    } catch (e) {
+      print("Error: $e");
+    }
+  }
   // ดึงข้อมูลหมุดจาก Firestore และสร้าง Marker
   Future<void> _loadMarkersFromFirestore() async {
     final markers =
@@ -181,6 +181,8 @@ class _mapState extends State<map> {
         );
       },
     );
+
+    
   }
 
   @override
@@ -225,13 +227,20 @@ class _mapState extends State<map> {
 
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          _getLocation();
+          _getCurrentLocation();
+          if (_currentPosition != null) {
+            _scrollToCurrentLocation();
+          }
         },
         child: Icon(Icons.location_on),
       ),
     );
   }
-
+ // เลื่อนมุมมองไปยังตำแหน่งปัจจุบัน
+  void _scrollToCurrentLocation() {
+    // นำ _currentPosition.latitude และ _currentPosition.longitude ไปใช้ต่อได้ตามความต้องการ
+    // ในตัวอย่างนี้จะแสดงว่าคุณสามารถใช้ Navigator, SingleChildScrollView, หรือ Controller ของ ScrollView ได้
+  }
   void _performSearch(String query) {
     FirebaseFirestore.instance
         .collection('locations')
