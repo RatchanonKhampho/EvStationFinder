@@ -1,5 +1,5 @@
 import 'package:ev_charger/main.dart';
-import 'package:ev_charger/screens/register.dart';
+import 'package:ev_charger/screens/signup.dart';
 import 'package:flutter/material.dart';
 
 class CompleteProfile extends StatefulWidget {
