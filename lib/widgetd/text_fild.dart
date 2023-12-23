@@ -12,44 +12,38 @@ Widget TextFromFile({
       height: 50,
       child: TextFormField(
         controller: controller,
-        cursorColor: buttoncolors,
-        style: const TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.w700,
-          letterSpacing: 1,
-          color: textmain,
-        ),
+        cursorColor: Colors.purple,
+        style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w700,
+            letterSpacing: 1,
+            color: Text1),
         decoration: InputDecoration(
             labelText: labelText,
-            labelStyle: TextStyle(
-                fontSize: 16, color: buttoncolors, fontWeight: FontWeight.w700),
+            labelStyle: TextStyle(fontSize: 16, color: backgroundblue),
             hintText: hintText,
             hintStyle: TextStyle(
                 fontWeight: FontWeight.w600,
-                color: textmain3,
+                color: text3,
                 letterSpacing: 2,
                 fontSize: 16),
             enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10.0),
+              borderRadius: BorderRadius.circular(20.0),
               borderSide: const BorderSide(color: Colors.black12),
             ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10.0),
-              borderSide: const BorderSide(color: buttoncolors),
-            ),
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(20.0),
               borderSide: const BorderSide(color: Colors.black12),
             ),
             suffixIcon: Container(
               margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               decoration: const BoxDecoration(
                 shape: BoxShape.circle,
-                color: bgcolor,
+                color: backgroundwhite,
               ),
               child: Icon(
                 suffixIcon,
-                color: buttoncolors,
+                color: backgroundblue,
                 size: 25,
               ),
             )),
