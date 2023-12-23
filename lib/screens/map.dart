@@ -1,14 +1,8 @@
-import 'dart:html';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
-import 'package:material_symbols_icons/material_symbols_icons.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:pathfinding/finders/astar.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class map extends StatefulWidget {
   const map({super.key});
@@ -22,7 +16,7 @@ class _mapState extends State<map> {
   GoogleMapController? _mapController;
   List<DocumentSnapshot> _searchResults = [];
   List<DocumentSnapshot> _allLocations = [];
-  late Position _currentPosition;
+  Position? _currentPosition;
   bool _showFilteredMarkers = false;
   String _location = "Press the FAB to get location";
   // ตั้งค่าพิกัดเริ่มต้น
@@ -36,8 +30,8 @@ class _mapState extends State<map> {
     super.initState();
     _loadMarkersFromFirestore();
     _getCurrentLocation();
+    _requestPermission();
   }
-   
 
   bool _filterActive = false;
 
@@ -46,7 +40,8 @@ class _mapState extends State<map> {
       _filterActive = !_filterActive;
     });
   }
-Future<void> _getCurrentLocation() async {
+
+  Future<void> _getCurrentLocation() async {
     try {
       Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high,
@@ -54,10 +49,31 @@ Future<void> _getCurrentLocation() async {
       setState(() {
         _currentPosition = position;
       });
+
+      if (_mapController != null) {
+        // Animate camera to current location
+        _mapController!.animateCamera(
+          CameraUpdate.newLatLng(
+            LatLng(_currentPosition!.latitude, _currentPosition!.longitude),
+          ),
+        );
+      }
     } catch (e) {
       print("Error: $e");
     }
   }
+
+  _requestPermission() async {
+    var status = await Permission.location.request();
+    if (status.isGranted) {
+      print('done');
+    } else if (status.isDenied) {
+      _requestPermission();
+    } else if (status.isPermanentlyDenied) {
+      openAppSettings();
+    }
+  }
+
   // ดึงข้อมูลหมุดจาก Firestore และสร้าง Marker
   Future<void> _loadMarkersFromFirestore() async {
     final markers =
@@ -181,8 +197,6 @@ Future<void> _getCurrentLocation() async {
         );
       },
     );
-
-    
   }
 
   @override
@@ -193,14 +207,15 @@ Future<void> _getCurrentLocation() async {
           GoogleMap(
             initialCameraPosition: CameraPosition(
               target: _initialCameraPosition,
-              zoom: 14,
+              zoom: 15,
             ),
             // ตั้งค่าให้ user สามารถเลื่อนแผนที่ได้
-            myLocationEnabled: true,
+            myLocationEnabled: false,
             // ตั้งค่าให้ user สามารถขยาย/ย่อ แผนที่ได้
-            zoomControlsEnabled: true,
-            compassEnabled: false,
+            zoomControlsEnabled: false,
+            compassEnabled: true,
             mapType: MapType.normal,
+            myLocationButtonEnabled: true,
             onMapCreated: (controller) {
               setState(() {
                 _mapController = controller;
@@ -234,13 +249,24 @@ Future<void> _getCurrentLocation() async {
         },
         child: Icon(Icons.location_on),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endContained,
     );
   }
- // เลื่อนมุมมองไปยังตำแหน่งปัจจุบัน
+
+  // เลื่อนมุมมองไปยังตำแหน่งปัจจุบัน
+  // เลื่อนมุมมองไปยังตำแหน่งปัจจุบัน
   void _scrollToCurrentLocation() {
-    // นำ _currentPosition.latitude และ _currentPosition.longitude ไปใช้ต่อได้ตามความต้องการ
-    // ในตัวอย่างนี้จะแสดงว่าคุณสามารถใช้ Navigator, SingleChildScrollView, หรือ Controller ของ ScrollView ได้
+    if (_currentPosition != null) {
+      _mapController!.animateCamera(
+        CameraUpdate.newLatLng(
+          LatLng(_currentPosition!.latitude, _currentPosition!.longitude),
+        ),
+      );
+    } else {
+      // ทำบางสิ่งเมื่อ _currentPosition ไม่ได้รับค่า
+    }
   }
+
   void _performSearch(String query) {
     FirebaseFirestore.instance
         .collection('locations')
