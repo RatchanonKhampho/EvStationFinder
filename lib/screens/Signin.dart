@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:ev_charger/main.dart';
 import 'package:ev_charger/provider/internet_provider.dart';
 import 'package:ev_charger/provider/sign_in_provider.dart';
-import 'package:ev_charger/screens/signup.dart';
+import 'package:ev_charger/screens/register.dart';
 import 'package:ev_charger/utils/snack_bar.dart';
 import 'package:ev_charger/widgetd/text_fild.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -82,7 +82,7 @@ class _sign_inState extends State<sign_in> {
               ),
               SizedBox(height: 30),
               Container(
-                width: MediaQuery.of(context).size.width * 0.75,
+                width: MediaQuery.of(context).size.width * 0.7,
                 child: Column(
                   children: [
                     Container(
@@ -92,8 +92,8 @@ class _sign_inState extends State<sign_in> {
                           "Welcome",
                           style: TextStyle(
                               fontSize: 30,
-                              color: textmain,
-                              fontWeight: FontWeight.w500),
+                              color: textmain2,
+                              fontWeight: FontWeight.w400),
                         ),
                       ),
                     ),
