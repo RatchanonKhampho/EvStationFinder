@@ -102,7 +102,7 @@ class _CreatePasswordState extends State<CreatePassword> {
                         ],
                       ),
                     ),
-                    SizedBox(height: 10),
+                    SizedBox(height: 100),
                     Container(
                       width: MediaQuery.of(context).size.width * 0.8,
                       child: Column(
