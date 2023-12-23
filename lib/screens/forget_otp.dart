@@ -27,7 +27,7 @@ class _Forget_otpState extends State<Forget_otp> {
         child: isLoading == true
             ? const Center(
                 child: CircularProgressIndicator(
-                  color: Colors.purple,
+                  color: buttoncolors,
                 ),
               )
             : Center(
@@ -82,9 +82,7 @@ class _Forget_otpState extends State<Forget_otp> {
                           height: 60,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
-                            border: Border.all(
-                              color: Colors.purple.shade200,
-                            ),
+                            border: Border.all(color: buttoncolors),
                           ),
                           textStyle: const TextStyle(
                             fontSize: 20,
@@ -127,7 +125,8 @@ class _Forget_otpState extends State<Forget_otp> {
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
-                          color: Colors.purple,
+                          letterSpacing: 0.3,
+                          color: buttoncolors,
                         ),
                       ),
                     ],
