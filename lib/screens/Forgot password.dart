@@ -1,7 +1,8 @@
 import 'package:country_picker/country_picker.dart';
 import 'package:ev_charger/main.dart';
 import 'package:ev_charger/provider/sign_in_provider.dart';
-import 'package:ev_charger/screens/register.dart';
+import 'package:ev_charger/screens/Signin.dart';
+import 'package:ev_charger/screens/signup.dart';
 import 'package:ev_charger/widgetd/custombutton.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -43,9 +44,31 @@ class _ForgetPhoneState extends State<ForgetPhone> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Container(),
               Container(
-                width: MediaQuery.of(context).size.width * 0.7,
+                child: ListTile(
+                  leading: IconButton(
+                    onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => sign_in()),
+                    ),
+                    icon: Icon(Icons.arrow_back_ios_new),
+                    color: textmain3,
+                  ),
+                  title: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Text(
+                        "Forgot Password",
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w600,
+                            color: textmain3),
+                      )),
+                  trailing: Text(""),
+                ),
+              ),
+              SizedBox(height: 30),
+              Container(
+                width: MediaQuery.of(context).size.width * 0.8,
                 child: Column(
                   children: [
                     Text(
@@ -57,7 +80,7 @@ class _ForgetPhoneState extends State<ForgetPhone> {
                         //letterSpacing: 1
                       ),
                     ),
-                    SizedBox(height: 20),
+                    SizedBox(height: 10),
                     Text(
                       'Please enter your phone and we will send you a link to return to your account',
                       textAlign: TextAlign.center,
@@ -67,7 +90,7 @@ class _ForgetPhoneState extends State<ForgetPhone> {
                           //letterSpacing: 2,
                           fontWeight: FontWeight.w600),
                     ),
-                    SizedBox(height: 20),
+                    SizedBox(height: 50),
                     TextFormField(
                       keyboardType: TextInputType.phone,
                       cursorColor: buttoncolors,
@@ -76,7 +99,7 @@ class _ForgetPhoneState extends State<ForgetPhone> {
                           fontSize: 20,
                           fontWeight: FontWeight.w700,
                           letterSpacing: 2,
-                          color: textmain2),
+                          color: textmain),
                       onChanged: (value) {
                         setState(() {
                           phoneController.text = value;
@@ -121,7 +144,7 @@ class _ForgetPhoneState extends State<ForgetPhone> {
                               "${selectedCountry.flagEmoji} +${selectedCountry.phoneCode}",
                               style: TextStyle(
                                   fontSize: 18,
-                                  color: textmain2,
+                                  color: textmain,
                                   fontWeight: FontWeight.w700),
                             ),
                           ),
@@ -144,10 +167,10 @@ class _ForgetPhoneState extends State<ForgetPhone> {
                             : null,
                       ),
                     ),
-                    SizedBox(height: 20),
+                    SizedBox(height: 50),
                     CustomButtonNext(
                         text: "CONTINUE", onPressed: sentPhoneNumber),
-                    SizedBox(height: 20),
+                    SizedBox(height: 10),
                     Text(
                       "Don’t have an account? ",
                       style: TextStyle(
@@ -155,7 +178,7 @@ class _ForgetPhoneState extends State<ForgetPhone> {
                           fontWeight: FontWeight.w500,
                           color: textmain2),
                     ),
-                    SizedBox(height: 20),
+                    SizedBox(height: 10),
                     CustomButtonback(
                       text: "SigUp",
                       onPressed: () => Navigator.push(
