@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
-
+import 'dart:math' show cos, sqrt, asin;
 class map extends StatefulWidget {
   const map({super.key});
 
@@ -12,19 +12,18 @@ class map extends StatefulWidget {
 }
 
 class _mapState extends State<map> {
-  final TextEditingController _searchController = TextEditingController();
   GoogleMapController? _mapController;
   List<DocumentSnapshot> _searchResults = [];
   List<DocumentSnapshot> _allLocations = [];
   Position? _currentPosition;
-  bool _showFilteredMarkers = false;
-  String _location = "Press the FAB to get location";
   // ตั้งค่าพิกัดเริ่มต้น
   static const LatLng _initialCameraPosition = const LatLng(13.7563, 100.5018);
   List<Marker?> _markers = [];
   bool _bottomSheetVisible = false;
   String _selectedMarkerId = "";
-  var _currentIndex = 0;
+  LatLng? _nearestLocation;
+
+
   @override
   void initState() {
     super.initState();
@@ -58,10 +57,38 @@ class _mapState extends State<map> {
           ),
         );
       }
+
+      // Find the nearest location
+      _findNearestLocation();
     } catch (e) {
       print("Error: $e");
     }
   }
+  void _findNearestLocation() {
+    double nearestDistance = double.infinity;
+
+    for (DocumentSnapshot location in _allLocations) {
+      final data = location.data() as Map<String, dynamic>;
+      final double latitude = data['latitude'];
+      final double longitude = data['longitude'];
+
+      final double distance = Geolocator.distanceBetween(
+        _currentPosition!.latitude,
+        _currentPosition!.longitude,
+        latitude,
+        longitude,
+      );
+
+      if (distance < nearestDistance) {
+        nearestDistance = distance;
+        setState(() {
+          _nearestLocation = LatLng(latitude, longitude);
+        });
+      }
+    }
+  }
+
+
 
   _requestPermission() async {
     var status = await Permission.location.request();
@@ -73,6 +100,75 @@ class _mapState extends State<map> {
       openAppSettings();
     }
   }
+
+  // Inside _mapState class
+
+  ListView _buildHorizontalListView() {
+    return ListView.builder(
+      scrollDirection: Axis.horizontal,
+      itemCount: _markers.length,
+      itemBuilder: (context, index) {
+        final marker = _markers[index];
+        if (marker != null) {
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: GestureDetector(
+              onTap: () => _showMarkerDetails(marker.markerId.value),
+              child: Column(
+                children: [
+                  CircleAvatar(
+                    backgroundImage: NetworkImage(
+                      'URL to your marker image', // เปลี่ยนเป็น URL รูปภาพของหมุด
+                    ),
+                    radius: 30,
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    'Marker ${index + 1}',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                ],
+              ),
+            ),
+          );
+        } else {
+          return Container(); // ไม่สร้าง Widget ถ้า Marker เป็น null
+        }
+      },
+    );
+  }
+
+  Widget _buildSearchResults() {
+    return Container(
+      color: Colors.white,
+      child: ListView.builder(
+        shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
+        itemCount: _allLocations.length,
+        itemBuilder: (context, index) {
+          final data = _allLocations[index].data() as Map<String, dynamic>;
+          final String name = data['name'];
+          final double latitude = data['latitude'];
+          final double longitude = data['longitude'];
+
+          return ListTile(
+            title: Text(name),
+            subtitle: (_nearestLocation != null)
+                ? Text('${Geolocator.distanceBetween(
+              _nearestLocation!.latitude,
+              _nearestLocation!.longitude,
+              latitude,
+              longitude,
+            ).toStringAsFixed(2)} meters away')
+                : null,
+            onTap: () => _selectSearchResult(_allLocations[index]),
+          );
+        },
+      ),
+    );
+  }
+
+
 
   // ดึงข้อมูลหมุดจาก Firestore และสร้าง Marker
   Future<void> _loadMarkersFromFirestore() async {
@@ -110,6 +206,8 @@ class _mapState extends State<map> {
 
       // อัพเดต _allLocations
       _allLocations = markers.docs;
+
+
     });
   }
 
@@ -192,7 +290,9 @@ class _mapState extends State<map> {
                   ),
                 ),
               ],
+              
             );
+            
           },
         );
       },
@@ -210,12 +310,12 @@ class _mapState extends State<map> {
               zoom: 15,
             ),
             // ตั้งค่าให้ user สามารถเลื่อนแผนที่ได้
-            myLocationEnabled: false,
+            myLocationEnabled: true,
             // ตั้งค่าให้ user สามารถขยาย/ย่อ แผนที่ได้
             zoomControlsEnabled: false,
             compassEnabled: true,
             mapType: MapType.normal,
-            myLocationButtonEnabled: true,
+            myLocationButtonEnabled: false,
             onMapCreated: (controller) {
               setState(() {
                 _mapController = controller;
@@ -239,18 +339,18 @@ class _mapState extends State<map> {
         child: Icon(Icons.location_on),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,*/
-
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           _getCurrentLocation();
           if (_currentPosition != null) {
             _scrollToCurrentLocation();
+
           }
         },
         child: Icon(Icons.location_on),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endContained,
     );
+    
   }
 
   // เลื่อนมุมมองไปยังตำแหน่งปัจจุบัน
@@ -280,26 +380,6 @@ class _mapState extends State<map> {
         });
   }
 
-  // คำนวณขอบเขตของหมุดทั้งหมด
-  LatLngBounds _boundsFromLatLngList(List<LatLng> list) {
-    double south = 90;
-    double west = 180;
-    double north = -90;
-    double east = -180;
-
-    for (LatLng latLng in list) {
-      if (latLng.latitude < south) south = latLng.latitude;
-      if (latLng.longitude < west) west = latLng.longitude;
-      if (latLng.latitude > north) north = latLng.latitude;
-      if (latLng.longitude > east) east = latLng.longitude;
-    }
-
-    return LatLngBounds(
-      southwest: LatLng(south, west),
-      northeast: LatLng(north, east),
-    );
-  }
-
   void _selectSearchResult(DocumentSnapshot result) {
     final data = result.data() as Map<String, dynamic>;
     final LatLng position = LatLng(data['latitude'], data['longitude']);
@@ -313,24 +393,6 @@ class _mapState extends State<map> {
     });
   }
 
-  Widget _buildSearchResults() {
-    return Container(
-      color: Colors.white,
-      child: ListView.builder(
-        shrinkWrap: true, // ตั้งค่า shrinkWrap เป็น true
-        physics:
-            NeverScrollableScrollPhysics(), // ตั้งค่า physics เป็น NeverScrollableScrollPhysics
-        itemCount: _searchResults.length,
-        itemBuilder: (context, index) {
-          final data = _searchResults[index].data() as Map<String, dynamic>;
-          return ListTile(
-            title: Text(data['name']),
-            onTap: () => _selectSearchResult(_searchResults[index]),
-          );
-        },
-      ),
-    );
-  }
 
   void _showAllLocations() {
     showModalBottomSheet(
