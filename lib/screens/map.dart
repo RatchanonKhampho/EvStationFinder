@@ -1,12 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
-import 'package:material_symbols_icons/material_symbols_icons.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../sidebar/navigation_bloc.dart';
 
-class map extends StatefulWidget {
+class map extends StatefulWidget implements NavigationStates {
   const map({super.key});
 
   @override
@@ -31,6 +30,7 @@ class _mapState extends State<map> {
     super.initState();
     _loadMarkersFromFirestore();
   }
+
   bool _filterActive = false;
 
   void _toggleFilter() {
@@ -41,40 +41,42 @@ class _mapState extends State<map> {
 
   // ดึงข้อมูลหมุดจาก Firestore และสร้าง Marker
   Future<void> _loadMarkersFromFirestore() async {
-    final markers = await FirebaseFirestore.instance.collection('locations').get();
+    final markers =
+        await FirebaseFirestore.instance.collection('locations').get();
     setState(() {
-      _markers = markers.docs.map((doc) {
-        final data = doc.data() as Map<String, dynamic>;
-        final LatLng position = LatLng(data['latitude'], data['longitude']);
+      _markers = markers.docs
+          .map((doc) {
+            final data = doc.data() as Map<String, dynamic>;
+            final LatLng position = LatLng(data['latitude'], data['longitude']);
 
-        // เช็คว่าข้อมูลหมุดต้องมีเงื่อนไขที่คุณต้องการกรองหรือไม่
-        if (_filterActive) {
-          // ตรวจสอบเงื่อนไขกรอง ยกตัวอย่างเช่น 'category' คือชื่อของฟิลด์ที่คุณใช้ในการกรอง
-          if (data['Type'] == 'Type 1') {
-            return Marker(
-              markerId: MarkerId(doc.id),
-              position: position,
-              onTap: () => _showMarkerDetails(doc.id),
-            );
-          } else {
-            return null; // ถ้าไม่ตรงเงื่อนไขจะไม่สร้าง Marker
-          }
-        } else {
-          // ถ้าไม่มีการกรองให้สร้าง Marker ทุกตัว
-          return Marker(
-            markerId: MarkerId(doc.id),
-            position: position,
-            onTap: () => _showMarkerDetails(doc.id),
-          );
-        }
-      }).where((marker) => marker != null).toList();
+            // เช็คว่าข้อมูลหมุดต้องมีเงื่อนไขที่คุณต้องการกรองหรือไม่
+            if (_filterActive) {
+              // ตรวจสอบเงื่อนไขกรอง ยกตัวอย่างเช่น 'category' คือชื่อของฟิลด์ที่คุณใช้ในการกรอง
+              if (data['Type'] == 'Type 1') {
+                return Marker(
+                  markerId: MarkerId(doc.id),
+                  position: position,
+                  onTap: () => _showMarkerDetails(doc.id),
+                );
+              } else {
+                return null; // ถ้าไม่ตรงเงื่อนไขจะไม่สร้าง Marker
+              }
+            } else {
+              // ถ้าไม่มีการกรองให้สร้าง Marker ทุกตัว
+              return Marker(
+                markerId: MarkerId(doc.id),
+                position: position,
+                onTap: () => _showMarkerDetails(doc.id),
+              );
+            }
+          })
+          .where((marker) => marker != null)
+          .toList();
 
       // อัพเดต _allLocations
       _allLocations = markers.docs;
     });
   }
-
-
 
   void _showMarkerDetails(String markerId) {
     setState(() {
@@ -89,7 +91,10 @@ class _mapState extends State<map> {
       context: context,
       builder: (context) {
         return FutureBuilder<DocumentSnapshot>(
-          future: FirebaseFirestore.instance.collection('locations').doc(_selectedMarkerId).get(),
+          future: FirebaseFirestore.instance
+              .collection('locations')
+              .doc(_selectedMarkerId)
+              .get(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return CircularProgressIndicator();
@@ -101,13 +106,17 @@ class _mapState extends State<map> {
             return ListView(
               shrinkWrap: true,
               children: [
-                  Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: Container(child: Text("Detail",
-                      style: TextStyle(fontSize: 25),),),
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Container(
+                      child: Text(
+                        "Detail",
+                        style: TextStyle(fontSize: 25),
+                      ),
                     ),
                   ),
+                ),
                 Image.network('${data['images']}'),
                 Padding(
                   padding: const EdgeInsets.only(left: 15.0, top: 10),
@@ -119,8 +128,9 @@ class _mapState extends State<map> {
                 Padding(
                   padding: const EdgeInsets.only(left: 30.0),
                   child: ListTile(
-                    leading: Icon(Icons.location_on_outlined,
-                    color: Colors.blue,
+                    leading: Icon(
+                      Icons.location_on_outlined,
+                      color: Colors.blue,
                     ),
                     title: Text('ที่อยู่: ${data['address']}'),
                   ),
@@ -128,17 +138,20 @@ class _mapState extends State<map> {
                 Padding(
                   padding: const EdgeInsets.only(left: 30.0),
                   child: ListTile(
-                    leading:Icon(Icons.timer_outlined,
-                    color: Colors.blue,) ,
+                    leading: Icon(
+                      Icons.timer_outlined,
+                      color: Colors.blue,
+                    ),
                     title: Text('เวลา: ${data['time']}'),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 30.0),
                   child: ListTile(
-                    leading: Image.network (data['type images'],
-                    width: 20,
-                    height: 20,
+                    leading: Image.network(
+                      data['type images'],
+                      width: 20,
+                      height: 20,
                     ),
                     title: Text('Type: ${data['Type']}'),
                   ),
@@ -152,7 +165,6 @@ class _mapState extends State<map> {
                     child: Text('เปิด Google Maps'),
                   ),
                 )
-
               ],
             );
           },
@@ -160,7 +172,6 @@ class _mapState extends State<map> {
       },
     );
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -198,25 +209,18 @@ class _mapState extends State<map> {
     );
   }
 
-
-
   void _performSearch(String query) {
     FirebaseFirestore.instance
         .collection('locations')
         .where('keywords', arrayContainsAny: [query.toLowerCase()])
         .get()
         .then((QuerySnapshot querySnapshot) {
-      setState(() {
-        _searchResults = querySnapshot.docs;
-        _bottomSheetVisible = true;
-      });
-    });
+          setState(() {
+            _searchResults = querySnapshot.docs;
+            _bottomSheetVisible = true;
+          });
+        });
   }
-
-
-
-
-
 
   // คำนวณขอบเขตของหมุดทั้งหมด
   LatLngBounds _boundsFromLatLngList(List<LatLng> list) {
@@ -251,13 +255,13 @@ class _mapState extends State<map> {
     });
   }
 
-
   Widget _buildSearchResults() {
     return Container(
       color: Colors.white,
       child: ListView.builder(
         shrinkWrap: true, // ตั้งค่า shrinkWrap เป็น true
-        physics: NeverScrollableScrollPhysics(), // ตั้งค่า physics เป็น NeverScrollableScrollPhysics
+        physics:
+            NeverScrollableScrollPhysics(), // ตั้งค่า physics เป็น NeverScrollableScrollPhysics
         itemCount: _searchResults.length,
         itemBuilder: (context, index) {
           final data = _searchResults[index].data() as Map<String, dynamic>;
@@ -269,6 +273,7 @@ class _mapState extends State<map> {
       ),
     );
   }
+
   void _showAllLocations() {
     showModalBottomSheet(
       context: context,
@@ -278,13 +283,16 @@ class _mapState extends State<map> {
           children: _allLocations.map((doc) {
             final data = doc.data() as Map<String, dynamic>;
             return ListTile(
-              leading: Image.network('${data['logo']}',
+              leading: Image.network(
+                '${data['logo']}',
                 width: 50,
-                height: 50,),
+                height: 50,
+              ),
               title: Text('${data['name']}'), // แสดงชื่อสถานที่
               onTap: () {
                 // ปิด BottomSheet และทำอะไรกับสถานที่ที่เลือก (เช่น นำคุณไปยังสถานที่นั้น)
-                final LatLng position = LatLng(data['latitude'], data['longitude']);
+                final LatLng position =
+                    LatLng(data['latitude'], data['longitude']);
                 _mapController!.animateCamera(CameraUpdate.newLatLng(position));
                 setState(() {
                   _bottomSheetVisible = false;
@@ -299,6 +307,7 @@ class _mapState extends State<map> {
       },
     );
   }
+
   void _launchGoogleMaps(double latitude, double longitude) async {
     final String googleMapsUrl =
         'http://maps.google.com/maps?daddr=$latitude,$longitude&mode=driving';
@@ -309,8 +318,4 @@ class _mapState extends State<map> {
       throw 'ไม่สามารถเปิด Google Maps ได้: $googleMapsUrl';
     }
   }
-
-
-
-
 }

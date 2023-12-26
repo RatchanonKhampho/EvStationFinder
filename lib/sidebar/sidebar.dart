@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:ev_charger/main.dart';
+import 'package:ev_charger/sidebar/menu_item.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -105,6 +106,24 @@ class _SideBarState extends State<SideBar>
                         indent: 25,
                         endIndent: 25,
                       ),
+                      MenuItem(
+                          icon: Icons.pin_drop_outlined,
+                          title: " Map",
+                          onTap: () {
+                            Container();
+                          }),
+                      MenuItem(
+                          icon: Icons.pin_drop_outlined,
+                          title: " Map",
+                          onTap: () {
+                            Container();
+                          }),
+                      MenuItem(
+                          icon: Icons.pin_drop_outlined,
+                          title: " Map",
+                          onTap: () {
+                            Container();
+                          })
                     ],
                   ),
                 ),
