@@ -8,11 +8,66 @@ Widget TextFromFile({
   required IconData suffixIcon,
 }) =>
     Container(
-      width: 370,
+      width: 1000,
       height: 50,
       child: TextFormField(
         controller: controller,
         cursorColor: buttoncolors,
+        style: const TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.w700,
+          letterSpacing: 1,
+          color: textmain,
+        ),
+        decoration: InputDecoration(
+            labelText: labelText,
+            labelStyle: TextStyle(
+                fontSize: 16, color: buttoncolors, fontWeight: FontWeight.w700),
+            hintText: hintText,
+            hintStyle: TextStyle(
+                fontWeight: FontWeight.w600,
+                color: textmain3,
+                letterSpacing: 2,
+                fontSize: 16),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10.0),
+              borderSide: const BorderSide(color: Colors.black12),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10.0),
+              borderSide: const BorderSide(color: buttoncolors),
+            ),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: const BorderSide(color: Colors.black12),
+            ),
+            suffixIcon: Container(
+              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+                color: bgcolor,
+              ),
+              child: Icon(
+                suffixIcon,
+                color: buttoncolors,
+                size: 25,
+              ),
+            )),
+      ),
+    );
+Widget TextFromFilePassword({
+  required TextEditingController controller,
+  required String labelText,
+  required String hintText,
+  required IconData suffixIcon,
+}) =>
+    Container(
+      width: 1000,
+      height: 50,
+      child: TextFormField(
+        controller: controller,
+        cursorColor: buttoncolors,
+        obscureText: true,
         style: const TextStyle(
           fontSize: 20,
           fontWeight: FontWeight.w700,
@@ -94,7 +149,7 @@ Widget TextFromFileEmail({
       ),
     );
 
-Widget TextFromFilePassword({
+Widget TextFromFilePasswordSign({
   required TextEditingController controller,
 }) =>
     Container(
@@ -103,12 +158,13 @@ Widget TextFromFilePassword({
         autofillHints: [AutofillHints.email],
         keyboardType: TextInputType.emailAddress,
         cursorColor: buttoncolors,
+        obscureText: true,
         style: const TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.w700,
             letterSpacing: 1.5,
             color: Text1),
-        decoration: const InputDecoration(
+        decoration: InputDecoration(
           label: Text("Password"),
           labelStyle: TextStyle(
             fontSize: 16,
@@ -117,27 +173,29 @@ Widget TextFromFilePassword({
             letterSpacing: 1,
           ),
           focusedBorder: UnderlineInputBorder(
-            borderSide: const BorderSide(
+            borderSide: BorderSide(
               color: buttoncolors,
             ),
           ),
           enabledBorder: UnderlineInputBorder(
             //borderRadius: BorderRadius.circular(50.0),
-            borderSide: const BorderSide(
+            borderSide: BorderSide(
               color: buttoncolors,
             ),
           ),
           disabledBorder: UnderlineInputBorder(
             //borderRadius: BorderRadius.circular(50.0),
-            borderSide: const BorderSide(
+            borderSide: BorderSide(
               color: buttoncolors,
             ),
           ),
-        ),
-        /*validator: 
+
+          /*validator: 
         },*/
+        ),
       ),
     );
+
 Widget change({
   required IconData leading,
   required String title,

@@ -56,6 +56,7 @@ class _MyHomePageState extends State<MyHomePage> {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     return const MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: SplashScreen(),
     );
   }

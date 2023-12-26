@@ -43,18 +43,6 @@ class _Forget_otpState extends State<Forget_otp> {
                           child: const Icon(Icons.arrow_back),
                         ),
                       ),
-                      /*Container(
-                        width: 200,
-                        height: 200,
-                        padding: const EdgeInsets.all(20.0),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.purple.shade50,
-                        ),
-                        child: Image.asset(
-                          "assets/image2.png",
-                        ),
-                      ),*/
                       const SizedBox(height: 20),
                       const Text(
                         "Verification",

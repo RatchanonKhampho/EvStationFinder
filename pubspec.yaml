@@ -59,6 +59,10 @@ dependencies:
   anim_search_bar: ^2.0.3
   url_launcher: ^6.1.14
   sign_button: ^2.0.6
+  rxdart: ^0.27.7
+  flutter_bloc: ^8.1.3
+  
+  
 
 
 dev_dependencies:

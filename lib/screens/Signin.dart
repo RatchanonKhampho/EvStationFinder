@@ -5,6 +5,7 @@ import 'package:ev_charger/provider/internet_provider.dart';
 import 'package:ev_charger/provider/sign_in_provider.dart';
 import 'package:ev_charger/screens/signup.dart';
 import 'package:ev_charger/utils/snack_bar.dart';
+import 'package:ev_charger/widgetd/image.dart';
 import 'package:ev_charger/widgetd/text_fild.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -62,12 +63,7 @@ class _sign_inState extends State<sign_in> {
                     height: MediaQuery.of(context).size.height,
                   ),
                   Container(
-                    width: 150,
-                    height: 150,
-                    color: buttoncolors,
-                  ),
-                  const SizedBox(
-                    height: 20,
+                    child: logoWidget("images/Logo.png"),
                   ),
                   Container(
                     child: const Text(
@@ -75,6 +71,7 @@ class _sign_inState extends State<sign_in> {
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 45,
+                        color: buttoncolors,
                       ),
                     ),
                   )
@@ -106,9 +103,9 @@ class _sign_inState extends State<sign_in> {
                               children: [
                                 TextFromFileEmail(controller: _emailController),
                                 SizedBox(height: 20),
-                                TextFromFilePassword(
+                                TextFromFilePasswordSign(
                                     controller: _passwordController),
-                                //SizedBox(height: 10),
+
                                 Row(
                                     mainAxisSize: MainAxisSize.max,
                                     mainAxisAlignment: MainAxisAlignment.end,
@@ -130,7 +127,6 @@ class _sign_inState extends State<sign_in> {
                                               fontWeight: FontWeight.bold,
                                               fontSize: 16,
                                               color: buttoncolors,
-                                              //letterSpacing: 0.5
                                             ),
                                           ))
                                     ]),

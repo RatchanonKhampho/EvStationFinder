@@ -88,13 +88,13 @@ class _CreatePasswordState extends State<CreatePassword> {
                       child: Column(
                         children: [
                           SizedBox(height: 20),
-                          TextFromFile(
+                          TextFromFilePassword(
                               controller: _passwordController,
                               labelText: "password",
                               hintText: "Enter your password",
                               suffixIcon: Icons.lock),
                           SizedBox(height: 20),
-                          TextFromFile(
+                          TextFromFilePassword(
                               controller: _confirmController,
                               labelText: "Confirm password",
                               hintText: "Enter your Confirm password",
