@@ -56,8 +56,8 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
-    return const MaterialApp(
-      home: map(),
+    return  MaterialApp(
+      home: HomePage(),
     );
   }
 }
