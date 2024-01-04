@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../sidebar/navigation_bloc.dart';
-
-class map extends StatefulWidget implements NavigationStates {
+class map extends StatefulWidget {
   const map({super.key});
 
   @override

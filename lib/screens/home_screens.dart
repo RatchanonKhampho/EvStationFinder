@@ -25,14 +25,14 @@ class _HomeScreenState extends State<HomeScreen> {
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.w600);
 
-  static  List<Widget> _widgetOptions = <Widget>[
+  static List<Widget> _widgetOptions = <Widget>[
     map(),
     Text(
-      'Likes',
+      'Station',
       style: optionStyle,
     ),
     Text(
-      'Search',
+      'Profile',
       style: optionStyle,
     ),
     profile(),
@@ -47,13 +47,13 @@ class _HomeScreenState extends State<HomeScreen> {
       bottomNavigationBar: Container(
         padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
         decoration: BoxDecoration(
-          border: Border.all(color: text3),
-          borderRadius: BorderRadius.circular(40),
+          //border: Border.all(color: text3),
+          //borderRadius: BorderRadius.circular(10),
           color: Colors.white,
           boxShadow: [
             BoxShadow(
               blurRadius: 20,
-              color: Colors.black.withOpacity(.1), // เงา
+              color: Colors.black26, // เงา
             )
           ],
         ),
@@ -64,24 +64,21 @@ class _HomeScreenState extends State<HomeScreen> {
               rippleColor: Colors.grey[300]!,
               hoverColor: text3,
               gap: 12,
-              activeColor: Text1,
+              activeColor: Colors.white,
               iconSize: 24,
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
               duration: Duration(milliseconds: 400),
-              tabBackgroundColor: text3,
-              color: Text1, // ยังไม่เลืออก
+              tabBackgroundColor: buttoncolors,
+              color: buttoncolors,
+              // ยังไม่เลืออก
               tabs: [
                 GButton(
                   icon: LineIcons.home,
                   text: 'Home',
                 ),
                 GButton(
-                  icon: LineIcons.qrcode,
-                  text: 'Likes',
-                ),
-                GButton(
-                  icon: LineIcons.wallet,
-                  text: 'Search',
+                  icon: LineIcons.mapMarker,
+                  text: 'Station',
                 ),
                 GButton(
                   icon: LineIcons.user,
