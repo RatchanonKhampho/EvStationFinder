@@ -1,9 +1,11 @@
 import 'dart:async';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 
 
 
@@ -18,7 +20,7 @@ class HomePageState extends State<HomePage> {
    final Completer<GoogleMapController> _controller = Completer();
   double zoomVal = 5.0;
   List<DocumentSnapshot> EV = [];
-  
+  Set<Polyline> _polylines = {};
   @override
   void initState() {
     super.initState();
@@ -73,6 +75,63 @@ Future<double> _getDistance(double destinationLat, double destinationLong) async
   }
 }
 
+Future<void> _gotoLocation(double lat, double long) async {
+  final GoogleMapController controller = await _controller.future;
+
+  // ดึงตำแหน่งปัจจุบัน
+  Position currentPosition = await Geolocator.getCurrentPosition();
+  double currentLat = currentPosition.latitude;
+  double currentLong = currentPosition.longitude;
+
+  // เรียกใช้ FlutterPolylinePoints
+  PolylinePoints polylinePoints = PolylinePoints();
+
+  // กำหนดตำแหน่งเริ่มและสิ้นสุด
+  PointLatLng startLatLng = PointLatLng(currentLat, currentLong);
+  PointLatLng endLatLng = PointLatLng(lat, long);
+
+ // ดึงเส้นทาง
+  PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
+    'AIzaSyDfep5HgNL_RXKAalzR0QAWObeikpqAc9c', // แทน YOUR_GOOGLE_MAPS_API_KEY ด้วย API Key ของคุณ
+    startLatLng,
+    endLatLng,
+    travelMode: TravelMode.driving,
+  );
+
+  // ตรวจสอบว่ามีข้อมูลเส้นทาง
+  if (result.status == 'OK') {
+    // แปลง List<PointLatLng> เป็น List<LatLng>
+    List<LatLng> polylineCoordinates = result.points
+        .map((PointLatLng point) => LatLng(point.latitude, point.longitude))
+        .toList();
+
+    // สร้าง Polyline object
+    Polyline polyline = Polyline(
+      polylineId: PolylineId('route1'),
+      color: Colors.blue,
+      points: polylineCoordinates,
+      width: 4,
+      startCap: Cap.roundCap,
+      endCap: Cap.roundCap,
+    );
+
+    // อัพเดท Set ของ Polylines
+    setState(() {
+      _polylines.add(polyline);
+    });
+
+   // ขยับแผนที่ไปที่ตำแหน่งปลายทาง
+  LatLngBounds bounds = LatLngBounds(
+    southwest: LatLng(min(currentLat, lat), min(currentLong, long)),
+    northeast: LatLng(max(currentLat, lat), max(currentLong, long)),
+  );
+
+
+  CameraUpdate cameraUpdate = CameraUpdate.newLatLngBounds(bounds, 50.0);
+
+  controller.animateCamera(cameraUpdate);
+  }
+}
 
  Widget _buildContainer() {
   return Align(
@@ -191,20 +250,16 @@ Container(
         mapType: MapType.normal,
         initialCameraPosition:  const CameraPosition(target: LatLng(40.712776, -74.005974), zoom: 12),
         myLocationEnabled: true,
+        
         onMapCreated: (GoogleMapController controller) {
           _controller.complete(controller);
         },
         markers: 
          _createMarkers(),
+         polylines: _polylines,
         
       ),
     );
-  }
-
-  Future<void> _gotoLocation(double lat,double long) async {
-    final GoogleMapController controller = await _controller.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: LatLng(lat, long), zoom: 15,tilt: 20.0,
-      bearing: 45.0,)));
   }
 
   Set<Marker> _createMarkers() {
