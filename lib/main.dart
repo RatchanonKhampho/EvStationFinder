@@ -1,5 +1,6 @@
 import 'package:ev_charger/provider/internet_provider.dart';
 import 'package:ev_charger/provider/sign_in_provider.dart';
+import 'package:ev_charger/screens/map.dart';
 import 'package:ev_charger/screens/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -55,7 +56,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
-    return const MaterialApp(
+    return  MaterialApp(
       home: SplashScreen(),
     );
   }
