@@ -6,6 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 
 
@@ -25,6 +26,7 @@ class HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     fetchEV();
+    _requestLocationPermission();
   }
   Future<void> fetchEV() async {
   QuerySnapshot snapshot =
@@ -74,7 +76,17 @@ Future<double> _getDistance(double destinationLat, double destinationLong) async
     return 0.0;
   }
 }
+Future<void> _requestLocationPermission() async {
+  var status = await Permission.location.request();
 
+  if (status == PermissionStatus.granted) {
+    // ทำตามขั้นตอนที่ต้องการทำหลังจากได้รับอนุญาต
+    print('Location permission granted');
+  } else {
+    // แจ้งเตือนหรือทำตามตามที่คุณต้องการเมื่อไม่ได้รับอนุญาต
+    print('Location permission denied');
+  }
+}
 Future<void> _gotoLocation(double lat, double long) async {
   final GoogleMapController controller = await _controller.future;
 
