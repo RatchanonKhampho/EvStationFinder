@@ -28,13 +28,35 @@ class HomePageState extends State<HomePage> {
     fetchEV();
     _requestLocationPermission();
   }
-  Future<void> fetchEV() async {
-  QuerySnapshot snapshot =
-      await FirebaseFirestore.instance.collection('locations').get();
+ Future<void> fetchEV() async {
+  QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('locations').get();
+
+  // Calculate and set distance for each EV
+  for (var doc in snapshot.docs) {
+    double lat = doc['latitude'] as double;
+    double long = doc['longitude'] as double;
+    double distance = await _getDistance(lat, long);
+
+    // Update the document in Firestore using DocumentReference
+    FirebaseFirestore.instance.collection('locations').doc(doc.id).update({
+      'distance': distance,
+      'distanceText': (distance / 1000.0).toStringAsFixed(2) + ' km away',
+    });
+  }
+
+  // Retrieve the updated data after updating Firestore
+  QuerySnapshot updatedSnapshot = await FirebaseFirestore.instance.collection('locations').get();
+
+  // Update EV list
   setState(() {
-    EV = snapshot.docs;
+    EV = updatedSnapshot.docs;
   });
 }
+
+
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -146,45 +168,38 @@ Future<void> _gotoLocation(double lat, double long) async {
 }
 
  Widget _buildContainer() {
-  return Align(
-    alignment: Alignment.bottomLeft,
-    child: Container(
-      margin: const EdgeInsets.symmetric(vertical: 20.0),
-      height: 150.0,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: EV.length,
-        itemBuilder: (context, index) {
-          try {
-            String image = EV[index]['images'] as String;
-            double lat = EV[index]['latitude'] as double;
-            double long = EV[index]['longitude'] as double;
-            String EVName = EV[index]['name'] as String;
+    // เรียงลำดับ EV ตามระยะห่างก่อนที่จะสร้าง container
+    EV.sort((a, b) {
+      double distanceA = a['distance'] as double;
+      double distanceB = b['distance'] as double;
+      return distanceA.compareTo(distanceB);
+    });
 
-            return FutureBuilder<double>(
-              future: _getDistance(lat, long),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  double distanceInMeters = snapshot.data!;
-                  double distanceInKilometers = distanceInMeters / 1000.0;
-                  String distanceText = distanceInKilometers.toStringAsFixed(2) + ' km away';
+    return Align(
+      alignment: Alignment.bottomLeft,
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 20.0),
+        height: 150.0,
+        child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: EV.length,
+          itemBuilder: (context, index) {
+            try {
+              String image = EV[index]['images'] as String;
+              double lat = EV[index]['latitude'] as double;
+              double long = EV[index]['longitude'] as double;
+              String EVName = EV[index]['name'] as String;
 
-                  return _boxes(image, lat, long, EVName, distanceText);
-                } else {
-                  return Container();
-                }
-              },
-            );
-          } catch (e) {
-            print('Error building container for document ${EV[index].id}: $e');
-            return Container(); // or replace with a placeholder widget
-          }
-        },
+              return _boxes(image, lat, long, EVName, EV[index]['distanceText'] as String);
+            } catch (e) {
+              print('Error building container for document ${EV[index].id}: $e');
+              return Container(); // หรือแทนด้วยวิดเจ็ตที่ใช้เป็นตัวยึดตำแหน่ง
+            }
+          },
+        ),
       ),
-    ),
-  );
-}
-
+    );
+  }
   Widget _boxes(String _image, double lat, double long, String EVName, String distanceText) {
     print('Image: $_image, Lat: $lat, Long: $long, EVName: $EVName, Distance: $distanceText');
   return GestureDetector(
