@@ -3,8 +3,9 @@ import 'dart:async';
 import 'package:ev_charger/main.dart';
 import 'package:ev_charger/provider/internet_provider.dart';
 import 'package:ev_charger/provider/sign_in_provider.dart';
-import 'package:ev_charger/screens/register.dart';
+import 'package:ev_charger/screens/signup.dart';
 import 'package:ev_charger/utils/snack_bar.dart';
+import 'package:ev_charger/widgetd/image.dart';
 import 'package:ev_charger/widgetd/text_fild.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +15,7 @@ import 'package:rounded_loading_button/rounded_loading_button.dart';
 
 import '../utils/next_Screen.dart';
 import '../widgetd/custombutton.dart';
-import 'forget_phone.dart';
+import 'Forgot password.dart';
 import 'home_screens.dart';
 
 class sign_in extends StatefulWidget {
@@ -62,12 +63,7 @@ class _sign_inState extends State<sign_in> {
                     height: MediaQuery.of(context).size.height,
                   ),
                   Container(
-                    width: 150,
-                    height: 150,
-                    color: buttoncolors,
-                  ),
-                  const SizedBox(
-                    height: 20,
+                    child: logoWidget("images/Logo.png"),
                   ),
                   Container(
                     child: const Text(
@@ -75,6 +71,7 @@ class _sign_inState extends State<sign_in> {
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 45,
+                        color: buttoncolors,
                       ),
                     ),
                   )
@@ -82,7 +79,7 @@ class _sign_inState extends State<sign_in> {
               ),
               SizedBox(height: 30),
               Container(
-                width: MediaQuery.of(context).size.width * 0.7,
+                width: MediaQuery.of(context).size.width * 0.75,
                 child: Column(
                   children: [
                     Container(
@@ -92,8 +89,8 @@ class _sign_inState extends State<sign_in> {
                           "Welcome",
                           style: TextStyle(
                               fontSize: 30,
-                              color: textmain2,
-                              fontWeight: FontWeight.w400),
+                              color: textmain,
+                              fontWeight: FontWeight.w500),
                         ),
                       ),
                     ),
@@ -106,9 +103,9 @@ class _sign_inState extends State<sign_in> {
                               children: [
                                 TextFromFileEmail(controller: _emailController),
                                 SizedBox(height: 20),
-                                TextFromFilePassword(
+                                TextFromFilePasswordSign(
                                     controller: _passwordController),
-                                //SizedBox(height: 10),
+
                                 Row(
                                     mainAxisSize: MainAxisSize.max,
                                     mainAxisAlignment: MainAxisAlignment.end,
@@ -130,7 +127,6 @@ class _sign_inState extends State<sign_in> {
                                               fontWeight: FontWeight.bold,
                                               fontSize: 16,
                                               color: buttoncolors,
-                                              //letterSpacing: 0.5
                                             ),
                                           ))
                                     ]),
@@ -157,12 +153,27 @@ class _sign_inState extends State<sign_in> {
                                       });
                                     }),
                                 const SizedBox(height: 20),
-                                const Text(
-                                  "OR",
-                                  style: TextStyle(
-                                      color: textmain2,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Container(
+                                        width: 100,
+                                        height: 1,
+                                        color: buttoncolors),
+                                    Text(
+                                      "  OR  ",
+                                      style: TextStyle(
+                                          color: textmain2,
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    Container(
+                                      width: 100,
+                                      height: 1,
+                                      color: buttoncolors,
+                                    ),
+                                  ],
                                 ),
                                 const SizedBox(height: 20),
 
@@ -234,6 +245,7 @@ class _sign_inState extends State<sign_in> {
               ),
               SizedBox(height: 20),
               Container(
+                width: MediaQuery.of(context).size.width * 0.8,
                 child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisSize: MainAxisSize.max,
@@ -252,7 +264,7 @@ class _sign_inState extends State<sign_in> {
                           child: const Text(
                             'Sign Up',
                             style: TextStyle(
-                                fontSize: 16,
+                                fontSize: 18,
                                 color: buttoncolors,
                                 letterSpacing: 0.5),
                           ))
