@@ -15,7 +15,7 @@ class SignInProvide extends ChangeNotifier {
   final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
   final FacebookAuth facebookAuth = FacebookAuth.instance;
   final GoogleSignIn googleSignIn = GoogleSignIn();
-  final
+
   bool _isSignedIn = false;
   bool get isSignedIn => _isSignedIn;
 
@@ -144,7 +144,6 @@ class SignInProvide extends ChangeNotifier {
   Future userSignout() async {
     await _firebaseAuth.signOut();
     await googleSignIn.signOut();
-
     _isSignedIn = false;
     notifyListeners();
     // claer all Storage information (ล้างข้อมูล)

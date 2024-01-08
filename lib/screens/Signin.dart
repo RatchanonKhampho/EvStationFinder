@@ -285,7 +285,6 @@ class _sign_inState extends State<sign_in> {
 
     if (ip.hasInternet == false) {
       openSnackbar(context, "Check your Internet connection ", Colors.red);
-      googleController.reset();
     } else {
       await sp.signInWithGoogle().then((value) {
         if (sp.hasError == true) {
@@ -293,7 +292,7 @@ class _sign_inState extends State<sign_in> {
           googleController.reset();
         } else {
           // checking whether user exists or not(ตรวจสอบว่ามีผู้ใช้อยู่หรือไม่)
-          sp.checkUserExists().then((value) async {
+          sp.checkExistingUser().then((value) async {
             if (value == true) {
               // user exists
               await sp.getUserDataFromFirestore(sp.uid).then((value) => sp
