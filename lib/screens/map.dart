@@ -260,7 +260,7 @@ Container(
       width: MediaQuery.of(context).size.width,
       child: GoogleMap(
         mapType: MapType.normal,
-        initialCameraPosition:  const CameraPosition(target: LatLng(40.712776, -74.005974), zoom: 12),
+        initialCameraPosition:  const CameraPosition(target: LatLng(13.755437519298216, 100.50534958162314), zoom: 12),
         myLocationEnabled: true,
         
         onMapCreated: (GoogleMapController controller) {
