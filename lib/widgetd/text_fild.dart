@@ -45,7 +45,7 @@ Widget TextFromFile({
               margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               decoration: const BoxDecoration(
                 shape: BoxShape.circle,
-                color: bgcolor,
+
               ),
               child: Icon(
                 suffixIcon,
@@ -100,7 +100,6 @@ Widget TextFromFilePassword({
               margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               decoration: const BoxDecoration(
                 shape: BoxShape.circle,
-                color: bgcolor,
               ),
               child: Icon(
                 suffixIcon,
@@ -195,6 +194,19 @@ Widget TextFromFilePasswordSign({
         ),
       ),
     );
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 Widget change({
   required IconData leading,

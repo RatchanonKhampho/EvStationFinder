@@ -32,7 +32,6 @@ class _sign_inState extends State<sign_in> {
       RoundedLoadingButtonController();
   final RoundedLoadingButtonController facebookController =
       RoundedLoadingButtonController();
-
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
@@ -47,6 +46,8 @@ class _sign_inState extends State<sign_in> {
     return Scaffold(
         body: SafeArea(
       child: Container(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
         decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage("images/bg.png"),
@@ -59,9 +60,6 @@ class _sign_inState extends State<sign_in> {
             children: [
               Column(
                 children: [
-                  Container(
-                    height: MediaQuery.of(context).size.height,
-                  ),
                   Container(
                     child: logoWidget("images/Logo.png"),
                   ),

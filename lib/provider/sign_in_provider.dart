@@ -144,6 +144,7 @@ class SignInProvide extends ChangeNotifier {
   Future userSignout() async {
     await _firebaseAuth.signOut();
     await googleSignIn.signOut();
+    //await googleSignIn.disconnect();
     _isSignedIn = false;
     notifyListeners();
     // claer all Storage information (ล้างข้อมูล)
