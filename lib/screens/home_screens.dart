@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:line_icons/line_icons.dart';
 
+import 'Chatbot.dart';
 void main() => runApp(MaterialApp(
     builder: (context, child) {
       return Directionality(textDirection: TextDirection.ltr, child: child!);
@@ -27,10 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   static List<Widget> _widgetOptions = <Widget>[
     HomePage(),
-    Text(
-      'Station',
-      style: optionStyle,
-    ),
+    chatbot(),
     profile(),
   ];
 
@@ -70,11 +68,10 @@ class _HomeScreenState extends State<HomeScreen> {
               tabs: [
                 GButton(
                   icon: LineIcons.home,
-                  text: 'Home',
+    
                 ),
                 GButton(
                   icon: LineIcons.mapMarker,
-                  text: 'Station',
                 ),
                 GButton(
                   icon: LineIcons.user,

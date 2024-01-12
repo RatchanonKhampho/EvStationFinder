@@ -60,28 +60,18 @@ class HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-            icon: const Icon(FontAwesomeIcons.arrowLeft),
-            onPressed: () {
-              //
-            }),
-        actions: <Widget>[
-          IconButton(
-              icon: const Icon(FontAwesomeIcons.search),
-              onPressed: () {
-                //
-              }),
-        ],
-      ),
+      
       body: Stack(
       children: <Widget>[
         _buildGoogleMap(context),
         if (EV.isNotEmpty) _buildContainer(), // เพิ่มเงื่อนไขตรวจสอบ EV
       ],
     ),
-    );
+  
+  );
+    
   }
+
 
 Future<double> _getDistance(double destinationLat, double destinationLong) async {
   try {
