@@ -22,8 +22,10 @@ class HomePageState extends State<HomePage> {
   double zoomVal = 5.0;
   List<DocumentSnapshot> EV = [];
   Set<Polyline> _polylines = {};
+  bool _isDisposed = false;
   @override
   void initState() {
+    _isDisposed = true;
     super.initState();
     fetchEV();
     _requestLocationPermission();
@@ -47,10 +49,12 @@ class HomePageState extends State<HomePage> {
   // Retrieve the updated data after updating Firestore
   QuerySnapshot updatedSnapshot = await FirebaseFirestore.instance.collection('locations').get();
 
-  // Update EV list
-  setState(() {
-    EV = updatedSnapshot.docs;
-  });
+// Update EV list
+  if (!_isDisposed) {
+    setState(() {
+      EV = updatedSnapshot.docs;
+    });
+  }
 }
 
 
@@ -75,6 +79,7 @@ class HomePageState extends State<HomePage> {
 
 Future<double> _getDistance(double destinationLat, double destinationLong) async {
   try {
+    if (_isDisposed) return 0.0;
     Position currentPosition = await Geolocator.getCurrentPosition();
     double distanceInMeters = await Geolocator.distanceBetween(
       currentPosition.latitude,
@@ -100,6 +105,7 @@ Future<void> _requestLocationPermission() async {
   }
 }
 Future<void> _gotoLocation(double lat, double long) async {
+  if (_isDisposed) return;
   final GoogleMapController controller = await _controller.future;
 
   // ดึงตำแหน่งปัจจุบัน
