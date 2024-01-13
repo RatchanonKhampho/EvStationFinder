@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:ev_charger/main.dart';
 import 'package:ev_charger/provider/internet_provider.dart';
 import 'package:ev_charger/provider/sign_in_provider.dart';
+import 'package:ev_charger/screens/forget_email_reset.dart';
 import 'package:ev_charger/screens/signup.dart';
 import 'package:ev_charger/utils/snack_bar.dart';
 import 'package:ev_charger/widgetd/image.dart';
@@ -15,7 +16,6 @@ import 'package:rounded_loading_button/rounded_loading_button.dart';
 
 import '../utils/next_Screen.dart';
 import '../widgetd/custombutton.dart';
-import 'Forgot password.dart';
 import 'home_screens.dart';
 
 class sign_in extends StatefulWidget {
@@ -56,7 +56,6 @@ class _sign_inState extends State<sign_in> {
         ),
         child: SingleChildScrollView(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Column(
                 children: [
@@ -75,7 +74,7 @@ class _sign_inState extends State<sign_in> {
                   )
                 ],
               ),
-              SizedBox(height: 30),
+              SizedBox(height: 50),
               Container(
                 width: MediaQuery.of(context).size.width * 0.75,
                 child: Column(
@@ -117,7 +116,8 @@ class _sign_inState extends State<sign_in> {
                                       ),
                                       TextButton(
                                           onPressed: () {
-                                            nextScreen(context, ForgetPhone());
+                                            nextScreen(
+                                                context, ForgotResetEmail());
                                           },
                                           child: const Text(
                                             'Password?',
@@ -128,7 +128,7 @@ class _sign_inState extends State<sign_in> {
                                             ),
                                           ))
                                     ]),
-                                SizedBox(height: 20),
+                                SizedBox(height: 30),
                                 CustomButton(
                                     text: 'Sign In ',
                                     onPressed: () {
@@ -150,7 +150,7 @@ class _sign_inState extends State<sign_in> {
                                                 255, 244, 54, 54));
                                       });
                                     }),
-                                const SizedBox(height: 20),
+                                const SizedBox(height: 40),
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceEvenly,
@@ -173,13 +173,14 @@ class _sign_inState extends State<sign_in> {
                                     ),
                                   ],
                                 ),
-                                const SizedBox(height: 20),
+                                const SizedBox(height: 40),
 
                                 // facebook login button
                                 RoundedLoadingButton(
                                   onPressed: () {
                                     handleFacebookAuth();
                                   },
+                                  width: 1000,
                                   controller: facebookController,
                                   successColor: Colors.blue,
                                   //width: MediaQuery.of(context).size.width * 0.80,
@@ -209,6 +210,7 @@ class _sign_inState extends State<sign_in> {
                                   onPressed: () {
                                     handleGoogleSignIn();
                                   },
+                                  width: 1000,
                                   controller: googleController,
                                   successColor: Colors.red,
                                   elevation: 0,
@@ -243,7 +245,7 @@ class _sign_inState extends State<sign_in> {
               ),
               SizedBox(height: 20),
               Container(
-                width: MediaQuery.of(context).size.width * 0.8,
+                width: MediaQuery.of(context).size.width * 0.75,
                 child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisSize: MainAxisSize.max,

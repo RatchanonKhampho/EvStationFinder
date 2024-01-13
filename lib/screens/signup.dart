@@ -23,14 +23,12 @@ class _registerState extends State<register> {
   final TextEditingController _userNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmpasswordController =
-      TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: SafeArea(
+      body: SafeArea(
+        child: SingleChildScrollView(
           child: Container(
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
@@ -62,10 +60,10 @@ class _registerState extends State<register> {
                               fontWeight: FontWeight.w600,
                               color: textmain3),
                         )),
-                    trailing: Text(""),
+                    trailing: Text("  "),
                   ),
                 ),
-                SizedBox(height: 30),
+                SizedBox(height:20),
                 Container(
                   width: MediaQuery.of(context).size.width * 0.8,
                   child: Column(
@@ -105,23 +103,18 @@ class _registerState extends State<register> {
                                 hintText: "Enter your username",
                                 suffixIcon: Icons.supervised_user_circle_sharp),
                             SizedBox(height: 20),
-                            TextFromFilePassword(
-                                controller: _passwordController,
-                                labelText: "password",
-                                hintText: "Enter your password",
-                                suffixIcon: Icons.lock),
-                            /* SizedBox(height: 20),
-                            TextFromFile(
-                                controller: _emailController,
-                                labelText: "Confirm password",
-                                hintText: "Enter your Confirm password",
-                                suffixIcon: Icons.email_outlined),*/
-                            SizedBox(height: 20),
+
                             TextFromFile(
                                 controller: _emailController,
                                 labelText: "Email",
                                 hintText: "Enter your e-mail",
                                 suffixIcon: Icons.email_outlined),
+                            SizedBox(height: 20),
+                            TextFromFilePassword(
+                                controller: _passwordController,
+                                labelText: "password",
+                                hintText: "Enter your password",
+                                suffixIcon: Icons.lock),
                             SizedBox(height: 20),
                             TextFromFile(
                                 controller: _phoneController,
@@ -134,7 +127,7 @@ class _registerState extends State<register> {
                           ],
                         ),
                       ),
-                      SizedBox(height: 30),
+                      SizedBox(height: 20),
                       Container(
                         width: MediaQuery.of(context).size.width * 0.8,
                         child: Row(
@@ -155,7 +148,7 @@ class _registerState extends State<register> {
                                   child: const Text(
                                     'Sign In here',
                                     style: TextStyle(
-                                      fontSize: 18,
+                                      fontSize: 16,
                                       color: buttoncolors,
                                     ),
                                   ))
@@ -173,10 +166,11 @@ class _registerState extends State<register> {
   }
 
   void clear() {
+    _userNameController.clear();
     _emailController.clear();
     _passwordController.clear();
     _phoneController.clear();
-    _userNameController.clear();
+
   }
 
   Future handleSignUp() async {
@@ -196,7 +190,7 @@ class _registerState extends State<register> {
           .signUpWithEmailAndPassword(email, password, name, phone)
           .then((value) {
         if (sp.hasError == true) {
-          openSnackbar(context, "Error ", Colors.red);
+          openSnackbar(context, "Error Data  ", Colors.red);
           clear();
         } else {
           // checking whether user exists or not(ตรวจสอบว่ามีผู้ใช้อยู่หรือไม่)

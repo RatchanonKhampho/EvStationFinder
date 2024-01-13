@@ -28,7 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
   static List<Widget> _widgetOptions = <Widget>[
     map(),
     Text(
-      'Station',
+      'Chatbot',
       style: optionStyle,
     ),
     profile(),
@@ -73,8 +73,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   text: 'Home',
                 ),
                 GButton(
-                  icon: LineIcons.mapMarker,
-                  text: 'Station',
+                  icon: LineIcons.rocketChat,
+                  text: 'ChatBot',
                 ),
                 GButton(
                   icon: LineIcons.user,
