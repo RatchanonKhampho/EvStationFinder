@@ -14,6 +14,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
     var w = MediaQuery.of(context).size.width;
     return ListView.separated(
         itemBuilder: (context, index) {
+          // 18 ถึง 49
           return Container(
             margin: EdgeInsets.all(10),
             child: Row(
