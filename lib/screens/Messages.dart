@@ -1,3 +1,4 @@
+import 'package:ev_charger/main.dart';
 import 'package:flutter/material.dart';
 
 class MessagesScreen extends StatefulWidget {
@@ -11,7 +12,7 @@ class MessagesScreen extends StatefulWidget {
 class _MessagesScreenState extends State<MessagesScreen> {
   @override
   Widget build(BuildContext context) {
-    var w = MediaQuery.of(context).size.width;
+    var w = MediaQuery.of(context).size.width ;
     return ListView.separated(
         itemBuilder: (context, index) {
           // 18 ถึง 49
@@ -36,8 +37,8 @@ class _MessagesScreenState extends State<MessagesScreen> {
                               widget.messages[index]['isUserMessage'] ? 20 : 0),
                         ),
                         color: widget.messages[index]['isUserMessage']
-                            ? Colors.amber
-                            : Colors.orange),
+                            ? Color(0xFFF7F0F0)
+                            : buttoncolors),
                     constraints: BoxConstraints(maxWidth: w * 2 / 3),
                     child:
                         Text(widget.messages[index]['message'].text.text[0])),

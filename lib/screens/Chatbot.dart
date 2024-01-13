@@ -1,4 +1,5 @@
 import 'package:dialog_flowtter/dialog_flowtter.dart';
+import 'package:ev_charger/main.dart';
 import 'package:flutter/material.dart';
 
 import 'Messages.dart';
@@ -32,17 +33,19 @@ class _chatbotState extends State<chatbot> {
               horizontal: 10,
               vertical: 5,
             ),
-            color: Colors.blue,
+            color: Color(0xFFF7F0F0),
             child: Row(
               children: [
                 Expanded(
                   child: TextField(
                     controller: _controller,
-                    style: TextStyle(color: Colors.white),
+                    cursorColor: buttoncolors,
+                    style: TextStyle(color: textmain),
+
                   ),
                 ),
                 IconButton(
-                  color: Colors.white,
+                  color: buttoncolors,
                   icon: Icon(Icons.send),
                   onPressed: () {
                     sendMessage(_controller.text);

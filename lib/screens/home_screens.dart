@@ -68,10 +68,11 @@ class _HomeScreenState extends State<HomeScreen> {
               tabs: [
                 GButton(
                   icon: LineIcons.home,
-    
+                  text: 'Home',
                 ),
                 GButton(
-                  icon: LineIcons.mapMarker,
+                  icon: LineIcons.rocketChat,
+                  text: 'ChatBot',
                 ),
                 GButton(
                   icon: LineIcons.user,
