@@ -79,12 +79,22 @@ class _profileState extends State<profile> {
             Container(
               width: MediaQuery.of(context).size.width,
             ),
-              SizedBox(height: 50,),
+              SizedBox(height: 30,),
               
               Container(
                 width: MediaQuery.of(context).size.width * 0.8,
                 child: Column(
                   children: [
+                    Text('Persinal Information',
+
+                      style: TextStyle(
+                          fontWeight: FontWeight.w400
+                          ,color: textmain ,
+                          fontSize: 24 ,
+
+                      ),
+                    ),
+                    SizedBox(height: 30,),
                    Container(
                      padding: EdgeInsets.all(5),
                      height: 70,
@@ -131,6 +141,13 @@ class _profileState extends State<profile> {
                     ),
 
                     SizedBox(height: 20),
+
+                    Text('Security',
+                      style: TextStyle(
+                          fontWeight: FontWeight.w400
+                          ,color: textmain ,
+                          fontSize: 24),),
+                    SizedBox(height: 30),
                     Container(
                       padding: EdgeInsets.all(5),
                       height: 70,
@@ -150,7 +167,7 @@ class _profileState extends State<profile> {
                     ),
 
 
-                    SizedBox(height: 30),
+                    SizedBox(height: 50),
                     CustomButton(text: "LogOut", onPressed: (){
 
                     })
