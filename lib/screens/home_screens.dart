@@ -73,7 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   text: 'Home',
                 ),
                 GButton(
-                  icon: LineIcons.rocketChat,
+                  icon: LineIcons.facebookMessenger,
                   text: 'ChatBot',
                 ),
                 GButton(

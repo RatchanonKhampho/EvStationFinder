@@ -6,6 +6,8 @@ import 'package:ev_charger/widgetd/custombutton.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'Signin.dart';
+
 class profile extends StatefulWidget {
   const profile({super.key});
 
@@ -34,152 +36,172 @@ class _profileState extends State<profile> {
         elevation: 0,
         backgroundColor: Colors.white,
         centerTitle: true,
-        title: Text("Profile",style: TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.w600,
-          color: textmain3,
+        title: Text(
+          "Profile",
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
+            color: textmain3,
+          ),
         ),
-        ),
-
       ),
-
       body: SafeArea(
-        child:Container(
-          color: Colors.white,
-          child: Column(
-            children: [
-              Stack(
-                children: [
-                  SizedBox(
+          child: Container(
+        color: Colors.white,
+        child: Column(
+          children: [
+            Stack(
+              children: [
+                SizedBox(
                     height: 120,
                     width: 120,
                     child: ClipRRect(
-                        borderRadius: BorderRadius.circular(100),
-                        child: Image(image: AssetImage("images/profile_img.jpg"),
-                        ),
-                    )
-                  ),
-                  Positioned(
-                    right: 0,
-                      bottom: 0,
-                      child: Container(
-                        width: 35,
-                        height: 35,
-                        decoration: BoxDecoration(
-                          borderRadius:BorderRadius.circular(100),
-                          color: buttoncolors
-
-                        ),
-                        child: Icon(Icons.camera_alt_outlined, color: Colors.white,),
-
+                      borderRadius: BorderRadius.circular(100),
+                      child: Image(
+                        image: AssetImage("images/profile_img.jpg"),
                       ),
+                    )),
+                Positioned(
+                  right: 0,
+                  bottom: 0,
+                  child: Container(
+                    width: 35,
+                    height: 35,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(100),
+                        color: buttoncolors),
+                    child: Icon(
+                      Icons.camera_alt_outlined,
+                      color: Colors.white,
+                    ),
                   ),
-                ],
-              ),
+                ),
+              ],
+            ),
             Container(
               width: MediaQuery.of(context).size.width,
             ),
-              SizedBox(height: 30,),
-              
-              Container(
-                width: MediaQuery.of(context).size.width * 0.8,
-                child: Column(
-                  children: [
-                    Text('Persinal Information',
-
+            SizedBox(
+              height: 30,
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width * 0.8,
+              child: Column(
+                children: [
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'Persinal Information',
                       style: TextStyle(
-                          fontWeight: FontWeight.w400
-                          ,color: textmain ,
-                          fontSize: 24 ,
-
+                        fontWeight: FontWeight.w400,
+                        color: textmain,
+                        fontSize: 24,
                       ),
                     ),
-                    SizedBox(height: 30,),
-                   Container(
-                     padding: EdgeInsets.all(5),
-                     height: 70,
-                     decoration: BoxDecoration(
-                       borderRadius: BorderRadius.circular(10),
-                       color: Color(0xFFF7F0F0)
-
-                     ),
-                     child: ListTile(
-                       leading: Icon(Icons.person_outlined,color: buttoncolors,),
-                       title:  Text('Username'),
-                       trailing: Text('Ratchanon', style: TextStyle(color: buttoncolors),),
-                     ),
-                   ),
-                    SizedBox(height: 20),
-                    Container(
-                      padding: EdgeInsets.all(5),
-                      height: 70,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Color(0xFFF7F0F0)
-
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  Container(
+                    padding: EdgeInsets.all(5),
+                    height: 70,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Color(0xFFF7F0F0)),
+                    child: ListTile(
+                      leading: Icon(
+                        Icons.person_outlined,
+                        color: buttoncolors,
                       ),
-                      child: ListTile(
-                        leading: Icon(Icons.email_outlined,color: buttoncolors,),
-                        title:  Text('Email'),
-                        trailing: Text('Ratchanon190944@gmail.com ', style: TextStyle(color: buttoncolors),),
+                      title: Text('Username'),
+                      trailing: Text(
+                        'Ratchanon',
+                        style: TextStyle(color: buttoncolors),
                       ),
                     ),
-                    SizedBox(height: 20),
-                    Container(
-                      padding: EdgeInsets.all(5),
-                      height: 70,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Color(0xFFF7F0F0)
-
+                  ),
+                  SizedBox(height: 20),
+                  Container(
+                    padding: EdgeInsets.all(5),
+                    height: 70,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Color(0xFFF7F0F0)),
+                    child: ListTile(
+                      leading: Icon(
+                        Icons.email_outlined,
+                        color: buttoncolors,
                       ),
-                      child: ListTile(
-                        leading: Icon(Icons.call_outlined,color: buttoncolors,),
-                        title:  Text('Telephone'),
-                        trailing: Text('0973504796', style: TextStyle(color: buttoncolors),),
+                      title: Text('Email'),
+                      trailing: Text(
+                        'Ratchanon190944@gmail.com ',
+                        style: TextStyle(color: buttoncolors),
                       ),
                     ),
-
-                    SizedBox(height: 20),
-
-                    Text('Security',
+                  ),
+                  SizedBox(height: 20),
+                  Container(
+                    padding: EdgeInsets.all(5),
+                    height: 70,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Color(0xFFF7F0F0)),
+                    child: ListTile(
+                      leading: Icon(
+                        Icons.call_outlined,
+                        color: buttoncolors,
+                      ),
+                      title: Text('Telephone'),
+                      trailing: Text(
+                        '0973504796',
+                        style: TextStyle(color: buttoncolors),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'Security',
                       style: TextStyle(
-                          fontWeight: FontWeight.w400
-                          ,color: textmain ,
-                          fontSize: 24),),
-                    SizedBox(height: 30),
-                    Container(
-                      padding: EdgeInsets.all(5),
-                      height: 70,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Color(0xFFF7F0F0)
-
-                      ),
-                      child: ListTile(
-                        leading: Icon(Icons.lock_outline,color: buttoncolors,),
-                        title:  Text('Reset Password'),
+                          fontWeight: FontWeight.w400,
+                          color: textmain,
+                          fontSize: 24),
+                    ),
+                  ),
+                  SizedBox(height: 30),
+                  Container(
+                    padding: EdgeInsets.all(5),
+                    height: 70,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Color(0xFFF7F0F0)),
+                    child: ListTile(
+                        leading: Icon(
+                          Icons.lock_outline,
+                          color: buttoncolors,
+                        ),
+                        title: Text('Reset Password'),
                         trailing: IconButton(
-                          onPressed: (){ nextScreen(context, ForgotResetEmail());},
+                          onPressed: () {
+                            nextScreen(context, ForgotResetEmail());
+                          },
                           icon: Icon(Icons.chevron_right_outlined),
-                        )
-                      ),
-                    ),
-
-
-                    SizedBox(height: 50),
-                    CustomButton(text: "LogOut", onPressed: (){
-
-                    })
-                  ],
-                ),
-              )
-
-
-            ],
-          ),
-        )
-      ),
+                        )),
+                  ),
+                  SizedBox(height: 50),
+                  CustomButton(
+                      text: "LogOut",
+                      onPressed: () {
+                        sp.userSignout();
+                        nextScreenReplace(context, const sign_in());
+                      })
+                ],
+              ),
+            )
+          ],
+        ),
+      )),
     );
   }
 
@@ -196,8 +218,4 @@ class _profileState extends State<profile> {
         title: Text(title),
         trailing: Text(trailing),
       );
-
-
-
-
 }
