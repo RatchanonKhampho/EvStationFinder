@@ -22,10 +22,10 @@ class HomePageState extends State<HomePage> {
   double zoomVal = 5.0;
   List<DocumentSnapshot> EV = [];
   Set<Polyline> _polylines = {};
-  bool _isDisposed = false;
+  // ติดตาม Marker ที่ถูกแตะ
+  Marker? _selectedMarker;
   @override
   void initState() {
-    _isDisposed = true;
     super.initState();
     fetchEV();
     _requestLocationPermission();
@@ -49,12 +49,10 @@ class HomePageState extends State<HomePage> {
   // Retrieve the updated data after updating Firestore
   QuerySnapshot updatedSnapshot = await FirebaseFirestore.instance.collection('locations').get();
 
-// Update EV list
-  if (!_isDisposed) {
-    setState(() {
-      EV = updatedSnapshot.docs;
-    });
-  }
+  // Update EV list
+  setState(() {
+    EV = updatedSnapshot.docs;
+  });
 }
 
 
@@ -65,21 +63,19 @@ class HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       
-      body: Stack(
-      children: <Widget>[
-        _buildGoogleMap(context),
-        if (EV.isNotEmpty) _buildContainer(), // เพิ่มเงื่อนไขตรวจสอบ EV
-      ],
-    ),
-  
-  );
-    
+      body: SafeArea(
+        child: Stack(
+        children: <Widget>[
+          _buildGoogleMap(context),
+          if (EV.isNotEmpty) _buildContainer(), // เพิ่มเงื่อนไขตรวจสอบ EV
+        ],
+            ),
+      ),
+    );
   }
-
 
 Future<double> _getDistance(double destinationLat, double destinationLong) async {
   try {
-    if (_isDisposed) return 0.0;
     Position currentPosition = await Geolocator.getCurrentPosition();
     double distanceInMeters = await Geolocator.distanceBetween(
       currentPosition.latitude,
@@ -105,7 +101,6 @@ Future<void> _requestLocationPermission() async {
   }
 }
 Future<void> _gotoLocation(double lat, double long) async {
-  if (_isDisposed) return;
   final GoogleMapController controller = await _controller.future;
 
   // ดึงตำแหน่งปัจจุบัน
@@ -197,55 +192,59 @@ Future<void> _gotoLocation(double lat, double long) async {
     );
   }
   Widget _boxes(String _image, double lat, double long, String EVName, String distanceText) {
-    print('Image: $_image, Lat: $lat, Long: $long, EVName: $EVName, Distance: $distanceText');
+  print('Image: $_image, Lat: $lat, Long: $long, EVName: $EVName, Distance: $distanceText');
   return GestureDetector(
     onTap: () {
-      _gotoLocation(lat, long);
+      // นำออกตัวระบบนำทาง
+      //_gotoLocation(lat, long);
+      _moveCameraToMarker(lat, long);
     },
-        child:Container(
-          padding: EdgeInsets.all(20),
-              child: new FittedBox(
-                child: Material(
-                    color: Colors.white,
-                    elevation: 14.0,
-                    borderRadius: BorderRadius.circular(24.0),
-                    shadowColor: const Color(0x802196F3),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Container(
-                          width: 180,
-                          height: 200,
-                          child: ClipRRect(
-                            borderRadius: new BorderRadius.circular(24.0),
-                            child: Image(
-                              fit: BoxFit.fill,
-                              image: NetworkImage(_image),
-                            ),
-                          ),),
-                          Column(
-                            children: <Widget>[
-Container(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: myDetailsContainer1(EVName),
-                          ),
-                        ),
-                            Container(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: myDetailsContainer1(distanceText),
-                          ),
-                        ),
-                            ],
-                          )
-                          
-                      ],)
+    child: Container(
+      padding: EdgeInsets.all(20),
+      child: FittedBox(
+        child: Material(
+          color: Colors.white,
+          elevation: 14.0,
+          borderRadius: BorderRadius.circular(24.0),
+          shadowColor: const Color(0x802196F3),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Container(
+                width: 180,
+                height: 200,
+                child: ClipRRect(
+                  borderRadius: new BorderRadius.circular(24.0),
+                  child: Image(
+                    fit: BoxFit.fill,
+                    image: NetworkImage(_image),
+                  ),
                 ),
               ),
-            ),
-    );
-  }
+              Column(
+                children: <Widget>[
+                  Container(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: myDetailsContainer1(EVName),
+                    ),
+                  ),
+                  Container(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: myDetailsContainer1(distanceText),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
 
   Widget myDetailsContainer1(String EVName) {
     return Column(
@@ -265,22 +264,35 @@ Container(
     );
   }
 
+void _moveCameraToMarker(double lat, double long) async {
+  final GoogleMapController controller = await _controller.future;
+
+  // ขยับแผนที่ไปที่ตำแหน่งปลายทาง
+  CameraPosition destinationPosition = CameraPosition(
+    target: LatLng(lat, long),
+    zoom: 15.0,
+  );
+
+  controller.animateCamera(CameraUpdate.newCameraPosition(destinationPosition));
+}
   Widget _buildGoogleMap(BuildContext context) {
-    return Container(
-      height: MediaQuery.of(context).size.height,
-      width: MediaQuery.of(context).size.width,
-      child: GoogleMap(
-        mapType: MapType.normal,
-        initialCameraPosition:  const CameraPosition(target: LatLng(13.755437519298216, 100.50534958162314), zoom: 12),
-        myLocationEnabled: true,
-        
-        onMapCreated: (GoogleMapController controller) {
-          _controller.complete(controller);
-        },
-        markers: 
-         _createMarkers(),
-         polylines: _polylines,
-        
+    return SafeArea(
+      child: Container(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        child: GoogleMap(
+          mapType: MapType.normal,
+          initialCameraPosition:  const CameraPosition(target: LatLng(13.755437519298216, 100.50534958162314), zoom: 12),
+          myLocationEnabled: true,
+          
+          onMapCreated: (GoogleMapController controller) {
+            _controller.complete(controller);
+          },
+          markers: 
+           _createMarkers(),
+           polylines: _polylines,
+          
+        ),
       ),
     );
   }
@@ -300,11 +312,27 @@ Container(
         Marker(
           markerId: MarkerId(EV[i].id),
           position: LatLng(lat, long),
-          infoWindow: InfoWindow(title: name),
           icon: BitmapDescriptor.defaultMarkerWithHue(
             BitmapDescriptor.hueViolet,
           ),
+          onTap: () {
+              // ตั้งค่า Marker ที่ถูกเลือกเมื่อแตะ
+              setState(() {
+                _selectedMarker = Marker(
+                  markerId: MarkerId(EV[i].id),
+                  position: LatLng(lat, long),
+                  infoWindow: InfoWindow(title: name),
+                  icon: BitmapDescriptor.defaultMarkerWithHue(
+                    BitmapDescriptor.hueViolet,
+                  ),
+                );
+              });
+
+              // แสดง Bottom Sheet พร้อมรายละเอียด
+              _showDetailsBottomSheet(EV[i]);
+            },
         ),
+        
       );
     } catch (e) {
       print('Error creating marker for document ${EV[i].id}: $e');
@@ -313,6 +341,59 @@ Container(
 
   return markers;
 }
+void _showDetailsBottomSheet(DocumentSnapshot evData) {
+  showModalBottomSheet(
+    context: context,
+    builder: (context) {
 
-
+      return Container(
+        height: MediaQuery.of(context).size.height * 0.9, // กำหนดความสูงให้เป็น 90%
+        child: ListView(
+          shrinkWrap: true,
+          padding: EdgeInsets.all(16),
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  evData['name'] as String,
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 8),
+                Text(
+                  evData['distanceText'] as String,
+                  style: TextStyle(fontSize: 16, color: Colors.grey),
+                ),
+                SizedBox(height: 16),
+                Image.network(evData['images']),
+                SizedBox(height: 8),
+                Text(
+                  evData['address'] as String,
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 8),
+                Text(
+                  'เวลา:' + evData['time'],
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    // นำทางไปยังตำแหน่ง Marker ที่เลือก
+                    _gotoLocation(
+                      evData['latitude'] as double,
+                      evData['longitude'] as double,
+                    );
+                    Navigator.pop(context); // ปิด Bottom Sheet
+                  },
+                  child: Text('นำทางไปยังตำแหน่ง'),
+                ),
+              ],
+            ),
+          ],
+        ),
+      );
+    },
+  );
+}
 }
