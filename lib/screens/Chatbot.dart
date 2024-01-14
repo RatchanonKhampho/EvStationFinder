@@ -1,7 +1,7 @@
 import 'package:dialog_flowtter/dialog_flowtter.dart';
 import 'package:ev_charger/main.dart';
 import 'package:flutter/material.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'Messages.dart';
 
 class chatbot extends StatefulWidget {
@@ -21,6 +21,20 @@ class _chatbotState extends State<chatbot> {
     super.initState();
     DialogFlowtter.fromFile().then((instance) => dialogFlowtter = instance);
   }
+
+  Future<void> getDataFromFirestore() async {
+  // เชื่อมต่อกับ Firestore
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+  // ดึงข้อมูลจาก Firestore
+  QuerySnapshot querySnapshot = await firestore.collection('your_collection').get();
+
+  // นำข้อมูลมาใช้งาน
+  for (QueryDocumentSnapshot documentSnapshot in querySnapshot.docs) {
+    print(documentSnapshot.data());
+  }
+}
+
   @override
   Widget build(BuildContext context) {
      return Scaffold(
