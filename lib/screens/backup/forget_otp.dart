@@ -1,5 +1,5 @@
 // ignore: unused_import
-import 'package:ev_charger/main.dart';
+/*import 'package:ev_charger/main.dart';
 import 'package:ev_charger/provider/sign_in_provider.dart';
 import 'package:ev_charger/screens/Forgot%20password.dart';
 import 'package:ev_charger/screens/create_password.dart';
@@ -179,4 +179,4 @@ class _Forget_otpState extends State<Forget_otp> {
       },
     );
   }
-}
+}*/

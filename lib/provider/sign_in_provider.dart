@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ev_charger/screens/forget_otp.dart';
+import 'package:ev_charger/screens/backup/forget_otp.dart';
 import 'package:ev_charger/utils/utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -323,7 +323,7 @@ class SignInProvide extends ChangeNotifier {
     }
     notifyListeners();
   }*/
-
+/*
   // Sigin with phone
   void signInWithPhone(BuildContext context, String phoneNumber) async {
     try {
@@ -350,9 +350,9 @@ class SignInProvide extends ChangeNotifier {
       showSnackBar(context, e.message.toString());
     }
   }
-
+*/
 // verifyOtp
-  void verifyOtp({
+  /*void verifyOtp({
     required BuildContext context,
     required String verificationId,
     required String userOtp,
@@ -378,5 +378,5 @@ class SignInProvide extends ChangeNotifier {
       _isLoading = false;
       notifyListeners();
     }
-  }
+  }*/
 }
