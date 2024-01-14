@@ -1,4 +1,4 @@
-import 'package:ev_charger/main.dart';
+/*import 'package:ev_charger/main.dart';
 import 'package:ev_charger/screens/signup.dart';
 import 'package:flutter/material.dart';
 
@@ -141,3 +141,4 @@ class _CompleteProfileState extends State<CompleteProfile> {
     );
   }
 }
+*/

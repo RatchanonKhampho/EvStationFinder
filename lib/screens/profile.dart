@@ -1,9 +1,12 @@
 import 'package:ev_charger/main.dart';
 import 'package:ev_charger/provider/sign_in_provider.dart';
-import 'package:ev_charger/screens/Signin.dart';
+import 'package:ev_charger/screens/forget_email_reset.dart';
 import 'package:ev_charger/utils/next_Screen.dart';
+import 'package:ev_charger/widgetd/custombutton.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import 'Signin.dart';
 
 class profile extends StatefulWidget {
   const profile({super.key});
@@ -29,96 +32,176 @@ class _profileState extends State<profile> {
     final sp = context.watch<SignInProvide>();
 
     return Scaffold(
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.white,
+        centerTitle: true,
+        title: Text(
+          "Profile",
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
+            color: textmain3,
+          ),
+        ),
+      ),
       body: SafeArea(
-        maintainBottomViewPadding: true,
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: ListView(children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          child: Container(
+        color: Colors.white,
+        child: Column(
+          children: [
+            Stack(
               children: [
-                IconButton(
-                  onPressed: () {
-                    sp.userSignout();
-                    // nextScreenReplace(context, HomeScreen());
-                  },
-                  icon: const Icon(
-                    Icons.arrow_back_ios_new,
-                    color: backgroundwhite,
+                SizedBox(
+                    height: 120,
+                    width: 120,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(100),
+                      child: Image(
+                        image: AssetImage("images/profile_img.jpg"),
+                      ),
+                    )),
+                Positioned(
+                  right: 0,
+                  bottom: 0,
+                  child: Container(
+                    width: 35,
+                    height: 35,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(100),
+                        color: buttoncolors),
+                    child: Icon(
+                      Icons.camera_alt_outlined,
+                      color: Colors.white,
+                    ),
                   ),
-                ),
-                const Text(
-                  "Profile",
-                  style: TextStyle(
-                      color: Colors.grey,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold),
-                ),
-                IconButton(
-                  onPressed: () {
-                    nextScreen(context, sign_in());
-                  },
-                  icon: const Icon(Icons.logout_rounded),
                 ),
               ],
             ),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
+            Container(
+              width: MediaQuery.of(context).size.width,
+            ),
+            SizedBox(
+              height: 30,
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width * 0.8,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  CircleAvatar(
-                      radius: 55,
-                      backgroundImage: NetworkImage(
-                          'https://t4.ftcdn.net/jpg/02/29/75/83/240_F_229758328_7x8jwCwjtBMmC6rgFzLFhZoEpLobB6L8.jpg')),
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      'Personal Information',
-                      style: TextStyle(fontSize: 25),
+                      'Persinal Information',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        color: textmain,
+                        fontSize: 24,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  Container(
+                    padding: EdgeInsets.all(5),
+                    height: 70,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Color(0xFFF7F0F0)),
+                    child: ListTile(
+                      leading: Icon(
+                        Icons.person_outlined,
+                        color: buttoncolors,
+                      ),
+                      title: Text('Username'),
+                      trailing: Text(
+                        'Ratchanon',
+                        style: TextStyle(color: buttoncolors),
+                      ),
                     ),
                   ),
                   SizedBox(height: 20),
-                  textfilewidget(
-                    leading: Icons.person_2_outlined,
-                    title: 'Name',
-                    trailing: '${sp.name}',
+                  Container(
+                    padding: EdgeInsets.all(5),
+                    height: 70,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Color(0xFFF7F0F0)),
+                    child: ListTile(
+                      leading: Icon(
+                        Icons.email_outlined,
+                        color: buttoncolors,
+                      ),
+                      title: Text('Email'),
+                      trailing: Text(
+                        'Ratchanon190944@gmail.com ',
+                        style: TextStyle(color: buttoncolors),
+                      ),
+                    ),
                   ),
                   SizedBox(height: 20),
-                  textfilewidget(
-                      leading: Icons.email_outlined,
-                      trailing: '${sp.email}',
-                      title: 'Email'),
+                  Container(
+                    padding: EdgeInsets.all(5),
+                    height: 70,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Color(0xFFF7F0F0)),
+                    child: ListTile(
+                      leading: Icon(
+                        Icons.call_outlined,
+                        color: buttoncolors,
+                      ),
+                      title: Text('Telephone'),
+                      trailing: Text(
+                        '0973504796',
+                        style: TextStyle(color: buttoncolors),
+                      ),
+                    ),
+                  ),
                   SizedBox(height: 20),
-                  textfilewidget(
-                      leading: Icons.phone_android_outlined,
-                      title: 'Mobile Phone',
-                      trailing: '${sp.provider}'),
-                  SizedBox(height: 20),
-
                   Align(
-                    alignment: Alignment.bottomLeft,
+                    alignment: Alignment.centerLeft,
                     child: Text(
                       'Security',
-                      style: TextStyle(fontSize: 25),
+                      style: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          color: textmain,
+                          fontSize: 24),
                     ),
                   ),
-                  SizedBox(height: 20),
-                  change(
-                    leading: Icons.lock,
-                    title: "Change Password",
-                  )
-                  /*Text(
-                    'Payment',
-                    style: TextStyle(fontSize: 25),
-                  ),*/
-                  // MyWallet()
+                  SizedBox(height: 30),
+                  Container(
+                    padding: EdgeInsets.all(5),
+                    height: 70,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Color(0xFFF7F0F0)),
+                    child: ListTile(
+                        leading: Icon(
+                          Icons.lock_outline,
+                          color: buttoncolors,
+                        ),
+                        title: Text('Reset Password'),
+                        trailing: IconButton(
+                          onPressed: () {
+                            nextScreen(context, ForgotResetEmail());
+                          },
+                          icon: Icon(Icons.chevron_right_outlined),
+                        )),
+                  ),
+                  SizedBox(height: 50),
+                  CustomButton(
+                      text: "LogOut",
+                      onPressed: () {
+                        sp.userSignout();
+                        nextScreenReplace(context, const sign_in());
+                      })
                 ],
               ),
             )
-          ]),
+          ],
         ),
-      ),
+      )),
     );
   }
 
@@ -134,21 +217,5 @@ class _profileState extends State<profile> {
         leading: Icon(leading),
         title: Text(title),
         trailing: Text(trailing),
-      );
-
-  Widget change({
-    required IconData leading,
-    required String title,
-  }) =>
-      ListTile(
-        shape: RoundedRectangleBorder(
-            side: BorderSide(width: 2, color: Colors.lightBlue),
-            borderRadius: BorderRadius.circular(20)),
-        leading: Icon(leading),
-        title: Text(title),
-        trailing: IconButton(
-          icon: Icon(Icons.arrow_forward_ios_outlined),
-          onPressed: () => null,
-        ),
       );
 }
