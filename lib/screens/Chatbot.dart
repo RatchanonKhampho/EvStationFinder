@@ -22,18 +22,8 @@ class _chatbotState extends State<chatbot> {
     DialogFlowtter.fromFile().then((instance) => dialogFlowtter = instance);
   }
 
-  Future<void> getDataFromFirestore() async {
-  // เชื่อมต่อกับ Firestore
-  FirebaseFirestore firestore = FirebaseFirestore.instance;
+  
 
-  // ดึงข้อมูลจาก Firestore
-  QuerySnapshot querySnapshot = await firestore.collection('your_collection').get();
-
-  // นำข้อมูลมาใช้งาน
-  for (QueryDocumentSnapshot documentSnapshot in querySnapshot.docs) {
-    print(documentSnapshot.data());
-  }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -74,25 +64,28 @@ class _chatbotState extends State<chatbot> {
     );
   }
   void sendMessage(String text) async {
-    if (text.isEmpty) return;
-    setState(() {
-      addMessage(
-        Message(text: DialogText(text: [text])),
-        true,
-      );
-    });
+  if (text.isEmpty) return;
 
-    dialogFlowtter.projectId = "evcharger-d3288";
-
-    DetectIntentResponse response = await dialogFlowtter.detectIntent(
-      queryInput: QueryInput(text: TextInput(text: text)),
+  
+  setState(() {
+    addMessage(
+      Message(text: DialogText(text: [text])),
+      true,
     );
+  });
 
-    if (response.message == null) return;
-    setState(() {
-      addMessage(response.message!);
-    });
-  }
+  dialogFlowtter.projectId = "evcharger-d3288";
+
+  DetectIntentResponse response = await dialogFlowtter.detectIntent(
+    queryInput: QueryInput(text: TextInput(text: text)),
+  );
+
+  if (response.message == null) return;
+  setState(() {
+    addMessage(response.message!);
+  });
+}
+
 
   void addMessage(Message message, [bool isUserMessage = false]) {
     messages.add({
