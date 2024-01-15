@@ -284,7 +284,9 @@ void _moveCameraToMarker(double lat, double long) async {
           mapType: MapType.normal,
           initialCameraPosition:  const CameraPosition(target: LatLng(13.755437519298216, 100.50534958162314), zoom: 12),
           myLocationEnabled: true,
-          
+          zoomControlsEnabled: false,
+          compassEnabled: true,
+          mapToolbarEnabled: false,
           onMapCreated: (GoogleMapController controller) {
             _controller.complete(controller);
           },
@@ -375,6 +377,11 @@ void _showDetailsBottomSheet(DocumentSnapshot evData) {
                 SizedBox(height: 8),
                 Text(
                   'เวลา:' + evData['time'],
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                 SizedBox(height: 8),
+                Text(
+                  evData['Type'],
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
                 ElevatedButton(
