@@ -381,7 +381,7 @@ void _showDetailsBottomSheet(DocumentSnapshot evData) {
                 ),
                  SizedBox(height: 8),
                 Text(
-                  'เวลา:' + evData['Type'],
+                  evData['Type'],
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
                 ElevatedButton(
