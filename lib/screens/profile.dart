@@ -193,6 +193,7 @@ class _profileState extends State<profile> {
                   CustomButton(
                       text: "LogOut",
                       onPressed: () {
+                        
                         sp.userSignout();
                         nextScreenReplace(context, const sign_in());
                       })
