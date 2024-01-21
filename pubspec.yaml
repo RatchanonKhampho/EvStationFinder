@@ -32,7 +32,6 @@ dependencies:
     sdk: flutter
   cupertino_icons: any
   google_fonts: any
-  cached_network_image: any
   get: any
   material_symbols_icons: any
   side_navigation: any
@@ -63,6 +62,7 @@ dependencies:
   flutter_polyline_points: ^1.0.0
   permission_handler: ^11.0.1
   dialog_flowtter: ^0.3.1
+  cached_network_image: ^3.3.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
