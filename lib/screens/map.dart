@@ -2,13 +2,11 @@ import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:permission_handler/permission_handler.dart';
-
-import '../main.dart';
-
 
 
 
@@ -134,7 +132,7 @@ Future<void> _gotoLocation(double lat, double long) async {
 
     // สร้าง Polyline object
     Polyline polyline = Polyline(
-      polylineId: const PolylineId('route1'),
+      polylineId: PolylineId('route1'),
       color: Colors.blue,
       points: polylineCoordinates,
       width: 4,
@@ -202,7 +200,7 @@ Future<void> _gotoLocation(double lat, double long) async {
       _moveCameraToMarker(lat, long);
     },
     child: Container(
-      padding: const EdgeInsets.all(20),
+      padding: EdgeInsets.all(20),
       child: FittedBox(
         child: Material(
           color: Colors.white,
@@ -352,81 +350,33 @@ void _showDetailsBottomSheet(DocumentSnapshot evData) {
 
       return Container(
         height: MediaQuery.of(context).size.height * 0.9, // กำหนดความสูงให้เป็น 90%
-        padding: const EdgeInsets.all(10),
         child: ListView(
           shrinkWrap: true,
-          padding: const EdgeInsets.all(16),
+          padding: EdgeInsets.all(16),
           children: [
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Expanded(
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10.0),
-                        child: Image.network(evData['logo'],
-                        width: 200,
-                        height: 200,
-                        fit: BoxFit.cover
-                        ),
-                      )),
-                      const SizedBox(
-                        width: 20,
-                      ),
-                    Expanded(
-                       child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10.0),
-                        child: Image.network(evData['images']),
-                      )),
-                  ],
-                ),
-                const SizedBox(height: 8),
                 Text(
                   evData['name'] as String,
-                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: 8),
                 Text(
                   evData['distanceText'] as String,
-                  style: const TextStyle(fontSize: 16, color: Colors.grey),
+                  style: TextStyle(fontSize: 16, color: Colors.grey),
                 ),
-                const SizedBox(height: 8),
-          ListTile(
-            leading: const Icon(Icons.location_pin,
-            color: buttoncolors),
-            title: Text(
-                  evData['address'] as String,
-                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-          ),
-                const SizedBox(height: 8),
-                ListTile(
-            leading: const Icon(Icons.timelapse_rounded,
-            color: buttoncolors),
-            title: Text(
-                  'เวลา:' + evData['time'],
-                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-<<<<<<< HEAD
-          ),
-                const SizedBox(height: 8),
-                ListTile(
-                  leading: const Icon(Icons.electric_car_rounded,
-                      color: buttoncolors),
-                  title: Text(
-                    'Type: ' + evData['Type'],
-                    style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-=======
-                 SizedBox(height: 8),
+                SizedBox(height: 16),
+                Image.network(evData['images']),
+                SizedBox(height: 8),
                 Text(
-                  'เวลา:' + evData['Type'],
+                  evData['address'] as String,
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 8),
+                Text(
+                  'เวลา:' + evData['time'],
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
                 ElevatedButton(
@@ -439,37 +389,7 @@ void _showDetailsBottomSheet(DocumentSnapshot evData) {
                     Navigator.pop(context); // ปิด Bottom Sheet
                   },
                   child: Text('นำทางไปยังตำแหน่ง'),
->>>>>>> 1d659dcb74b57919c0a3166bb2f327f04bf0629d
                 ),
-                const SizedBox(height: 20),
-                Center(
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: buttoncolors
-                    ),
-                    onPressed: () {
-                      // นำทางไปยังตำแหน่ง Marker ที่เลือก
-                      _gotoLocation(
-                        evData['latitude'] as double,
-                        evData['longitude'] as double,
-                      );
-                      Navigator.pop(context); // ปิด Bottom Sheet
-                    },
-                    child: const IntrinsicWidth(
-                      child: IntrinsicHeight(
-                        child: ListTile(
-                          leading: Icon(Icons.location_pin, color: Colors.white),
-                          title: Text(
-                            'Navigation',
-                            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold,color: Colors.white),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-
-
               ],
             ),
           ],
