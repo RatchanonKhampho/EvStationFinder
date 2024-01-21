@@ -413,7 +413,7 @@ void _showDetailsBottomSheet(DocumentSnapshot evData) {
                   'เวลา:' + evData['time'],
                   style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
-<<<<<<< HEAD
+
           ),
                 const SizedBox(height: 8),
                 ListTile(
@@ -423,8 +423,8 @@ void _showDetailsBottomSheet(DocumentSnapshot evData) {
                     'Type: ' + evData['Type'],
                     style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
-=======
-                 SizedBox(height: 8),
+                ),
+                  SizedBox(height: 8),
                 Text(
                   'เวลา:' + evData['Type'],
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -439,7 +439,7 @@ void _showDetailsBottomSheet(DocumentSnapshot evData) {
                     Navigator.pop(context); // ปิด Bottom Sheet
                   },
                   child: Text('นำทางไปยังตำแหน่ง'),
->>>>>>> 1d659dcb74b57919c0a3166bb2f327f04bf0629d
+
                 ),
                 const SizedBox(height: 20),
                 Center(
@@ -468,8 +468,6 @@ void _showDetailsBottomSheet(DocumentSnapshot evData) {
                     ),
                   ),
                 ),
-
-
               ],
             ),
           ],
