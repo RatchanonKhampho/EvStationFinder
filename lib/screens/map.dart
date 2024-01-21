@@ -193,62 +193,60 @@ Future<void> _gotoLocation(double lat, double long) async {
       ),
     );
   }
-  Widget _boxes(String _image, double lat, double long, String EVName, String distanceText) {
-  print('Image: $_image, Lat: $lat, Long: $long, EVName: $EVName, Distance: $distanceText');
-  return GestureDetector(
-    onTap: () {
-      // นำออกตัวระบบนำทาง
-      //_gotoLocation(lat, long);
-      _moveCameraToMarker(lat, long);
-    },
-    child: Container(
-      padding: const EdgeInsets.all(20),
-      child: FittedBox(
-        child: Material(
-          color: Colors.white,
-          elevation: 14.0,
-          borderRadius: BorderRadius.circular(24.0),
-          shadowColor: const Color(0x802196F3),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Container(
-                width: 180,
-                height: 200,
-                child: ClipRRect(
-                  borderRadius: new BorderRadius.circular(24.0),
-                  child: Image(
-                    fit: BoxFit.fill,
-                    image: NetworkImage(_image),
-                  ),
-                ),
-              ),
-              Column(
-                children: <Widget>[
-                  Container(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: myDetailsContainer1(EVName),
-                    ),
-                  ),
-                  Container(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: myDetailsContainer1(distanceText),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    ),
-  );
-}
+   Widget _boxes(String _image, double lat, double long, String EVName, String distanceText) {
+     print('Image: $_image, Lat: $lat, Long: $long, EVName: $EVName, Distance: $distanceText');
+     return GestureDetector(
+       onTap: () {
+         // นำออกตัวระบบนำทาง
+         //_gotoLocation(lat, long);
+         _moveCameraToMarker(lat, long);
+       },
+       child: Container(
+         padding: const EdgeInsets.all(10),
+         child: FittedBox(
+           child: Material(
+             color: Colors.white,
+             elevation: 14.0,
+             borderRadius: BorderRadius.circular(24.0),
+             shadowColor: const Color(0x802196F3),
+             child: Row(
+               children: <Widget>[
+                 Container(
+                   width: 120, // ปรับขนาดตามต้องการ
+                   height: 150, // ปรับขนาดตามต้องการ
+                   child: ClipRRect(
+                     borderRadius: new BorderRadius.circular(24.0),
+                     child: Image(
+                       fit: BoxFit.fill,
+                       image: NetworkImage(_image),
+                     ),
+                   ),
+                 ),
+                 SizedBox(width: 10), // เพิ่มระยะห่างระหว่างรูปภาพและข้อความ
+                 Column(
+                   crossAxisAlignment: CrossAxisAlignment.start,
+                   children: <Widget>[
+                     Container(
+                       width: 250, // ปรับขนาดตามต้องการ
+                       child: Padding(
+                         padding: const EdgeInsets.all(8.0),
+                         child: myDetailsContainer1(EVName),
+                       ),
+                     ),
+                     myDetailsContainer2(distanceText),
+                   ],
+                 ),
+               ],
+             ),
+           ),
+         ),
+       ),
+     );
+   }
 
 
-  Widget myDetailsContainer1(String EVName) {
+
+   Widget myDetailsContainer1(String EVName) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
@@ -257,14 +255,32 @@ Future<void> _gotoLocation(double lat, double long) async {
           child: Container(
               child: Text(EVName,
             style: const TextStyle(
-                color: Color(0xff6200ee),
-                fontSize: 24.0,
+                color: Colors.black,
+                fontSize: 20.0,
                 fontWeight: FontWeight.bold),
           )),
         ),
       ],
     );
   }
+
+   Widget myDetailsContainer2(String distanceText) {
+     return Column(
+       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+       children: <Widget>[
+         Padding(
+           padding: const EdgeInsets.only(left: 100.0),
+           child: Container(
+               child: Text(distanceText,
+                 style: const TextStyle(
+                     color: buttoncolors,
+                     fontSize: 20.0,
+                     fontWeight: FontWeight.bold),
+               )),
+         ),
+       ],
+     );
+   }
 
 void _moveCameraToMarker(double lat, double long) async {
   final GoogleMapController controller = await _controller.future;
@@ -317,7 +333,7 @@ void _moveCameraToMarker(double lat, double long) async {
           markerId: MarkerId(EV[i].id),
           position: LatLng(lat, long),
           icon: BitmapDescriptor.defaultMarkerWithHue(
-            BitmapDescriptor.hueViolet,
+            BitmapDescriptor.hueOrange,
           ),
           onTap: () {
               // ตั้งค่า Marker ที่ถูกเลือกเมื่อแตะ
@@ -371,8 +387,7 @@ void _showDetailsBottomSheet(DocumentSnapshot evData) {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(10.0),
                         child: Image.network(evData['logo'],
-                        width: 200,
-                        height: 200,
+
                         fit: BoxFit.cover
                         ),
                       )),
@@ -428,18 +443,6 @@ void _showDetailsBottomSheet(DocumentSnapshot evData) {
                 Text(
                   'เวลา:' + evData['Type'],
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    // นำทางไปยังตำแหน่ง Marker ที่เลือก
-                    _gotoLocation(
-                      evData['latitude'] as double,
-                      evData['longitude'] as double,
-                    );
-                    Navigator.pop(context); // ปิด Bottom Sheet
-                  },
-                  child: Text('นำทางไปยังตำแหน่ง'),
-
                 ),
                 const SizedBox(height: 20),
                 Center(
