@@ -11,12 +11,16 @@ class chatbot extends StatefulWidget {
 class _chatbotState extends State<chatbot> {
 
   final controller = WebViewController()..setJavaScriptMode(JavaScriptMode.unrestricted)..loadRequest
- (Uri.parse('https://console.dialogflow.com/api-client/demo/embedded/cba37b96-98fc-4535-ba91-74134e1d9478'));
+ (Uri.parse('https://evcharger-d3288.web.app/'));
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: WebViewWidget (controller: controller),
+        body: Center(
+          child: Container(
+            padding: EdgeInsets.all(10),
+            child: WebViewWidget (controller: controller)),
+        ),
       ),
     );
   }
