@@ -439,11 +439,8 @@ void _showDetailsBottomSheet(DocumentSnapshot evData) {
                     style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                 ),
-                  SizedBox(height: 8),
-                Text(
-                  'เวลา:' + evData['Type'],
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
+
+
                 const SizedBox(height: 20),
                 Center(
                   child: ElevatedButton(

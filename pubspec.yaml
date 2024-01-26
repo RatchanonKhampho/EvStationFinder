@@ -61,8 +61,10 @@ dependencies:
   geolocator: ^10.1.0
   flutter_polyline_points: ^1.0.0
   permission_handler: ^11.0.1
-  dialog_flowtter: ^0.3.1
+  dialog_flowtter: ^0.3.3
   cached_network_image: ^3.3.0
+  http: ^0.13.6
+  webview_flutter: ^4.4.4
 dev_dependencies:
   flutter_test:
     sdk: flutter
