@@ -1,12 +1,13 @@
 import 'dart:async';
 import 'dart:math';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:permission_handler/permission_handler.dart';
-
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import '../main.dart';
 
 
@@ -21,11 +22,15 @@ class HomePage extends StatefulWidget {
 
 class HomePageState extends State<HomePage> {
    final Completer<GoogleMapController> _controller = Completer();
+   final FirebaseAuth _auth = FirebaseAuth.instance;
+// รายการ feedback ทั้งหมด
   double zoomVal = 5.0;
   List<DocumentSnapshot> EV = [];
   Set<Polyline> _polylines = {};
+  double _userRating = 0.0;
+String _userFeedback = '';
+
   // ติดตาม Marker ที่ถูกแตะ
-  Marker? _selectedMarker;
   @override
   void initState() {
     super.initState();
@@ -338,14 +343,6 @@ void _moveCameraToMarker(double lat, double long) async {
           onTap: () {
               // ตั้งค่า Marker ที่ถูกเลือกเมื่อแตะ
               setState(() {
-                _selectedMarker = Marker(
-                  markerId: MarkerId(EV[i].id),
-                  position: LatLng(lat, long),
-                  infoWindow: InfoWindow(title: name),
-                  icon: BitmapDescriptor.defaultMarkerWithHue(
-                    BitmapDescriptor.hueViolet,
-                  ),
-                );
               });
 
               // แสดง Bottom Sheet พร้อมรายละเอียด
@@ -365,115 +362,261 @@ void _showDetailsBottomSheet(DocumentSnapshot evData) {
   showModalBottomSheet(
     context: context,
     builder: (context) {
-
-      return Container(
-        height: MediaQuery.of(context).size.height * 0.9, // กำหนดความสูงให้เป็น 90%
-        padding: const EdgeInsets.all(10),
-        child: ListView(
-          shrinkWrap: true,
-          padding: const EdgeInsets.all(16),
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Expanded(
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10.0),
-                        child: Image.network(evData['logo'],
-
-                        fit: BoxFit.cover
-                        ),
-                      )),
-                      const SizedBox(
-                        width: 20,
-                      ),
-                    Expanded(
-                       child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10.0),
-                        child: Image.network(evData['images']),
-                      )),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  evData['name'] as String,
-                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  evData['distanceText'] as String,
-                  style: const TextStyle(fontSize: 16, color: Colors.grey),
-                ),
-                const SizedBox(height: 8),
-          ListTile(
-            leading: const Icon(Icons.location_pin,
-            color: buttoncolors),
-            title: Text(
-                  evData['address'] as String,
-                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-          ),
-                const SizedBox(height: 8),
-                ListTile(
-            leading: const Icon(Icons.timelapse_rounded,
-            color: buttoncolors),
-            title: Text(
-                  'เวลา:' + evData['time'],
-                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-
-          ),
-                const SizedBox(height: 8),
-                ListTile(
-                  leading: const Icon(Icons.electric_car_rounded,
-                      color: buttoncolors),
-                  title: Text(
-                    'Type: ' + evData['Type'],
-                    style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                ),
-
-
-                const SizedBox(height: 20),
-                Center(
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: buttoncolors
-                    ),
-                    onPressed: () {
-                      // นำทางไปยังตำแหน่ง Marker ที่เลือก
-                      _gotoLocation(
-                        evData['latitude'] as double,
-                        evData['longitude'] as double,
-                      );
-                      Navigator.pop(context); // ปิด Bottom Sheet
-                    },
-                    child: const IntrinsicWidth(
-                      child: IntrinsicHeight(
-                        child: ListTile(
-                          leading: Icon(Icons.location_pin, color: Colors.white),
-                          title: Text(
-                            'Navigation',
-                            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold,color: Colors.white),
-                          ),
-                        ),
-                      ),
+      return StatefulBuilder(
+        builder: (context, setState) {
+          return Container(
+            height: MediaQuery.of(context).size.height * 0.9, // กำหนดความสูงให้เป็น 90%
+            padding: const EdgeInsets.all(10),
+            child: DefaultTabController(
+              length: 2,
+              child: Column(
+                children: [
+                  Expanded(
+                    child: TabBarView(
+                      children: [
+                        _buildDetailsTab(evData),
+                        _buildFeedbackTab(evData),
+                      ],
                     ),
                   ),
-                ),
-              ],
+                  const SizedBox(height: 16),
+                  const TabBar(
+                    tabs: [
+                      Tab(text: 'Details'),
+                      Tab(text: 'Feedback'),
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ],
-        ),
+          );
+        },
       );
     },
   );
 }
+
+Widget _buildDetailsTab(DocumentSnapshot evData) {
+  return ListView(
+    shrinkWrap: true,
+    padding: const EdgeInsets.all(16),
+    children: [
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              SizedBox(
+                height: 20,
+              ),
+              Expanded(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10.0),
+                  child: Image.network(
+                    evData['logo'],
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              const SizedBox(
+                width: 20,
+              ),
+              Expanded(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10.0),
+                  child: Image.network(evData['images']),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Text(
+            evData['name'] as String,
+            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            evData['distanceText'] as String,
+            style: const TextStyle(fontSize: 16, color: Colors.grey),
+          ),
+          const SizedBox(height: 8),
+          ListTile(
+            leading: const Icon(Icons.location_pin, color: buttoncolors),
+            title: Text(
+              evData['address'] as String,
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+          ),
+          const SizedBox(height: 8),
+          ListTile(
+            leading: const Icon(Icons.timelapse_rounded, color: buttoncolors),
+            title: Text(
+              'เวลา:' + evData['time'],
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+          ),
+          const SizedBox(height: 8),
+          ListTile(
+            leading: const Icon(Icons.electric_car_rounded, color: buttoncolors),
+            title: Text(
+              'Type: ' + evData['Type'],
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+          ),
+          const SizedBox(height: 20),
+          ListTile(
+            leading: const Icon(Icons.stars, color: buttoncolors),
+            title: Row(
+              children: [
+                const Text('Rating: '),
+                RatingBar(
+                  initialRating: _userRating,
+                  direction: Axis.horizontal,
+                  allowHalfRating: true,
+                  itemCount: 5,
+                  ratingWidget: RatingWidget(
+                    full: Icon(Icons.star, color: Colors.amber),
+                    half: Icon(Icons.star_half, color: Colors.amber),
+                    empty: Icon(Icons.star_border, color: Colors.amber),
+                  ),
+                  itemSize: 30,
+                  onRatingUpdate: (rating) {
+                    setState(() {
+                      _userRating = rating;
+                    });
+                  },
+                ),
+              ],
+            ),
+          ),
+          TextField(
+            decoration: InputDecoration(
+              labelText: 'Feedback',
+              hintText: 'Provide your feedback here...',
+            ),
+            onChanged: (value) {
+              setState(() {
+                _userFeedback = value;
+              });
+            },
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              // ดึงข้อมูลผู้ใช้ที่ล็อกอิน
+              User? user = _auth.currentUser;
+              // บันทึกคะแนนและ feedback ลง Firestore
+              if (user != null) {
+                // บันทึกคะแนนและ feedback แยกตามบัญชีผู้ใช้ที่ล็อกอิน
+                await FirebaseFirestore.instance.collection('ratings').add({
+                  'username': user.displayName, // เพิ่มข้อมูล userId
+                  'name': evData['name'],
+                  'rating': _userRating,
+                  'feedback': _userFeedback,
+                });
+                // รีเซ็ตค่าคะแนนและ feedback เมื่อ BottomSheet หายไป
+                setState(() {
+                  _userRating = 0.0;
+                  _userFeedback = '';
+                });
+                // ปิด Bottom Sheet
+                Navigator.pop(context);
+              }
+            },
+            child: Text('Submit'),
+          ),
+          const SizedBox(height: 16),
+          Center(
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(backgroundColor: buttoncolors),
+              onPressed: () {
+                // นำทางไปยังตำแหน่ง Marker ที่เลือก
+                _gotoLocation(
+                  evData['latitude'] as double,
+                  evData['longitude'] as double,
+                );
+                Navigator.pop(context); // ปิด Bottom Sheet
+              },
+              child: const IntrinsicWidth(
+                child: IntrinsicHeight(
+                  child: ListTile(
+                    leading: Icon(Icons.location_pin, color: Colors.white),
+                    title: Text(
+                      'Navigation',
+                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    ],
+  );
+}
+
+Widget _buildFeedbackTab(DocumentSnapshot evData) {
+  // ดึง feedback ทั้งหมดของ EV นี้จาก Firestore
+  return FutureBuilder<QuerySnapshot>(
+    future: FirebaseFirestore.instance
+        .collection('ratings')
+        .where('name', isEqualTo: evData['name'])
+        .get(),
+    builder: (context, snapshot) {
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return CircularProgressIndicator();
+      } else if (snapshot.hasError) {
+        return Text('Error: ${snapshot.error}');
+      } else {
+        List<double> ratings = [];
+        List<String> feedbacks = [];
+
+        // ดึงข้อมูลคะแนนและ feedback จาก Firestore
+        for (var doc in snapshot.data!.docs) {
+          double rating = doc['rating'] as double;
+          String feedback = doc['feedback'] as String;
+
+          ratings.add(rating);
+          feedbacks.add(feedback);
+        }
+
+        // คำนวณค่าเฉลี่ยของคะแนน
+        double averageRating = ratings.isNotEmpty ? ratings.reduce((value, element) => value + element) / ratings.length : 0.0;
+
+        return ListView(
+          children: [
+            ListTile(
+              leading: const Icon(Icons.stars, color: buttoncolors),
+              title: Row(
+                children: [
+                  const Text('Average Rating: '),
+                  RatingBar(
+                    initialRating: averageRating,
+                    direction: Axis.horizontal,
+                    allowHalfRating: true,
+                    itemCount: 5,
+                    ratingWidget: RatingWidget(
+                      full: Icon(Icons.star, color: Colors.amber),
+                      half: Icon(Icons.star_half, color: Colors.amber),
+                      empty: Icon(Icons.star_border, color: Colors.amber),
+                    ),
+                    itemSize: 30,
+                    onRatingUpdate: (rating) {},
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 10),
+            Text('Feedbacks:'),
+            for (String feedback in feedbacks) Text('- $feedback'),
+          ],
+        );
+      }
+    },
+  );
+}
+
+
 }
