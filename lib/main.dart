@@ -1,4 +1,4 @@
-import 'package:ev_charger/provider/internet_provider.dart';
+   import 'package:ev_charger/provider/internet_provider.dart';
 import 'package:ev_charger/provider/sign_in_provider.dart';
 import 'package:ev_charger/screens/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
