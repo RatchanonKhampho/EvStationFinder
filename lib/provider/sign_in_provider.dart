@@ -1,8 +1,6 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ev_charger/screens/backup/forget_otp.dart';
-import 'package:ev_charger/utils/utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
@@ -36,9 +34,6 @@ class SignInProvide extends ChangeNotifier {
 
   String? _name;
   String? get name => _name;
-
-  /* String? _imageUrl;
-  String? get imageUrl => _imageUrl;*/
 
   String? _email;
   String get email => _email!;
@@ -173,8 +168,6 @@ class SignInProvide extends ChangeNotifier {
         // saving the values
         _name = profile['name'];
         _email = profile['email'];
-
-        //_imageUrl = profile['picture']['data']['url'];
         _uid = profile['id'];
         _hasError = false;
         _provider = "FACEBOOK";
@@ -264,7 +257,6 @@ class SignInProvide extends ChangeNotifier {
           .createUserWithEmailAndPassword(email: email, password: password);
       _name = name;
       _email = email;
-      //_imageUrl = userDetails.photoURL;
       _provider = "Email";
       _uid = userCredential.user?.uid;
       _phone = phone;

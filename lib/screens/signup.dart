@@ -26,6 +26,7 @@ class _registerState extends State<register> {
   final TextEditingController _phoneController = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    bool _acceptedPDPA = false;
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -48,10 +49,10 @@ class _registerState extends State<register> {
                         context,
                         MaterialPageRoute(builder: (context) => sign_in()),
                       ),
-                      icon: Icon(Icons.arrow_back_ios_new),
+                      icon: const Icon(Icons.arrow_back_ios_new),
                       color: textmain3,
                     ),
-                    title: Align(
+                    title: const Align(
                         alignment: Alignment.bottomCenter,
                         child: Text(
                           "Sign Up",
@@ -60,16 +61,16 @@ class _registerState extends State<register> {
                               fontWeight: FontWeight.w600,
                               color: textmain3),
                         )),
-                    trailing: Text("  "),
+                    trailing: const Text("  "),
                   ),
                 ),
-                SizedBox(height:20),
+                const SizedBox(height: 20),
                 Container(
                   width: MediaQuery.of(context).size.width * 0.8,
                   child: Column(
                     children: [
                       Container(
-                        child: Column(
+                        child: const Column(
                           children: [
                             Text(
                               "Let’s Get Started!",
@@ -93,7 +94,7 @@ class _registerState extends State<register> {
                           ],
                         ),
                       ),
-                      SizedBox(height: 60),
+                      const SizedBox(height: 60),
                       Container(
                         child: Column(
                           children: [
@@ -102,32 +103,87 @@ class _registerState extends State<register> {
                                 labelText: "Username",
                                 hintText: "Enter your username",
                                 suffixIcon: Icons.supervised_user_circle_sharp),
-                            SizedBox(height: 20),
-
+                            const SizedBox(height: 20),
                             TextFromFile(
                                 controller: _emailController,
                                 labelText: "Email",
                                 hintText: "Enter your e-mail",
                                 suffixIcon: Icons.email_outlined),
-                            SizedBox(height: 20),
+                            const SizedBox(height: 20),
                             TextFromFilePassword(
                                 controller: _passwordController,
                                 labelText: "password",
                                 hintText: "Enter your password",
                                 suffixIcon: Icons.lock),
-                            SizedBox(height: 20),
+                            const SizedBox(height: 20),
                             TextFromFile(
                                 controller: _phoneController,
                                 labelText: "Telephone",
                                 hintText: "Enter your Telephone",
                                 suffixIcon: Icons.call),
-                            SizedBox(height: 100),
+                            const SizedBox(height: 100),
                             CustomButtonNext(
-                                text: "CONTINUE", onPressed: handleSignUp),
+                              text: "CONTINUE",
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: Text('กรุณากรอกข้อมูล'),
+                                      content: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Checkbox(
+                                                value: _acceptedPDPA,
+                                                onChanged: (value) {
+                                                  setState(() {
+                                                    _acceptedPDPA = value!;
+                                                  });
+                                                },
+                                              ),
+                                              Text('ยอมรับข้อตกลงตาม PDPA'),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: Text('ยกเลิก'),
+                                        ),
+                                        ElevatedButton(
+                                          onPressed: () {
+                                            if (_acceptedPDPA) {
+                                              // บันทึกข้อมูลที่ได้จากฟอร์ม
+
+                                              Navigator.of(context).pop();
+                                            } else {
+                                              // แสดงข้อความเตือนถ้ายังไม่ยอมรับ PDPA
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(
+                                                SnackBar(
+                                                  content: Text(
+                                                      'กรุณายอมรับข้อตกลงตาม PDPA'),
+                                                ),
+                                              );
+                                            }
+                                          },
+                                          child: Text('ยืนยัน'),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              },
+                            ),
                           ],
                         ),
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       Container(
                         width: MediaQuery.of(context).size.width * 0.8,
                         child: Row(
@@ -170,7 +226,6 @@ class _registerState extends State<register> {
     _emailController.clear();
     _passwordController.clear();
     _phoneController.clear();
-
   }
 
   Future handleSignUp() async {
@@ -222,4 +277,8 @@ class _registerState extends State<register> {
       nextScreenReplace(context, HomeScreen());
     });
   }
+}
+
+Widget PDPA() {
+  return AlertDialog();
 }
