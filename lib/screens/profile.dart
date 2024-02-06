@@ -94,7 +94,7 @@ class _profileState extends State<profile> {
         elevation: 0,
         backgroundColor: Colors.white,
         centerTitle: true,
-        title: Text(
+        title: const Text(
           "Profile",
           style: TextStyle(
             fontSize: 20,
@@ -153,7 +153,7 @@ class _profileState extends State<profile> {
                             );
                           });
                     },
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.add_a_photo,
                       //color: buttoncolors,
                     ),
@@ -166,14 +166,14 @@ class _profileState extends State<profile> {
             Container(
               width: MediaQuery.of(context).size.width,
             ),
-            SizedBox(
+            const SizedBox(
               height: 30,
             ),
             Container(
               width: MediaQuery.of(context).size.width * 0.8,
               child: Column(
                 children: [
-                  Align(
+                  const Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
                       'Persinal Information',
@@ -184,7 +184,7 @@ class _profileState extends State<profile> {
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 30,
                   ),
                   Container(
@@ -194,18 +194,18 @@ class _profileState extends State<profile> {
                         borderRadius: BorderRadius.circular(10),
                         color: Color(0xFFF7F0F0)),
                     child: ListTile(
-                      leading: Icon(
+                      leading: const Icon(
                         Icons.person_outlined,
                         color: buttoncolors,
                       ),
-                      title: Text('Username'),
+                      title: const Text('Username'),
                       trailing: Text(
                         '${sp.name}',
                         style: TextStyle(color: buttoncolors),
                       ),
                     ),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   Container(
                     padding: EdgeInsets.all(5),
                     height: 70,
@@ -213,11 +213,11 @@ class _profileState extends State<profile> {
                         borderRadius: BorderRadius.circular(10),
                         color: Color(0xFFF7F0F0)),
                     child: ListTile(
-                      leading: Icon(
+                      leading: const Icon(
                         Icons.email_outlined,
                         color: buttoncolors,
                       ),
-                      title: Text(
+                      title: const Text(
                         'Email',
                       ),
                       trailing: Text(
@@ -226,27 +226,9 @@ class _profileState extends State<profile> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 20),
-                  /* Container(
-                    padding: EdgeInsets.all(5),
-                    height: 70,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Color(0xFFF7F0F0)),
-                    child: ListTile(
-                      leading: Icon(
-                        Icons.call_outlined,
-                        color: buttoncolors,
-                      ),
-                      title: Text('Telephone'),
-                      trailing: Text(
-                        '0973504796',
-                        style: TextStyle(color: buttoncolors),
-                      ),
-                    ),
-                  ),*/
-                  SizedBox(height: 20),
-                  Align(
+                  const SizedBox(height: 20),
+                  const SizedBox(height: 20),
+                  const Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
                       'Security',
@@ -256,7 +238,7 @@ class _profileState extends State<profile> {
                           fontSize: 24),
                     ),
                   ),
-                  SizedBox(height: 30),
+                  const SizedBox(height: 30),
                   Container(
                     padding: EdgeInsets.all(5),
                     height: 70,
@@ -309,8 +291,6 @@ class _profileState extends State<profile> {
                                               ),
                                             ),
                                           ),
-                                          /*validator: 
-        },*/
                                         ),
                                       ]),
                                   actions: [
@@ -318,9 +298,17 @@ class _profileState extends State<profile> {
                                       onPressed: () {
                                         Navigator.of(context).pop();
                                       },
-                                      child: Text('ยกเลิก'),
+                                      child: const Text(
+                                        'ยกเลิก',
+                                        style: TextStyle(color: textmain),
+                                      ),
                                     ),
                                     ElevatedButton(
+                                      style: ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStateProperty.all<Color>(
+                                                buttoncolors),
+                                      ),
                                       onPressed: () {
                                         passwordReset();
                                         _emailcontroller.clear();
