@@ -67,7 +67,7 @@ class SignInProvide extends ChangeNotifier {
               _uid = snapshot['uid'],
               _name = snapshot['name'],
               _email = snapshot['email'],
-              //_imageUrl = snapshot['image_url'],
+              _phone = snapshot['phone'],
               _provider = snapshot['provider'],
             });
   }
@@ -80,7 +80,7 @@ class SignInProvide extends ChangeNotifier {
       "name": _name,
       "email": _email,
       "uid": _uid,
-      //"image_url": _imageUrl,
+      "phone": _phone,
       "provider": _provider,
     });
     notifyListeners();
@@ -92,7 +92,7 @@ class SignInProvide extends ChangeNotifier {
     await s.setString('name', _name!);
     await s.setString('email', _email!);
     await s.setString('uid', _uid!);
-    //await s.setString('image_url', _imageUrl!);
+    await s.setString('phone', _phone!);
     await s.setString('provider', _provider!);
     notifyListeners();
   }
@@ -102,7 +102,7 @@ class SignInProvide extends ChangeNotifier {
     final SharedPreferences s = await SharedPreferences.getInstance();
     _name = s.getString('name');
     _email = s.getString('email');
-    //_imageUrl = s.getString('image_url');
+    _phone = s.getString('phone');
     _uid = s.getString('uid');
     _provider = s.getString('provider');
 
@@ -258,8 +258,9 @@ class SignInProvide extends ChangeNotifier {
       _name = name;
       _email = email;
       _provider = "Email";
-      _uid = userCredential.user?.uid;
       _phone = phone;
+      _uid = userCredential.user?.uid;
+
       notifyListeners();
     } on FirebaseAuthException catch (e) {
       switch (e.code) {

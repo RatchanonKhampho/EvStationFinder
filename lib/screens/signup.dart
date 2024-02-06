@@ -24,9 +24,11 @@ class _registerState extends State<register> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
+
+  bool _acceptedPDPA = true;
+
   @override
   Widget build(BuildContext context) {
-    bool _acceptedPDPA = false;
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -123,21 +125,38 @@ class _registerState extends State<register> {
                                 suffixIcon: Icons.call),
                             const SizedBox(height: 100),
                             CustomButtonNext(
-                              text: "CONTINUE",
+                              text: "Sign Up",
                               onPressed: () {
                                 showDialog(
                                   context: context,
                                   builder: (BuildContext context) {
                                     return AlertDialog(
-                                      title: Text('กรุณากรอกข้อมูล'),
+                                      title:
+                                          Text('ขออนุญาติเก็บข้อมูลตาม PDPA'),
                                       content: Column(
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
+                                          Text(
+                                              """เรียน ผู้ใช้บริการ EV Station Finder
+
+เพื่อให้บริการที่ดีที่สุดและปรับปรุงประสิทธิภาพการให้บริการของเรา, เราขออนุญาติเก็บ, ใช้, และประมวลผลข้อมูลส่วนบุคคลของคุณตามกฎหมายความเป็นส่วนตัวของประชาชน (PDPA).
+
+ข้อมูลที่เรารวบรวม:
+
+ชื่อ
+อีเมล
+เบอร์โทรศัพท์
+
+วัตถุประสงค์ของการใช้ข้อมูล:
+
+ให้บริการและสนับสนุนลูกค้า
+ปรับปรุงประสิทธิภาพการให้บริการ
+"""),
                                           Row(
                                             children: [
                                               Checkbox(
                                                 value: _acceptedPDPA,
-                                                onChanged: (value) {
+                                                onChanged: (bool? value) {
                                                   setState(() {
                                                     _acceptedPDPA = value!;
                                                   });
@@ -158,8 +177,7 @@ class _registerState extends State<register> {
                                         ElevatedButton(
                                           onPressed: () {
                                             if (_acceptedPDPA) {
-                                              // บันทึกข้อมูลที่ได้จากฟอร์ม
-
+                                              handleSignUp();
                                               Navigator.of(context).pop();
                                             } else {
                                               // แสดงข้อความเตือนถ้ายังไม่ยอมรับ PDPA
