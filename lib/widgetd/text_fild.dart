@@ -45,7 +45,6 @@ Widget TextFromFile({
               margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               decoration: const BoxDecoration(
                 shape: BoxShape.circle,
-
               ),
               child: Icon(
                 suffixIcon,
@@ -125,7 +124,7 @@ Widget TextFromFileEmail({
             letterSpacing: 1.5,
             color: Text1),
         decoration: const InputDecoration(
-          label: Text("Username"),
+          label: Text("Useremail"),
           labelStyle: TextStyle(
             fontSize: 16,
             color: textmain2,
@@ -194,19 +193,6 @@ Widget TextFromFilePasswordSign({
         ),
       ),
     );
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 Widget change({
   required IconData leading,

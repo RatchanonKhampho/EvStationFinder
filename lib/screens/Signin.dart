@@ -60,7 +60,7 @@ class _sign_inState extends State<sign_in> {
               Column(
                 children: [
                   Container(
-                    child: logoWidget("images/Logo.png"),
+                    child: logoWidget("images/IconApp.png"),
                   ),
                   Container(
                     child: const Text(
