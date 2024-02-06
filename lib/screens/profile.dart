@@ -140,7 +140,7 @@ class _profileState extends State<profile> {
                     ),
                   ),
                   SizedBox(height: 20),
-                  Container(
+                  /* Container(
                     padding: EdgeInsets.all(5),
                     height: 70,
                     decoration: BoxDecoration(
@@ -157,7 +157,7 @@ class _profileState extends State<profile> {
                         style: TextStyle(color: buttoncolors),
                       ),
                     ),
-                  ),
+                  ),*/
                   SizedBox(height: 20),
                   Align(
                     alignment: Alignment.centerLeft,
@@ -193,7 +193,6 @@ class _profileState extends State<profile> {
                   CustomButton(
                       text: "LogOut",
                       onPressed: () {
-                        
                         sp.userSignout();
                         nextScreenReplace(context, const sign_in());
                       })

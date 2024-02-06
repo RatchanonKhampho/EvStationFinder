@@ -112,17 +112,18 @@ class _registerState extends State<register> {
                                 hintText: "Enter your e-mail",
                                 suffixIcon: Icons.email_outlined),
                             const SizedBox(height: 20),
+
                             TextFromFilePassword(
                                 controller: _passwordController,
                                 labelText: "password",
                                 hintText: "Enter your password",
                                 suffixIcon: Icons.lock),
-                            const SizedBox(height: 20),
-                            TextFromFile(
+                            // const SizedBox(height: 20),
+                            /* TextFromFile(
                                 controller: _phoneController,
                                 labelText: "Telephone",
                                 hintText: "Enter your Telephone",
-                                suffixIcon: Icons.call),
+                                suffixIcon: Icons.call),*/
                             const SizedBox(height: 100),
                             CustomButtonNext(
                               text: "Sign Up",
@@ -243,14 +244,12 @@ class _registerState extends State<register> {
     _userNameController.clear();
     _emailController.clear();
     _passwordController.clear();
-    _phoneController.clear();
   }
 
   Future handleSignUp() async {
     final email = _emailController.text;
     final password = _passwordController.text;
     final name = _userNameController.text;
-    final phone = _phoneController.text;
 
     final sp = context.read<SignInProvide>();
     final ip = context.read<InternetProvider>();
@@ -260,7 +259,11 @@ class _registerState extends State<register> {
       openSnackbar(context, "Check your Internet connection ", Colors.red);
     } else {
       await sp
-          .signUpWithEmailAndPassword(email, password, name, phone)
+          .signUpWithEmailAndPassword(
+        email,
+        password,
+        name,
+      )
           .then((value) {
         if (sp.hasError == true) {
           openSnackbar(context, "Error Data  ", Colors.red);

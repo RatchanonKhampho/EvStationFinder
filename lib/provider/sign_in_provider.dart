@@ -38,9 +38,6 @@ class SignInProvide extends ChangeNotifier {
   String? _email;
   String get email => _email!;
 
-  String? _phone;
-  String get phone => _phone!;
-
   SignInProvide() {
     checkSignInUser();
   }
@@ -67,7 +64,6 @@ class SignInProvide extends ChangeNotifier {
               _uid = snapshot['uid'],
               _name = snapshot['name'],
               _email = snapshot['email'],
-              _phone = snapshot['phone'],
               _provider = snapshot['provider'],
             });
   }
@@ -80,7 +76,6 @@ class SignInProvide extends ChangeNotifier {
       "name": _name,
       "email": _email,
       "uid": _uid,
-      "phone": _phone,
       "provider": _provider,
     });
     notifyListeners();
@@ -92,7 +87,7 @@ class SignInProvide extends ChangeNotifier {
     await s.setString('name', _name!);
     await s.setString('email', _email!);
     await s.setString('uid', _uid!);
-    await s.setString('phone', _phone!);
+
     await s.setString('provider', _provider!);
     notifyListeners();
   }
@@ -102,7 +97,7 @@ class SignInProvide extends ChangeNotifier {
     final SharedPreferences s = await SharedPreferences.getInstance();
     _name = s.getString('name');
     _email = s.getString('email');
-    _phone = s.getString('phone');
+
     _uid = s.getString('uid');
     _provider = s.getString('provider');
 
@@ -171,6 +166,7 @@ class SignInProvide extends ChangeNotifier {
         _uid = profile['id'];
         _hasError = false;
         _provider = "FACEBOOK";
+
         notifyListeners();
       } on FirebaseAuthException catch (e) {
         switch (e.code) {
@@ -219,7 +215,7 @@ class SignInProvide extends ChangeNotifier {
         // now save all values
         _name = userDetails.displayName;
         _email = userDetails.email;
-        //_imageUrl = userDetails.photoURL;
+
         _provider = "Google";
         _uid = userDetails.uid;
         notifyListeners();
@@ -251,14 +247,16 @@ class SignInProvide extends ChangeNotifier {
 
   // SignUp with Emailpassword
   Future signUpWithEmailAndPassword(
-      String email, String password, String name, String phone) async {
+    String email,
+    String password,
+    String name,
+  ) async {
     try {
       UserCredential userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
       _name = name;
       _email = email;
       _provider = "Email";
-      _phone = phone;
       _uid = userCredential.user?.uid;
 
       notifyListeners();
@@ -284,92 +282,4 @@ class SignInProvide extends ChangeNotifier {
     }
     notifyListeners();
   }
-
-  //SignIn with Emailpassword
-  /* Future signInWithEmailAndPassword(
-    String email,
-    String password,
-  ) async {
-    try {
-      await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: email, password: password);
-      notifyListeners();
-    } on FirebaseAuthException catch (e) {
-      switch (e.code) {
-        case "account-exists-with-different-credential":
-          _errorCode =
-              "You already have an account with us. Use correct provider";
-          _hasError = true;
-          notifyListeners();
-          break;
-
-        case "null":
-          _errorCode = "Some unexpected error while trying to sign in";
-          _hasError = true;
-          notifyListeners();
-          break;
-        default:
-          _errorCode = e.toString();
-          _hasError = true;
-          notifyListeners();
-      }
-    }
-    notifyListeners();
-  }*/
-/*
-  // Sigin with phone
-  void signInWithPhone(BuildContext context, String phoneNumber) async {
-    try {
-      await _firebaseAuth.verifyPhoneNumber(
-          phoneNumber: phoneNumber,
-          verificationCompleted:
-              (PhoneAuthCredential phoneAuthCredential) async {
-            await _firebaseAuth.signInWithCredential(phoneAuthCredential);
-          },
-          verificationFailed: (error) {
-            throw Exception(error.message);
-          },
-          codeSent: (verificationId, forceResendingToken) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) =>
-                    Forget_otp(verificationId: verificationId),
-              ),
-            );
-          },
-          codeAutoRetrievalTimeout: (verificationId) {});
-    } on FirebaseAuthException catch (e) {
-      showSnackBar(context, e.message.toString());
-    }
-  }
-*/
-// verifyOtp
-  /*void verifyOtp({
-    required BuildContext context,
-    required String verificationId,
-    required String userOtp,
-    required Function onSuccess,
-  }) async {
-    _isLoading = true;
-    notifyListeners();
-
-    try {
-      PhoneAuthCredential creds = PhoneAuthProvider.credential(
-          verificationId: verificationId, smsCode: userOtp);
-      User? user = (await _firebaseAuth.signInWithCredential(creds)).user!;
-      if (user != null) {
-        //carry our logic
-
-        onSuccess();
-      }
-      _uid = user.uid;
-      _isLoading = false;
-      notifyListeners();
-    } on FirebaseAuthException catch (e) {
-      showSnackBar(context, e.message.toString());
-      _isLoading = false;
-      notifyListeners();
-    }
-  }*/
 }
