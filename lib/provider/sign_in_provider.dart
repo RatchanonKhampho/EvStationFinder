@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -13,6 +15,7 @@ class SignInProvide extends ChangeNotifier {
   final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
   final FacebookAuth facebookAuth = FacebookAuth.instance;
   final GoogleSignIn googleSignIn = GoogleSignIn();
+  final FirebaseStorage _storage = FirebaseStorage.instance;
 
   bool _isSignedIn = false;
   bool get isSignedIn => _isSignedIn;
@@ -37,6 +40,9 @@ class SignInProvide extends ChangeNotifier {
 
   String? _email;
   String get email => _email!;
+
+  String? _imageUrl;
+  String get imageUrl => _imageUrl!;
 
   SignInProvide() {
     checkSignInUser();
@@ -64,6 +70,7 @@ class SignInProvide extends ChangeNotifier {
               _uid = snapshot['uid'],
               _name = snapshot['name'],
               _email = snapshot['email'],
+              // _imageUrl = snapshot['image_url'],
               _provider = snapshot['provider'],
             });
   }
@@ -76,6 +83,7 @@ class SignInProvide extends ChangeNotifier {
       "name": _name,
       "email": _email,
       "uid": _uid,
+      //"image_url": _imageUrl,
       "provider": _provider,
     });
     notifyListeners();
@@ -86,6 +94,7 @@ class SignInProvide extends ChangeNotifier {
     final SharedPreferences s = await SharedPreferences.getInstance();
     await s.setString('name', _name!);
     await s.setString('email', _email!);
+    //await s.setString('image_url', _imageUrl!);
     await s.setString('uid', _uid!);
 
     await s.setString('provider', _provider!);
@@ -97,8 +106,8 @@ class SignInProvide extends ChangeNotifier {
     final SharedPreferences s = await SharedPreferences.getInstance();
     _name = s.getString('name');
     _email = s.getString('email');
-
-    _uid = s.getString('uid');
+    _imageUrl = s.getString('image_url');
+    //_uid = s.getString('uid');
     _provider = s.getString('provider');
 
     notifyListeners();
@@ -281,5 +290,29 @@ class SignInProvide extends ChangeNotifier {
       }
     }
     notifyListeners();
+  }
+
+  Future<String> uploadImageToStorage(String childname, Uint8List file) async {
+    Reference ref = _storage.ref().child(childname);
+    UploadTask uploadTask = ref.putData(file);
+    TaskSnapshot snapshot = await uploadTask;
+    String downloadUrl = await snapshot.ref.getDownloadURL();
+    return downloadUrl;
+  }
+
+  Future<String> saveData({required Uint8List file}) async {
+    String resp = " Some Error Occurred";
+
+    try {
+      String imageUrl = await uploadImageToStorage("profileImage", file);
+      await _firebaseFirestore
+          .collection("usersProfile")
+          .add({'uid': uid, 'ImageUrl': imageUrl});
+
+      resp = "Profile Image has been uploaded successfully!";
+    } catch (err) {
+      resp = err.toString();
+    }
+    return resp;
   }
 }

@@ -4,13 +4,13 @@ import 'package:ev_charger/utils/next_Screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class SingOut extends StatefulWidget {
+  const SingOut({super.key});
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<SingOut> createState() => _SingOutState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _SingOutState extends State<SingOut> {
   Future getData() async {
     final sp = context.read<SignInProvide>();
     sp.getDataFromSharedPreferences();
@@ -34,7 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
           children: <Widget>[
             CircleAvatar(
               backgroundColor: Colors.white,
-              //backgroundImage: NetworkImage("${sp.imageUrl}"),
+              backgroundImage: NetworkImage("${sp.imageUrl}"),
               radius: 50,
             ),
             const SizedBox(

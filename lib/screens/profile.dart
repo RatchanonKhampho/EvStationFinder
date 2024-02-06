@@ -1,16 +1,19 @@
+import 'dart:typed_data';
+
 import 'package:ev_charger/main.dart';
 import 'package:ev_charger/provider/sign_in_provider.dart';
-import 'package:ev_charger/screens/forget_email_reset.dart';
 import 'package:ev_charger/utils/next_Screen.dart';
+import 'package:ev_charger/utils/upload_image.dart';
 import 'package:ev_charger/widgetd/custombutton.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import 'Signin.dart';
 
 class profile extends StatefulWidget {
   const profile({super.key});
-
   @override
   State<profile> createState() => _profileState();
 }
@@ -19,6 +22,61 @@ class _profileState extends State<profile> {
   Future getData() async {
     final sp = context.read<SignInProvide>();
     sp.getDataFromSharedPreferences();
+  }
+
+  final TextEditingController _emailcontroller = TextEditingController();
+  Future passwordReset() async {
+    {
+      try {
+        await FirebaseAuth.instance
+            .sendPasswordResetEmail(email: _emailcontroller.text.trim());
+        showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              content: Text('Password reset link sent! check your email'),
+            );
+          },
+        );
+      } on FirebaseAuthException catch (e) {
+        print(e);
+        showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              content: Text(e.message.toString()),
+            );
+          },
+        );
+      }
+    }
+  }
+
+  /*Future uploadImage() async {
+    if (_image != null) {
+      try {
+        User? user = FirebaseAuth.instance.currentUser;
+        String uid = user?.uid ?? '';
+        Reference storageReference = FirebaseStorage.instance.ref().child('profile_images/$uid');
+        await storageReference.putFile(_image!);
+        print('Image uploaded successfully.');
+      } catch (e) {
+        print('Error uploading image: $e');
+      }
+    }
+  }*/
+
+  void saveprofile() async {
+    String resp = await SignInProvide().saveData(file: _image!);
+  }
+
+  Uint8List? _image;
+
+  void selectImage() async {
+    Uint8List img = await pickImage(ImageSource.gallery);
+    setState(() {
+      _image = img;
+    });
   }
 
   @override
@@ -52,29 +110,56 @@ class _profileState extends State<profile> {
           children: [
             Stack(
               children: [
-                SizedBox(
-                    height: 120,
-                    width: 120,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(100),
-                      child: Image(
-                        image: AssetImage("images/profile_img.jpg"),
+                /* CircleAvatar(
+                  backgroundColor: Colors.white,
+                  backgroundImage: NetworkImage("${sp.imageUrl}"),
+                  radius: 50,
+                ),*/
+                _image != null
+                    ? CircleAvatar(
+                        radius: 64,
+                        backgroundColor: Colors.white,
+                        backgroundImage: MemoryImage(_image!),
+                      )
+                    : const CircleAvatar(
+                        radius: 64,
+                        backgroundColor: Colors.white,
+                        backgroundImage: AssetImage("images/profile_img.jpg"),
                       ),
-                    )),
                 Positioned(
-                  right: 0,
-                  bottom: 0,
-                  child: Container(
-                    width: 35,
-                    height: 35,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(100),
-                        color: buttoncolors),
-                    child: Icon(
-                      Icons.camera_alt_outlined,
-                      color: Colors.white,
+                  child: IconButton(
+                    onPressed: () {
+                      selectImage();
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text('Save Upload Image'),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text('ยกเลิก'),
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    saveprofile();
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text('ยืนยัน'),
+                                ),
+                              ],
+                            );
+                          });
+                    },
+                    icon: const Icon(
+                      Icons.add_a_photo,
+                      //color: buttoncolors,
                     ),
                   ),
+                  bottom: -10,
+                  left: 80,
                 ),
               ],
             ),
@@ -115,7 +200,7 @@ class _profileState extends State<profile> {
                       ),
                       title: Text('Username'),
                       trailing: Text(
-                        'Ratchanon',
+                        '${sp.name}',
                         style: TextStyle(color: buttoncolors),
                       ),
                     ),
@@ -132,10 +217,12 @@ class _profileState extends State<profile> {
                         Icons.email_outlined,
                         color: buttoncolors,
                       ),
-                      title: Text('Email'),
+                      title: Text(
+                        'Email',
+                      ),
                       trailing: Text(
-                        'Ratchanon190944@gmail.com ',
-                        style: TextStyle(color: buttoncolors),
+                        '${sp.email}',
+                        style: TextStyle(color: buttoncolors, fontSize: 13),
                       ),
                     ),
                   ),
@@ -184,7 +271,67 @@ class _profileState extends State<profile> {
                         title: Text('Reset Password'),
                         trailing: IconButton(
                           onPressed: () {
-                            nextScreen(context, ForgotResetEmail());
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: Text('Reset Password'),
+                                  content: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        TextFormField(
+                                          controller: _emailcontroller,
+                                          autofillHints: [AutofillHints.email],
+                                          keyboardType:
+                                              TextInputType.emailAddress,
+                                          cursorColor: buttoncolors,
+                                          style: const TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w700,
+                                              letterSpacing: 1.5,
+                                              color: Text1),
+                                          decoration: const InputDecoration(
+                                            label: Text("Enter your email"),
+                                            labelStyle: TextStyle(
+                                              fontSize: 14,
+                                              color: textmain2,
+                                              fontWeight: FontWeight.w400,
+                                              letterSpacing: 1,
+                                            ),
+                                            enabledBorder: UnderlineInputBorder(
+                                              borderSide: const BorderSide(
+                                                color: buttoncolors,
+                                              ),
+                                            ),
+                                            focusedBorder: UnderlineInputBorder(
+                                              borderSide: const BorderSide(
+                                                color: buttoncolors,
+                                              ),
+                                            ),
+                                          ),
+                                          /*validator: 
+        },*/
+                                        ),
+                                      ]),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text('ยกเลิก'),
+                                    ),
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        passwordReset();
+                                        _emailcontroller.clear();
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text('ยืนยัน'),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
                           },
                           icon: Icon(Icons.chevron_right_outlined),
                         )),
